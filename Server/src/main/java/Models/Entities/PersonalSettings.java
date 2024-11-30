@@ -53,7 +53,7 @@ public class PersonalSettings implements Serializable {
         this.phone = phone;
     }
 
-    public boolean isNotifications() {
+    public boolean getNotifications() {
         return notifications;
     }
 

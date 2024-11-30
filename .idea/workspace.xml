@@ -4,14 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="212a1867-1f9e-474c-b72f-37fb6a2419f7" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+    <list default="true" id="212a1867-1f9e-474c-b72f-37fb6a2419f7" name="Changes" comment="User">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/9dd97dea-6643-497a-8e2d-bc59537523c4.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/9dd97dea-6643-497a-8e2d-bc59537523c4.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sqldialects.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Client/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Client/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/main/java/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/java/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/main/java/Enums/RequestType.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/java/Enums/RequestType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/main/java/Models/Entities/PersonalSettings.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/java/Models/Entities/PersonalSettings.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/main/java/Models/Entities/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/java/Models/Entities/User.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Server/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Server/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/javafx-swt.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/javafx.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/DAO/PersonalSettingsDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/java/DAO/PersonalSettingsDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/DAO/UserDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/java/DAO/UserDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/Enums/RequestType.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/java/Enums/RequestType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/Models/Entities/PersonalSettings.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/java/Models/Entities/PersonalSettings.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/Models/Entities/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/java/Models/Entities/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/Utilities/ClientThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/java/Utilities/ClientThread.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/resources/бд.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/resources/бд.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -22,8 +32,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="FxmlFile" />
         <option value="Interface" />
+        <option value="FxmlFile" />
         <option value="Class" />
       </list>
     </option>
@@ -31,24 +41,24 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "Burikkkk"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Burikkkk&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/Burikkkk/Weather.git",
-    "accountId": "9fa653a0-795d-4708-ac3c-5316c77dc0e3"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Burikkkk/Weather.git&quot;,
+    &quot;accountId&quot;: &quot;9fa653a0-795d-4708-ac3c-5316c77dc0e3&quot;
   }
-}]]></component>
+}</component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 3
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
   <component name="ProjectId" id="2pNiEmOB0KOLJwlDmFzDofkb2Ot" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="1" id="Add" />
@@ -69,14 +79,14 @@
     "git-widget-placeholder": "master",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Sasha/3_kurs/прогсп/КУРСАЧ/weather/Client/src/main/java/Utilities",
+    "last_opened_file_path": "D:/Sasha/3_kurs/прогсп/КУРСАЧ/материалы/Пример КП/Пример КП",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "onboarding.tips.debug.path": "D:/Sasha/3_kurs/прогсп/КУРСАЧ/weather/Server/src/main/java/Main.java",
-    "project.structure.last.edited": "Modules",
+    "project.structure.last.edited": "Global Libraries",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.19043238",
     "settings.editor.selected.configurable": "preferences.JavaFX",
@@ -90,11 +100,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Sasha\3_kurs\прогсп\КУРСАЧ\weather\Client\src\main\resources" />
       <recent name="D:\Sasha\3_kurs\прогсп\КУРСАЧ\weather\Client\src\main\java\Utilities" />
       <recent name="D:\Sasha\3_kurs\прогсп\КУРСАЧ\weather\Client\src\main\java" />
       <recent name="D:\Sasha\3_kurs\прогсп\КУРСАЧ\weather\Server\src\main\resources" />
       <recent name="D:\Sasha\3_kurs\прогсп\КУРСАЧ\weather\Server\src\main\java\Service" />
-      <recent name="D:\Sasha\3_kurs\прогсп\КУРСАЧ\weather\Server\src\main\java\Enums" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="Utilities" />
@@ -103,7 +113,7 @@
       <recent name="Models.Entities" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Client1">
+  <component name="RunManager" selected="Application.Client2">
     <configuration name="Client1" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="Client" />
       <module name="Client" />
@@ -147,25 +157,31 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1732612826830</updated>
-      <workItem from="1732612827924" duration="29172000" />
+      <workItem from="1732612827924" duration="37090000" />
+      <workItem from="1732747744943" duration="23638000" />
+      <workItem from="1732885614001" duration="35440000" />
     </task>
+    <task id="LOCAL-00001" summary="User">
+      <option name="closed" value="true" />
+      <created>1732735919473</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1732735919473</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="User" />
+    <option name="LAST_COMMIT_MESSAGE" value="User" />
+  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/Client/src/main/java/Client.java</url>
-          <line>17</line>
-          <properties class="Client" method="main">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="7" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/Client/src/main/java/Utilities/ClientSocket.java</url>
           <line>18</line>
@@ -211,42 +227,15 @@
           </properties>
           <option name="timeStamp" value="17" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/Server/src/main/java/Utilities/ClientThread.java</url>
-          <line>56</line>
-          <properties class="Utilities.ClientThread" method="handleRequest">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="18" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/Server/src/main/java/Utilities/ClientThread.java</url>
-          <line>78</line>
-          <properties class="Utilities.ClientThread" method="handleRegister">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="19" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/Server/src/main/java/Utilities/ClientThread.java</url>
-          <line>98</line>
-          <properties class="Utilities.ClientThread" method="handleLogin">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="20" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/Client/src/main/java/Models/Entities/User.java</url>
-          <line>92</line>
-          <option name="timeStamp" value="9" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/Client/src/main/java/Utilities/GetService.java</url>
           <line>9</line>
           <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/Server/src/main/java/Utilities/ClientThread.java</url>
+          <line>261</line>
+          <option name="timeStamp" value="29" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

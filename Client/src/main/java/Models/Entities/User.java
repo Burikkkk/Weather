@@ -1,20 +1,23 @@
 package Models.Entities;
 
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Scanner;
 
 public class User implements Serializable {
 
     private int id;
     private String login;
-    private String password;
+    private byte[] password;
     private String role = "user";
     private PersonalSettings personalSettings;
 
 
     public User(){}
 
-    public User(int id, String login, String password, String role, PersonalSettings personalSettings) {
+    public User(int id, String login, byte[] password, String role, PersonalSettings personalSettings) {
         this.id = id;
         this.login = login;
         this.password = password;
@@ -39,11 +42,11 @@ public class User implements Serializable {
         this.login = login;
     }
 
-    public String getPassword() {
+    public byte[] getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(byte[] password) {
         this.password = password;
     }
 
@@ -65,71 +68,42 @@ public class User implements Serializable {
 
 
 
-    public void inputUser() {
-        Scanner scanner = new Scanner(System.in);
+    public static byte[] getHash(String password) {
+        MessageDigest digest = null;
+        byte[] hash = null;
+        try {
+            digest = MessageDigest.getInstance("MD5");
+            digest.reset();
+            hash = digest.digest(password.getBytes("UTF-8"));
 
-        // Запрашиваем у пользователя логин
-        System.out.print("Введите логин: ");
-        String login = scanner.nextLine();
-        this.setLogin(login);  // Сохраняем введённый логин
-
-        // Запрашиваем у пользователя пароль
-        System.out.print("Введите пароль: ");
-        String password = scanner.nextLine();
-
-        // Запрашиваем подтверждение пароля
-        String password1;
-        do {
-            System.out.print("Подтвердите пароль: ");
-            password1 = scanner.nextLine();
-            if (password.equals(password1)) {
-                this.setPassword(password);  // Сохраняем введённый пароль
-            } else {
-                System.out.println("Неверный пароль, повторите ввод.");
-            }
-        } while (!password.equals(password1));  // Повторяем запрос до совпадения пароля
-
-        // Создаём объект PersonalSettings и запрашиваем настройки
-        PersonalSettings settings = new PersonalSettings();
-
-        // Запрашиваем номер телефона
-        System.out.print("Введите номер телефона (или оставьте пустым): ");
-        String phone = scanner.nextLine();
-        settings.setPhone(phone);  // Сохраняем номер телефона (может быть пустым)
-
-        // Запрашиваем настройку уведомлений
-        System.out.print("Включить уведомления? (true/false): ");
-        boolean notifications = Boolean.parseBoolean(scanner.nextLine());
-        settings.setNotifications(notifications);  // Сохраняем выбор пользователя по уведомлениям
-
-        // Запрашиваем единицу измерения температуры
-        System.out.print("Введите единицу измерения температуры (по умолчанию 'C'): ");
-        String temperature = scanner.nextLine();
-        if (temperature.isEmpty()) {
-            temperature = "C";  // Если не введено, ставим значение по умолчанию
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
         }
-        settings.setTemperature(temperature);  // Сохраняем единицу измерения температуры
-
-        // Запрашиваем единицу измерения давления
-        System.out.print("Введите единицу измерения давления (по умолчанию 'мм рт. ст.'): ");
-        String pressure = scanner.nextLine();
-        if (pressure.isEmpty()) {
-            pressure = "мм рт. ст.";  // Если не введено, ставим значение по умолчанию
-        }
-        settings.setPressure(pressure);  // Сохраняем единицу измерения давления
-
-        // Запрашиваем единицу измерения скорости
-        System.out.print("Введите единицу измерения скорости (по умолчанию 'м/с'): ");
-        String speed = scanner.nextLine();
-        if (speed.isEmpty()) {
-            speed = "м/с";  // Если не введено, ставим значение по умолчанию
-        }
-        settings.setSpeed(speed);  // Сохраняем единицу измерения скорости
-
-        // Связываем настройки с пользователем
-        this.setPersonalSettings(settings);
-
-        System.out.println("Пользователь успешно создан.");
+        return hash;
     }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id &&
+                (login != null ? login.equals(user.login) : user.login == null) &&
+                (role != null ? role.equals(user.role) : user.role == null) &&
+                (password != null ? java.util.Arrays.equals(password, user.password) : user.password == null) &&
+                (personalSettings != null ? personalSettings.equals(user.personalSettings) : user.personalSettings == null);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + (login != null ? login.hashCode() : 0);
+        result = 31 * result + (role != null ? role.hashCode() : 0);
+        result = 31 * result + java.util.Arrays.hashCode(password); // Для массива используется Arrays.hashCode
+        result = 31 * result + (personalSettings != null ? personalSettings.hashCode() : 0);
+        return result;
+    }
+
 
 }

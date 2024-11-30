@@ -11,37 +11,29 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-public class Client {
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 
+public class Client extends Application {
 
-    public static void main(String[] args) throws IOException {
+    @Override
+    public void start(Stage primaryStage) throws Exception{
         ClientSocket.getInstance().getSocket();
-
-        //GetService<User> getService = new GetService<>(User.class);
-
-        // Получаем данные для регистрации
-        User user = new User();
-        user.inputUser();  // Запрашиваем данные для регистрации пользователя
-
-        Request request = new Request();
-
-        request.setRequestMessage(new Gson().toJson(user));
-        request.setRequestType(RequestType.LOGIN);
-
-        ClientSocket.getInstance().getOut().println(new Gson().toJson(request));
-        ClientSocket.getInstance().getOut().flush();
+        Parent root = FXMLLoader.load(getClass().getResource("/Login.fxml"));
+        primaryStage.setTitle("Добро пожаловать!");
+        primaryStage.setScene(new Scene(root, 314, 358));
+        primaryStage.show();
+    }
 
 
-
-        String answer = ClientSocket.getInstance().getInStream().readLine();
-        Response response = new Gson().fromJson(answer, Response.class);
-        if (response.getResponseStatus() == ResponseStatus.OK) {
-            System.out.println("Ответ от сервера: Регистрация прошла успешно!");
-        } else {
-            System.out.println("Ошибка при регистрации.");
-        }
-
-
+    public static void main(String[] args) {
+        launch(args);
     }
 }
+
+
+

@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public class UserDao implements Dao<User> {
 
-    private static Connection connection;
+    private Connection connection = null;
 
     public UserDao() {
         try {
@@ -39,7 +39,7 @@ public class UserDao implements Dao<User> {
         String sql = "INSERT INTO user (login, password, role, settings_id) VALUES (?, ?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, user.getLogin());
-            statement.setString(2, user.getPassword());
+            statement.setBytes(2, user.getPassword());
             statement.setString(3, user.getRole());
             statement.setInt(4, user.getPersonalSettings().getId());
             statement.executeUpdate();
@@ -95,7 +95,7 @@ public class UserDao implements Dao<User> {
         String sql = "UPDATE user SET login = ?, password = ?, role = ?, settings_id = ? WHERE id = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, user.getLogin());
-            statement.setString(2, user.getPassword());
+            statement.setBytes(2, user.getPassword());
             statement.setString(3, user.getRole());
             statement.setInt(4, user.getPersonalSettings().getId());
             statement.setInt(5, user.getId());
@@ -116,7 +116,7 @@ public class UserDao implements Dao<User> {
     public User resultSetToEntity(ResultSet resultSet) throws SQLException {
         int id = resultSet.getInt("id");
         String login = resultSet.getString("login");
-        String password = resultSet.getString("password");
+        byte[] password = resultSet.getBytes("password");
         String role = resultSet.getString("role");
         int settingsId = resultSet.getInt("settings_id");
 

@@ -41,7 +41,7 @@ public class PersonalSettingsDao implements Dao<PersonalSettings>{
         try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             // Установка параметров запроса
             statement.setString(1, settings.getPhone());
-            statement.setBoolean(2, settings.isNotifications());
+            statement.setBoolean(2, settings.getNotifications());
             statement.setString(3, settings.getTemperature());
             statement.setString(4, settings.getPressure());
             statement.setString(5, settings.getSpeed());
@@ -101,7 +101,7 @@ public class PersonalSettingsDao implements Dao<PersonalSettings>{
         String sql = "UPDATE personal_settings SET phone = ?, notifications = ?, temperature = ?, pressure = ?, speed = ? WHERE id = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, settings.getPhone());
-            statement.setBoolean(2, settings.isNotifications());
+            statement.setBoolean(2, settings.getNotifications());
             statement.setString(3, settings.getTemperature());
             statement.setString(4, settings.getPressure());
             statement.setString(5, settings.getSpeed());

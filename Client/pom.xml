@@ -12,8 +12,8 @@
     <artifactId>Client</artifactId>
 
     <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
@@ -22,5 +22,8 @@
             <artifactId>gson</artifactId>
             <version>2.8.6</version>
         </dependency>
+
+
+
     </dependencies>
 </project>

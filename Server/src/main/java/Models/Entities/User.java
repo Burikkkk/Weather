@@ -2,6 +2,9 @@ package Models.Entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Scanner;
 
 @Entity
@@ -16,7 +19,7 @@ public class User implements Serializable {
     private String login;
 
     @Column
-    private String password;
+    private byte[] password;
 
     @Column
     private String role = "user";
@@ -28,7 +31,7 @@ public class User implements Serializable {
 
     public User(){}
 
-    public User(int id, String login, String password, String role, PersonalSettings personalSettings) {
+    public User(int id, String login, byte[] password, String role, PersonalSettings personalSettings) {
         this.id = id;
         this.login = login;
         this.password = password;
@@ -53,11 +56,11 @@ public class User implements Serializable {
         this.login = login;
     }
 
-    public String getPassword() {
+    public byte[] getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(byte[] password) {
         this.password = password;
     }
 
@@ -75,6 +78,22 @@ public class User implements Serializable {
 
     public void setPersonalSettings(PersonalSettings personalSettings) {
         this.personalSettings = personalSettings;
+    }
+
+    public static byte[] getHash(String password) {
+        MessageDigest digest = null;
+        byte[] hash = null;
+        try {
+            digest = MessageDigest.getInstance("MD5");
+            digest.reset();
+            hash = digest.digest(password.getBytes("UTF-8"));
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return hash;
     }
 
 }
