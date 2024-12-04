@@ -4,24 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="212a1867-1f9e-474c-b72f-37fb6a2419f7" name="Changes" comment="User">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/9dd97dea-6643-497a-8e2d-bc59537523c4.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/9dd97dea-6643-497a-8e2d-bc59537523c4.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sqldialects.xml" beforeDir="false" />
+    <list default="true" id="212a1867-1f9e-474c-b72f-37fb6a2419f7" name="Changes" comment="User cases">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Client/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Client/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/java/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/java/Client.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/java/Enums/RequestType.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/java/Enums/RequestType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/java/Models/Entities/PersonalSettings.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/java/Models/Entities/PersonalSettings.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/java/Models/Entities/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/java/Models/Entities/User.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Server/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Server/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/src/main/java/DAO/PersonalSettingsDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/java/DAO/PersonalSettingsDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/DAO/DashboardDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/java/DAO/DashboardDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/DAO/DayDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/java/DAO/DayDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/DAO/LocationDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/java/DAO/LocationDao.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Server/src/main/java/DAO/UserDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/java/DAO/UserDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/src/main/java/Enums/RequestType.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/java/Enums/RequestType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/DAO/WeatherNameDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/java/DAO/WeatherNameDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/DAO/WeatherParametersDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/java/DAO/WeatherParametersDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/Models/Entities/Dashboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/java/Models/Entities/Dashboard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/Models/Entities/Day.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/java/Models/Entities/Day.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/Models/Entities/Location.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/java/Models/Entities/Location.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Server/src/main/java/Models/Entities/PersonalSettings.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/java/Models/Entities/PersonalSettings.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Server/src/main/java/Models/Entities/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/java/Models/Entities/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/src/main/java/Utilities/ClientThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/java/Utilities/ClientThread.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/src/main/resources/бд.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/resources/бд.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/Models/Entities/WeatherName.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/java/Models/Entities/WeatherName.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/Models/Entities/WeatherParameters.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/java/Models/Entities/WeatherParameters.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -74,12 +74,26 @@
     "Application.Client1.executor": "Run",
     "Application.Client2.executor": "Run",
     "Application.Server.executor": "Run",
+    "JUnit.DashboardDaoTest.executor": "Run",
+    "JUnit.DayDaoTest.executor": "Run",
+    "JUnit.DayDaoTest.testFindById.executor": "Run",
+    "JUnit.DayDaoTest.testUpdate.executor": "Debug",
+    "JUnit.LocationDaoTest.executor": "Run",
+    "JUnit.PersonalSettingsCRUDTest.executor": "Run",
+    "JUnit.PersonalSettingsCRUDTest.testFindAll.executor": "Run",
+    "JUnit.PersonalSettingsDaoTest.executor": "Run",
+    "JUnit.UserCRUDTest.executor": "Run",
+    "JUnit.UserCRUDTest.testFindById.executor": "Run",
+    "JUnit.UserCRUDTest.testFindByLogin.executor": "Run",
+    "JUnit.UserDaoTest.executor": "Run",
+    "JUnit.WeatherNameDaoTest.executor": "Run",
+    "JUnit.WeatherParametersDaoTest.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "master",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Sasha/3_kurs/прогсп/КУРСАЧ/материалы/Пример КП/Пример КП",
+    "last_opened_file_path": "D:/Sasha/3_kurs/прогсп/КУРСАЧ/weather/Client/src/main/java/Models/Entities",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -106,6 +120,9 @@
       <recent name="D:\Sasha\3_kurs\прогсп\КУРСАЧ\weather\Server\src\main\resources" />
       <recent name="D:\Sasha\3_kurs\прогсп\КУРСАЧ\weather\Server\src\main\java\Service" />
     </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="DAO" />
+    </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="Utilities" />
       <recent name="" />
@@ -113,7 +130,7 @@
       <recent name="Models.Entities" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Client2">
+  <component name="RunManager">
     <configuration name="Client1" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="Client" />
       <module name="Client" />
@@ -135,11 +152,105 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="DayDaoTest.testFindById" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Server" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="DAO.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="DAO" />
+      <option name="MAIN_CLASS_NAME" value="DAO.DayDaoTest" />
+      <option name="METHOD_NAME" value="testFindById" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DayDaoTest.testUpdate" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Server" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="DAO.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="DAO" />
+      <option name="MAIN_CLASS_NAME" value="DAO.DayDaoTest" />
+      <option name="METHOD_NAME" value="testUpdate" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PersonalSettingsDaoTest.testFindAll" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Server" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="DAO.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="DAO" />
+      <option name="MAIN_CLASS_NAME" value="DAO.PersonalSettingsDaoTest" />
+      <option name="METHOD_NAME" value="testFindAll" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserDaoTest.testFindById" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Server" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="DAO.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="DAO" />
+      <option name="MAIN_CLASS_NAME" value="DAO.UserDaoTest" />
+      <option name="METHOD_NAME" value="testFindById" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserDaoTest.testFindByLogin" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Server" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="DAO.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="DAO" />
+      <option name="MAIN_CLASS_NAME" value="DAO.UserDaoTest" />
+      <option name="METHOD_NAME" value="testFindByLogin" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <list>
       <item itemvalue="Application.Client1" />
       <item itemvalue="Application.Client2" />
       <item itemvalue="Application.Server" />
+      <item itemvalue="JUnit.DayDaoTest.testFindById" />
+      <item itemvalue="JUnit.DayDaoTest.testUpdate" />
+      <item itemvalue="JUnit.PersonalSettingsDaoTest.testFindAll" />
+      <item itemvalue="JUnit.UserDaoTest.testFindById" />
+      <item itemvalue="JUnit.UserDaoTest.testFindByLogin" />
     </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.DayDaoTest.testUpdate" />
+        <item itemvalue="JUnit.DayDaoTest.testFindById" />
+        <item itemvalue="JUnit.UserDaoTest.testFindByLogin" />
+        <item itemvalue="JUnit.UserDaoTest.testFindById" />
+        <item itemvalue="JUnit.PersonalSettingsDaoTest.testFindAll" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -159,7 +270,9 @@
       <updated>1732612826830</updated>
       <workItem from="1732612827924" duration="37090000" />
       <workItem from="1732747744943" duration="23638000" />
-      <workItem from="1732885614001" duration="35440000" />
+      <workItem from="1732885614001" duration="38299000" />
+      <workItem from="1733140733230" duration="775000" />
+      <workItem from="1733262171626" duration="16420000" />
     </task>
     <task id="LOCAL-00001" summary="User">
       <option name="closed" value="true" />
@@ -169,7 +282,15 @@
       <option name="project" value="LOCAL" />
       <updated>1732735919473</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="User cases">
+      <option name="closed" value="true" />
+      <created>1732977378028</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1732977378028</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -177,7 +298,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="User" />
-    <option name="LAST_COMMIT_MESSAGE" value="User" />
+    <MESSAGE value="User cases" />
+    <option name="LAST_COMMIT_MESSAGE" value="User cases" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -227,6 +349,15 @@
           </properties>
           <option name="timeStamp" value="17" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/Server/src/test/java/DAO/DayDaoTest.java</url>
+          <line>93</line>
+          <properties class="DAO.DayDaoTest" method="testUpdate">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="32" />
+        </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/Client/src/main/java/Utilities/GetService.java</url>
           <line>9</line>
@@ -236,6 +367,11 @@
           <url>file://$PROJECT_DIR$/Server/src/main/java/Utilities/ClientThread.java</url>
           <line>261</line>
           <option name="timeStamp" value="29" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/Server/src/test/java/DAO/DayDaoTest.java</url>
+          <line>15</line>
+          <option name="timeStamp" value="34" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -31,13 +31,11 @@ public class User implements Serializable {
 
     public User(){}
 
-    public User(int id, String login, byte[] password, String role, PersonalSettings personalSettings) {
-        this.id = id;
+    public User(String login, byte[] password, String role, PersonalSettings personalSettings) {
         this.login = login;
         this.password = password;
         this.role = role;
         this.personalSettings = personalSettings;
-
     }
 
     public int getId() {
@@ -94,6 +92,28 @@ public class User implements Serializable {
             e.printStackTrace();
         }
         return hash;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id &&
+                (login != null ? login.equals(user.login) : user.login == null) &&
+                (role != null ? role.equals(user.role) : user.role == null) &&
+                (password != null ? java.util.Arrays.equals(password, user.password) : user.password == null) &&
+                (personalSettings != null ? personalSettings.equals(user.personalSettings) : user.personalSettings == null);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + (login != null ? login.hashCode() : 0);
+        result = 31 * result + (role != null ? role.hashCode() : 0);
+        result = 31 * result + java.util.Arrays.hashCode(password); // Для массива используется Arrays.hashCode
+        result = 31 * result + (personalSettings != null ? personalSettings.hashCode() : 0);
+        return result;
     }
 
 }

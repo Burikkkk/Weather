@@ -18,10 +18,25 @@ public class LocationDao implements Dao<Location> {
     @Override
     public void add(Location location) throws SQLException {
         String query = "INSERT INTO location (town, country) VALUES (?, ?)";
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
+        try (PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)){
             statement.setString(1, location.getTown());
             statement.setString(2, location.getCountry());
-            statement.executeUpdate();
+            // Выполнение обновления (вставка данных)
+            int affectedRows = statement.executeUpdate();
+
+            // Проверяем, были ли затронуты строки (успешная вставка)
+            if (affectedRows > 0) {
+                // Получаем сгенерированные ключи (например, ID автоинкрементного поля)
+                try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        // Получаем сгенерированный ID и устанавливаем его в объект настроек
+                        int generatedId = generatedKeys.getInt(1);
+                        location.setId(generatedId); // Устанавливаем ID в объект
+                    }
+                }
+            } else {
+                throw new SQLException("Вставка не затронула ни одной строки.");
+            }
         }
     }
 

@@ -24,25 +24,30 @@ public class Day implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "weather_id", referencedColumnName = "id", nullable = true)
-    private WeatherName weather;
+    private WeatherName weatherName;
 
     @ManyToOne
     @JoinColumn(name = "location_id", referencedColumnName = "id", nullable = true)
     private Location location;
 
-    // Constructors
     public Day() {}
 
-    public Day(Integer id, Date date, WeatherParameters dayWeather, WeatherParameters nightWeather, WeatherName weather, Location location) {
+    public Day(Integer id, Date date, WeatherParameters dayWeather, WeatherParameters nightWeather, WeatherName weatherName, Location location) {
         this.id = id;
         this.date = date;
         this.dayWeather = dayWeather;
         this.nightWeather = nightWeather;
-        this.weather = weather;
+        this.weatherName = weatherName;
+        this.location = location;
+    }
+    public Day(Date date, WeatherParameters dayWeather, WeatherParameters nightWeather, WeatherName weatherName, Location location) {
+        this.date = date;
+        this.dayWeather = dayWeather;
+        this.nightWeather = nightWeather;
+        this.weatherName = weatherName;
         this.location = location;
     }
 
-    // Getters and Setters
     public Integer getId() {
         return id;
     }
@@ -75,12 +80,12 @@ public class Day implements Serializable {
         this.nightWeather = nightWeather;
     }
 
-    public WeatherName getWeather() {
-        return weather;
+    public WeatherName getWeatherName() {
+        return weatherName;
     }
 
-    public void setWeather(WeatherName weather) {
-        this.weather = weather;
+    public void setWeatherName(WeatherName weatherName) {
+        this.weatherName = weatherName;
     }
 
     public Location getLocation() {

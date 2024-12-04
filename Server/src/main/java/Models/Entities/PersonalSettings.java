@@ -84,5 +84,29 @@ public class PersonalSettings implements Serializable {
     public void setSpeed(String speed) {
         this.speed = speed;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PersonalSettings that = (PersonalSettings) o;
+        return id == that.id &&
+                notifications == that.notifications &&
+                (phone != null ? phone.equals(that.phone) : that.phone == null) &&
+                (temperature != null ? temperature.equals(that.temperature) : that.temperature == null) &&
+                (pressure != null ? pressure.equals(that.pressure) : that.pressure == null) &&
+                (speed != null ? speed.equals(that.speed) : that.speed == null);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + (phone != null ? phone.hashCode() : 0);
+        result = 31 * result + (notifications ? 1 : 0);
+        result = 31 * result + (temperature != null ? temperature.hashCode() : 0);
+        result = 31 * result + (pressure != null ? pressure.hashCode() : 0);
+        result = 31 * result + (speed != null ? speed.hashCode() : 0);
+        return result;
+    }
 }
 

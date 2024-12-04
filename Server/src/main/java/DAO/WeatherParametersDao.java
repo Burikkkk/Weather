@@ -18,13 +18,28 @@ public class WeatherParametersDao implements Dao<WeatherParameters> {
     @Override
     public void add(WeatherParameters weatherParameters) throws SQLException {
         String query = "INSERT INTO weather_parameters (temperature, pressure, humidity, precipitation, wind_speed) VALUES (?, ?, ?, ?, ?)";
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
+        try (PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)){
             statement.setDouble(1, weatherParameters.getTemperature());
             statement.setInt(2, weatherParameters.getPressure());
             statement.setInt(3, weatherParameters.getHumidity());
             statement.setObject(4, weatherParameters.getPrecipitation(), Types.DOUBLE);
             statement.setDouble(5, weatherParameters.getWindSpeed());
-            statement.executeUpdate();
+            // Выполнение обновления (вставка данных)
+            int affectedRows = statement.executeUpdate();
+
+            // Проверяем, были ли затронуты строки (успешная вставка)
+            if (affectedRows > 0) {
+                // Получаем сгенерированные ключи (например, ID автоинкрементного поля)
+                try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        // Получаем сгенерированный ID и устанавливаем его в объект настроек
+                        int generatedId = generatedKeys.getInt(1);
+                        weatherParameters.setId(generatedId); // Устанавливаем ID в объект
+                    }
+                }
+            } else {
+                throw new SQLException("Вставка не затронула ни одной строки.");
+            }
         }
     }
 

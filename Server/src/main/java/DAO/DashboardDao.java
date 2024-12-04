@@ -18,11 +18,26 @@ public class DashboardDao implements Dao<Dashboard> {
     @Override
     public void add(Dashboard dashboard) throws SQLException {
         String query = "INSERT INTO dashboard (start_date_id, end_date_id, user_id) VALUES (?, ?, ?)";
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
+        try (PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             statement.setInt(1, dashboard.getStartDate().getId());
             statement.setInt(2, dashboard.getEndDate().getId());
             statement.setInt(3, dashboard.getUser().getId());
-            statement.executeUpdate();
+            // Выполнение обновления (вставка данных)
+            int affectedRows = statement.executeUpdate();
+
+            // Проверяем, были ли затронуты строки (успешная вставка)
+            if (affectedRows > 0) {
+                // Получаем сгенерированные ключи (например, ID автоинкрементного поля)
+                try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        // Получаем сгенерированный ID и устанавливаем его в объект настроек
+                        int generatedId = generatedKeys.getInt(1);
+                        dashboard.setId(generatedId); // Устанавливаем ID в объект
+                    }
+                }
+            } else {
+                throw new SQLException("Вставка не затронула ни одной строки.");
+            }
         }
     }
 

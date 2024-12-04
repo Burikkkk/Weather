@@ -18,13 +18,28 @@ public class DayDao implements Dao<Day> {
     @Override
     public void add(Day day) throws SQLException {
         String query = "INSERT INTO day (date, day_weather, night_weather, weather_id, location_id) VALUES (?, ?, ?, ?, ?)";
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
+        try (PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)){
             statement.setDate(1, day.getDate());
             statement.setObject(2, day.getDayWeather() != null ? day.getDayWeather().getId() : null, Types.INTEGER);
             statement.setObject(3, day.getNightWeather() != null ? day.getNightWeather().getId() : null, Types.INTEGER);
-            statement.setObject(4, day.getWeather() != null ? day.getWeather().getId() : null, Types.INTEGER);
+            statement.setObject(4, day.getWeatherName() != null ? day.getWeatherName().getId() : null, Types.INTEGER);
             statement.setObject(5, day.getLocation() != null ? day.getLocation().getId() : null, Types.INTEGER);
-            statement.executeUpdate();
+            // Выполнение обновления (вставка данных)
+            int affectedRows = statement.executeUpdate();
+
+            // Проверяем, были ли затронуты строки (успешная вставка)
+            if (affectedRows > 0) {
+                // Получаем сгенерированные ключи (например, ID автоинкрементного поля)
+                try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        // Получаем сгенерированный ID и устанавливаем его в объект настроек
+                        int generatedId = generatedKeys.getInt(1);
+                        day.setId(generatedId); // Устанавливаем ID в объект
+                    }
+                }
+            } else {
+                throw new SQLException("Вставка не затронула ни одной строки.");
+            }
         }
     }
 
@@ -35,7 +50,7 @@ public class DayDao implements Dao<Day> {
             statement.setDate(1, day.getDate());
             statement.setObject(2, day.getDayWeather() != null ? day.getDayWeather().getId() : null, Types.INTEGER);
             statement.setObject(3, day.getNightWeather() != null ? day.getNightWeather().getId() : null, Types.INTEGER);
-            statement.setObject(4, day.getWeather() != null ? day.getWeather().getId() : null, Types.INTEGER);
+            statement.setObject(4, day.getWeatherName() != null ? day.getWeatherName().getId() : null, Types.INTEGER);
             statement.setObject(5, day.getLocation() != null ? day.getLocation().getId() : null, Types.INTEGER);
             statement.setInt(6, day.getId());
             statement.executeUpdate();

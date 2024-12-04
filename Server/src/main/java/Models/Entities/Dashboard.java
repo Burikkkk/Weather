@@ -22,7 +22,7 @@ public class Dashboard implements Serializable {
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = true)
     private User user;
 
-    // Constructors
+
     public Dashboard() {}
 
     public Dashboard(Integer id, Day startDate, Day endDate, User user) {
@@ -31,8 +31,13 @@ public class Dashboard implements Serializable {
         this.endDate = endDate;
         this.user = user;
     }
+    public Dashboard(Day startDate, Day endDate, User user) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.user = user;
+    }
 
-    // Getters and Setters
+
     public Integer getId() {
         return id;
     }

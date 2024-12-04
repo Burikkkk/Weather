@@ -37,12 +37,28 @@ public class UserDao implements Dao<User> {
     @Override
     public void add(User user) throws SQLException {
         String sql = "INSERT INTO user (login, password, role, settings_id) VALUES (?, ?, ?, ?)";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {  // Указываем флаг для получения сгенерированных ключей{
             statement.setString(1, user.getLogin());
             statement.setBytes(2, user.getPassword());
             statement.setString(3, user.getRole());
             statement.setInt(4, user.getPersonalSettings().getId());
-            statement.executeUpdate();
+
+            // Выполнение обновления (вставка данных)
+            int affectedRows = statement.executeUpdate();
+
+            // Проверяем, были ли затронуты строки (успешная вставка)
+            if (affectedRows > 0) {
+                // Получаем сгенерированные ключи (например, ID автоинкрементного поля)
+                try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        // Получаем сгенерированный ID и устанавливаем его в объект настроек
+                        int generatedId = generatedKeys.getInt(1);
+                        user.setId(generatedId); // Устанавливаем ID в объект
+                    }
+                }
+            } else {
+                throw new SQLException("Вставка не затронула ни одной строки.");
+            }
         }
     }
 
@@ -108,7 +124,11 @@ public class UserDao implements Dao<User> {
         String sql = "DELETE FROM user WHERE id = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, user.getId());
-            statement.executeUpdate();
+            int rowsAffected = statement.executeUpdate(); // Один вызов executeUpdate()
+
+            if (rowsAffected == 0) {
+                throw new SQLException("Удаление не затронуло ни одной строки.");
+            }
         }
     }
 

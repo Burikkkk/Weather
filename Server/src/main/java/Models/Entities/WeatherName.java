@@ -13,15 +13,18 @@ public class WeatherName implements Serializable {
     @Column
     private String name;
 
-    // Constructors
+
     public WeatherName() {}
 
     public WeatherName(Integer id, String name) {
         this.id = id;
         this.name = name;
     }
+    public WeatherName(String name) {
+        this.name = name;
+    }
 
-    // Getters and Setters
+
     public Integer getId() {
         return id;
     }

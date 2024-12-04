@@ -25,7 +25,7 @@ public class WeatherParameters implements Serializable {
     @Column
     private Double windSpeed;
 
-    // Constructors
+
     public WeatherParameters() {}
 
     public WeatherParameters(Integer id, Double temperature, Integer pressure, Integer humidity, Double precipitation, Double windSpeed) {
@@ -36,8 +36,14 @@ public class WeatherParameters implements Serializable {
         this.precipitation = precipitation;
         this.windSpeed = windSpeed;
     }
+    public WeatherParameters(Double temperature, Integer pressure, Integer humidity, Double precipitation, Double windSpeed) {
+        this.temperature = temperature;
+        this.pressure = pressure;
+        this.humidity = humidity;
+        this.precipitation = precipitation;
+        this.windSpeed = windSpeed;
+    }
 
-    // Getters and Setters
     public Integer getId() {
         return id;
     }

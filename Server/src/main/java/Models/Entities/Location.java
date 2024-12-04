@@ -16,7 +16,7 @@ public class Location implements Serializable {
     @Column
     private String country;
 
-    // Constructors
+
     public Location() {}
 
     public Location(Integer id, String town, String country) {
@@ -24,8 +24,12 @@ public class Location implements Serializable {
         this.town = town;
         this.country = country;
     }
+    public Location(String town, String country) {
+        this.town = town;
+        this.country = country;
+    }
 
-    // Getters and Setters
+
     public Integer getId() {
         return id;
     }
