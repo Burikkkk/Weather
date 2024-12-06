@@ -12,7 +12,7 @@ public class PersonalSettingsService implements Service<PersonalSettings> {
 
     private final PersonalSettingsDao personalSettingsDao;
 
-    public PersonalSettingsService() {
+    public PersonalSettingsService() throws SQLException {
         this.personalSettingsDao = new PersonalSettingsDao();
     }
 

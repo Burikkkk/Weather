@@ -2,14 +2,12 @@ package GUI.Admin;
 
 import Enums.RequestType;
 import Enums.ResponseStatus;
-import Models.Entities.PersonalSettings;
 import Models.Entities.User;
 import Models.TCP.Request;
 import Models.TCP.Response;
 import Utilities.ClientSocket;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -75,7 +73,7 @@ public class RoleControl implements Initializable {
     @FXML
     void back_Pressed(ActionEvent event) throws IOException {
         Stage stage = (Stage) backButton.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/Admin_menu.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Admin_menu.fxml"));
         Scene newScene = new Scene(root);
         stage.setScene(newScene);
     }

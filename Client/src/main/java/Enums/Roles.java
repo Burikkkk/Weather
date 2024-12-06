@@ -1,7 +1,7 @@
 package Enums;
 
 public enum Roles {
-    admin,
     user,
+    admin,
     employee
 }

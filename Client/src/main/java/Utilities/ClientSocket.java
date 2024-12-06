@@ -9,14 +9,19 @@ import java.net.Socket;
 import java.io.IOException;
 
 public class ClientSocket {
-    private static final ClientSocket SINGLE_INSTANCE = new ClientSocket();
+    private static ClientSocket SINGLE_INSTANCE;
     private User user;
-    private static Socket socket;
+    private Socket socket;
     private BufferedReader in;
     private PrintWriter out;
 
     // Конструктор для установления соединения с сервером
     private ClientSocket() {
+        connectToServer();
+    }
+
+    // Метод для создания нового соединения
+    private void connectToServer() {
         try {
             // Подключаемся к серверу по указанному адресу и порту
             socket = new Socket("localhost", 5555);
@@ -31,37 +36,10 @@ public class ClientSocket {
 
     // Получение экземпляра синглтона
     public static ClientSocket getInstance() {
+        if (SINGLE_INSTANCE == null) {
+            SINGLE_INSTANCE = new ClientSocket();
+        }
         return SINGLE_INSTANCE;
-    }
-
-    // Получение сокета
-    public Socket getSocket() {
-        return socket;
-    }
-
-    // Получение потока ввода
-    public BufferedReader getInStream() {
-        return in;
-    }
-
-    // Получение пользователя
-    public User getUser() {
-        return user;
-    }
-
-    // Установка пользователя
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    // Получение потока вывода
-    public PrintWriter getOut() {
-        return out;
-    }
-
-    // Установка потока вывода
-    public void setOut(PrintWriter out) {
-        this.out = out;
     }
 
     // Метод для закрытия всех ресурсов
@@ -79,5 +57,38 @@ public class ClientSocket {
         } catch (IOException e) {
             System.err.println("Ошибка при закрытии ресурсов: " + e.getMessage());
         }
+    }
+
+    // Метод для перезапуска соединения
+    public static void resetConnection() {
+        if (SINGLE_INSTANCE != null) {
+            SINGLE_INSTANCE.close(); // Закрываем старое соединение
+        }
+        SINGLE_INSTANCE = new ClientSocket(); // Создаем новый экземпляр с новым соединением
+    }
+
+    // Получение сокета
+    public Socket getSocket() {
+        return socket;
+    }
+
+    // Получение потока ввода
+    public BufferedReader getInStream() {
+        return in;
+    }
+
+    // Получение потока вывода
+    public PrintWriter getOut() {
+        return out;
+    }
+
+    // Получение пользователя
+    public User getUser() {
+        return user;
+    }
+
+    // Установка пользователя
+    public void setUser(User user) {
+        this.user = user;
     }
 }

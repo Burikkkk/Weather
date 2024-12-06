@@ -25,14 +25,7 @@ public class ForgotPassword {
 
     private User user;
 
-    @FXML
-    private Label labelLogin;
-    @FXML
-    private Label labelPhone;
-    @FXML
-    private Label labelPass1;
-    @FXML
-    private Label labelPass2;
+
     @FXML
     private Button buttonSave;
     @FXML
@@ -61,9 +54,10 @@ public class ForgotPassword {
     @FXML
     void back_Pressed(ActionEvent event) throws IOException {
         Stage stage = (Stage) buttonBack.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/Login.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Login.fxml"));
         Scene newScene = new Scene(root);
         stage.setScene(newScene);
+        stage.centerOnScreen();
     }
 
     @FXML
@@ -94,17 +88,16 @@ public class ForgotPassword {
             labelMessage.setVisible(false);
             ClientSocket.getInstance().setUser(new Gson().fromJson(responseModel.getResponseData(), User.class));
 
-            labelLogin.setVisible(false);
-            labelPhone.setVisible(false);
+
             textfieldLogin.setVisible(false);
             textfieldPhone.setVisible(false);
             textfieldLogin.setDisable(true);
             textfieldPhone.setDisable(true);
 
-            labelPass1.setVisible(true);
+
             passwordfieldPassword.setDisable(false);
             passwordfieldPassword.setVisible(true);
-            labelPass2.setVisible(true);
+
             passwordfieldConfirmPassword.setDisable(false);
             passwordfieldConfirmPassword.setVisible(true);
             buttonSave.setDisable(false);
@@ -146,9 +139,10 @@ public class ForgotPassword {
             ClientSocket.getInstance().setUser(new Gson().fromJson(responseModel.getResponseData(), User.class));
             Stage stage = (Stage) buttonSave.getScene().getWindow();
             Parent root;
-            root = FXMLLoader.load(getClass().getResource("/Login.fxml"));
+            root = FXMLLoader.load(getClass().getResource("/fxml/Login.fxml"));
             Scene newScene = new Scene(root);
             stage.setScene(newScene);
+            stage.centerOnScreen();
         } else {
             labelMessage.setText(responseModel.getResponseMessage());
             labelMessage.setVisible(true);

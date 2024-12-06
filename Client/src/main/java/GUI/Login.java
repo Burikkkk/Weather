@@ -69,15 +69,16 @@ public class Login {
             labelMessage.setVisible(true);
             if (ClientSocket.getInstance().getUser() != null) {
                 if (Roles.user.name().equals(ClientSocket.getInstance().getUser().getRole()))
-                    root = FXMLLoader.load(getClass().getResource("/User_menu.fxml"));
-                if (Roles.admin.name().equals(ClientSocket.getInstance().getUser().getRole()))
-                    root = FXMLLoader.load(getClass().getResource("/Admin_menu.fxml"));
-                else {
+                    root = FXMLLoader.load(getClass().getResource("/fxml/User_menu.fxml"));
+                else if (Roles.admin.name().equals(ClientSocket.getInstance().getUser().getRole()))
+                    root = FXMLLoader.load(getClass().getResource("/fxml/Admin_menu.fxml"));
+                else if (Roles.employee.name().equals(ClientSocket.getInstance().getUser().getRole())){
+                    root = FXMLLoader.load(getClass().getResource("/fxml/Employee_menu.fxml"));
                 }
 
                 Scene newScene = new Scene(root);
                 stage.setScene(newScene);
-
+                stage.centerOnScreen();
             }
         } else {
             labelMessage.setText(responseModel.getResponseMessage());
@@ -88,17 +89,19 @@ public class Login {
     @FXML
     void register_Pressed(ActionEvent event) throws IOException {
         Stage stage = (Stage) buttonRegister.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/Register.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Register.fxml"));
         Scene newScene = new Scene(root);
         stage.setScene(newScene);
+        stage.centerOnScreen();
     }
 
     @FXML
     public void password_Pressed(ActionEvent actionEvent) throws IOException {
         Stage stage = (Stage) buttonForgotPassword.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/Forgot_password.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Forgot_password.fxml"));
         Scene newScene = new Scene(root);
         stage.setScene(newScene);
+        stage.centerOnScreen();
     }
 }
 

@@ -13,14 +13,8 @@ public class UserDao implements Dao<User> {
 
     private Connection connection = null;
 
-    public UserDao() {
-        try {
-            if (connection == null) {
-                connection = ConnectorDB.getConnection();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    public UserDao() throws SQLException {
+        connection = ConnectorDB.getConnection();
     }
 
 

@@ -12,14 +12,8 @@ public class PersonalSettingsDao implements Dao<PersonalSettings>{
 
     private static Connection connection;
 
-    public PersonalSettingsDao() {
-        try {
-            if (connection == null) {
-                connection = ConnectorDB.getConnection();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    public PersonalSettingsDao() throws SQLException {
+        connection = ConnectorDB.getConnection();
     }
 
     public void closeConnection() {

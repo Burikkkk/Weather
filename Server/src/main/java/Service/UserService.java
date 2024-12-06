@@ -13,7 +13,7 @@ public class UserService implements Service<User>{
     private final UserDao userDao;
 
 
-    public UserService() {
+    public UserService() throws SQLException {
         this.userDao = new UserDao();
     }
 

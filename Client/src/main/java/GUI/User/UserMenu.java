@@ -29,7 +29,7 @@ public class UserMenu {
     @FXML
     void calendar_Pressed(ActionEvent event) throws IOException {
         Stage stage = (Stage) calendar.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/Calendar.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Calendar.fxml"));
         Scene newScene = new Scene(root);
         stage.setScene(newScene);
     }
@@ -37,7 +37,7 @@ public class UserMenu {
     @FXML
     void personalAccount_Pressed(ActionEvent event) throws IOException {
         Stage stage = (Stage) personalAccount.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/Personal_account.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Personal_account.fxml"));
         Scene newScene = new Scene(root);
         stage.setScene(newScene);
     }

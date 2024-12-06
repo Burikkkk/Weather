@@ -55,9 +55,10 @@ public class Register {
     @FXML
     void back_Pressed(ActionEvent event) throws IOException {
         Stage stage = (Stage) buttonBack.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/Login.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Login.fxml"));
         Scene newScene = new Scene(root);
         stage.setScene(newScene);
+        stage.centerOnScreen();
     }
 
 
@@ -130,9 +131,10 @@ public class Register {
             ClientSocket.getInstance().setUser(new Gson().fromJson(responseModel.getResponseData(), User.class));
             Stage stage = (Stage) buttonSignUp.getScene().getWindow();
             Parent root;
-            root = FXMLLoader.load(getClass().getResource("/User_menu.fxml")); //потом поменять
+            root = FXMLLoader.load(getClass().getResource("/fxml/Login.fxml")); //потом поменять
             Scene newScene = new Scene(root);
             stage.setScene(newScene);
+            stage.centerOnScreen();
         } else {
             labelMessage.setText(responseModel.getResponseMessage());
             labelMessage.setVisible(true);

@@ -3,6 +3,7 @@ import Utilities.ClientThread;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +15,7 @@ public class Server {
     private static Thread thread;
     private static List<Socket> currentSockets = new ArrayList<>();
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, SQLException {
         serverSocket = new ServerSocket(PORT_NUMBER);
         while (true) {
             // Проходим по списку через обычный цикл for с индексами

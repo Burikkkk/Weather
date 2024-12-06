@@ -88,7 +88,7 @@ private User currentUser;
     @FXML
     void back_Pressed(ActionEvent event) throws IOException {
         Stage stage = (Stage) buttonBack.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/User_menu.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/User_menu.fxml"));
         Scene newScene = new Scene(root);
         stage.setScene(newScene);
     }

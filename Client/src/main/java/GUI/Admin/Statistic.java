@@ -2,15 +2,12 @@ package GUI.Admin;
 
 import Enums.RequestType;
 import Enums.ResponseStatus;
-import Models.Entities.PersonalSettings;
 import Models.Entities.User;
 import Models.TCP.Request;
 import Models.TCP.Response;
 import Utilities.ClientSocket;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -20,11 +17,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -59,7 +53,7 @@ public class Statistic implements Initializable{
     @FXML
     void back_Pressed(ActionEvent event) throws IOException {
         Stage stage = (Stage) backButton.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/Admin_menu.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Admin_menu.fxml"));
         Scene newScene = new Scene(root);
         stage.setScene(newScene);
     }

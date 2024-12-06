@@ -24,7 +24,7 @@ public class AdminMenu {
     @FXML
     void personalAccount_Pressed(ActionEvent event) throws IOException {
         Stage stage = (Stage) personalAccount.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/Personal_account_admin.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Personal_account_admin.fxml"));
         Scene newScene = new Scene(root);
         stage.setScene(newScene);
     }
@@ -32,7 +32,7 @@ public class AdminMenu {
     @FXML
     void statistic_Pressed(ActionEvent event) throws IOException {
         Stage stage = (Stage) statistic.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/Admin_statistic.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Admin_statistic.fxml"));
         Scene newScene = new Scene(root);
         stage.setScene(newScene);
     }
@@ -40,7 +40,7 @@ public class AdminMenu {
     @FXML
     void usersControl_Pressed(ActionEvent event) throws IOException {
         Stage stage = (Stage) usersControl.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/Role_control.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Role_control.fxml"));
         Scene newScene = new Scene(root);
         stage.setScene(newScene);
     }

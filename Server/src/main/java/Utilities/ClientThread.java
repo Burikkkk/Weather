@@ -2,8 +2,11 @@ package Utilities;
 
 import Enums.RequestType;
 import Enums.ResponseStatus;
+import Models.Entities.Day;
+import Models.Entities.Location;
 import Models.TCP.Request;
 import Models.TCP.Response;
+import Service.DayService;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
@@ -12,6 +15,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.lang.reflect.Type;
 import java.net.Socket;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -22,18 +26,21 @@ import Service.UserService;
 import Service.PersonalSettingsService;
 
 public class ClientThread implements Runnable {
-    private static final List<User> loginUsers = Collections.synchronizedList(new ArrayList<>());
-    private String currentLogin = null;
+
+    private static final List<Integer> loginUsersId = Collections.synchronizedList(new ArrayList<>());
+    private int currentId = 0;
     private final Socket clientSocket;
     private final Gson gson = new Gson();
     private BufferedReader in;
     private PrintWriter out;
 
     // Сервисы для работы с данными
+    private final Connection connection = ConnectorDB.getConnection();
     private final UserService userService = new UserService();
     private final PersonalSettingsService personalSettingsService = new PersonalSettingsService();
+    private final DayService dayService = new DayService(connection);
 
-    public ClientThread(Socket clientSocket) throws IOException {
+    public ClientThread(Socket clientSocket) throws IOException, SQLException {
         this.clientSocket = clientSocket;
         in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
         out = new PrintWriter(clientSocket.getOutputStream(), true);
@@ -48,24 +55,24 @@ public class ClientThread implements Runnable {
                 if (message == null) { // Клиент разорвал соединение
                     break;
                 }
-                Request request = gson.fromJson(message, Request.class);
-                if (request != null && request.getRequestType() == RequestType.LOGIN) {
-                    User user = gson.fromJson(request.getRequestMessage(), User.class);
-                    currentLogin = user.getLogin(); // Сохраняем логин подключившегося
-                }
-
+                Request request = gson.fromJson(message, Request.class);//
                 Response response = handleRequest(message);
                 out.println(gson.toJson(response)); // Отправка ответа клиенту
+                if (request != null && request.getRequestType() == RequestType.LOGOUT) {
+                    closeResources();
+                    break;
+                }
             }
         } catch (IOException e) {
             System.err.println("Ошибка связи с клиентом: " + e.getMessage());
         } finally {
-            if (currentLogin != null) {
-                synchronized (loginUsers) {
-                    loginUsers.removeIf(user -> user.getLogin().equalsIgnoreCase(currentLogin));
+            if (currentId != 0) {
+                synchronized (loginUsersId) {
+                    loginUsersId.removeIf(id -> id == currentId);
                 }
             }
-            closeResources();
+            if(clientSocket != null && !clientSocket.isClosed())
+                closeResources();
         }
     }
 
@@ -94,6 +101,12 @@ public class ClientThread implements Runnable {
                     return handleUpdateAllUsers(request);
                 case GET_CONNECTED_USERS:
                     return handleGetConnectedUsers();
+                case GET_REGION:
+                    return handleGetRegions();
+                case GET_ALL_DAYS:
+                    return handleGetAllDays();
+                case LOGOUT:
+                    return handleLogout(request);
                 default:
                     return new Response(ResponseStatus.ERROR, "Неизвестный тип запроса", "");
             }
@@ -134,10 +147,12 @@ public class ClientThread implements Runnable {
                 .findFirst()
                 .orElse(null);
 
+
         if (existingUser != null) {
-            synchronized (loginUsers) {
-                if (!loginUsers.contains(existingUser)) {
-                    loginUsers.add(existingUser); // Добавляем в список подключенных пользователей
+            currentId= existingUser.getId();
+            synchronized (loginUsersId) {
+                if (!loginUsersId.contains(existingUser.getId())) {
+                    loginUsersId.add(existingUser.getId());
                 }
             }
         }
@@ -147,6 +162,29 @@ public class ClientThread implements Runnable {
             return new Response(ResponseStatus.ERROR, "Неверный логин или пароль", "");
         }
     }
+
+    private Response handleLogout(Request request) throws SQLException {
+        // Десериализация пользователя из запроса
+        User requestUser = gson.fromJson(request.getRequestMessage(), User.class);
+
+        if (requestUser == null) {
+            return new Response(ResponseStatus.ERROR, "Пользователь не найден", "");
+        }
+
+        synchronized (loginUsersId) {
+            // Проверяем, существует ли пользователь в списке
+            if (loginUsersId.contains(requestUser.getId())) {
+                loginUsersId.removeIf(id -> id == currentId);
+
+
+
+                return new Response(ResponseStatus.OK, "Выход успешен", gson.toJson(requestUser));
+            } else {
+                return new Response(ResponseStatus.ERROR, "Пользователь не найден в системе", "");
+            }
+        }
+    }
+
 
     private Response handleForgotPassword(Request request) throws SQLException {
         // Преобразуем сообщение запроса в объект User
@@ -287,12 +325,67 @@ public class ClientThread implements Runnable {
     private Response handleGetConnectedUsers() throws SQLException {
 
         // Проверяем, что список пользователей не пустой
-        if (loginUsers.isEmpty()) {
+        if (loginUsersId.isEmpty()) {
             return new Response(ResponseStatus.ERROR, "Пользователи не подключены", "");
         }
+
+        List<User> loginUsers = new ArrayList<>();
+
+        for (Integer userId : loginUsersId) {
+            // Ищем пользователя по ID
+            User user = userService.getAllEntities().stream()
+                    .filter(u -> u.getId() == userId) // Сравниваем ID
+                    .findFirst()
+                    .orElse(null); // Если не нашли пользователя, возвращаем null
+
+            // Если пользователь найден, добавляем его в список loginUsers
+            if (user != null) {
+                loginUsers.add(user);
+            }
+        }
+
+
         // Возвращаем успешный ответ с данными пользователей
         return new Response(ResponseStatus.OK, "Пользователи подключены", gson.toJson(loginUsers));
     }
+
+    private Response handleGetAllDays() throws SQLException {
+
+        List<Day> outputDays = dayService.getAllEntities();
+
+        // Проверяем, что список пользователей не пустой
+        if (outputDays.isEmpty()) {
+            return new Response(ResponseStatus.ERROR, "Данные не найдены", "");
+        }
+
+        // Возвращаем успешный ответ с данными пользователей
+        return new Response(ResponseStatus.OK, "Данные загружены", gson.toJson(outputDays));
+
+
+    }
+
+    private Response handleGetRegions() throws SQLException {
+        List<Day> outputDays = dayService.getAllEntities();
+        List<Location> regions = new ArrayList<>();
+        Set<String> uniqueTowns = new HashSet<>();
+
+        for (Day day : outputDays) {
+            Location location = day.getLocation();
+            if (location != null && uniqueTowns.add(location.getTown())) {
+                regions.add(location); // Добавляем только уникальные города
+            }
+        }
+
+
+        // Проверяем, что список пользователей не пустой
+        if (regions.isEmpty()) {
+            return new Response(ResponseStatus.ERROR, "Данные не найдены", "");
+        }
+
+        // Возвращаем успешный ответ с данными пользователей
+        return new Response(ResponseStatus.OK, "Данные загружены", gson.toJson(regions));
+    }
+
 
     private void closeResources() {
         System.out.println("Клиент " + clientSocket.getInetAddress() + ":" + clientSocket.getPort() + " отключен.");

@@ -10,5 +10,8 @@ public enum RequestType {
     UPDATE_ROLE,
     GET_ALL_USERS,
     UPDATE_ALL_USERS,
-    GET_CONNECTED_USERS
+    GET_CONNECTED_USERS,
+    LOGOUT,
+    GET_ALL_DAYS,
+    GET_REGION
 }
