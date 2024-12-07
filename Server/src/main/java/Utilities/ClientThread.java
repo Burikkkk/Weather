@@ -2,11 +2,10 @@ package Utilities;
 
 import Enums.RequestType;
 import Enums.ResponseStatus;
-import Models.Entities.Day;
-import Models.Entities.Location;
+import Models.Entities.*;
 import Models.TCP.Request;
 import Models.TCP.Response;
-import Service.DayService;
+import Service.*;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
@@ -20,10 +19,6 @@ import java.sql.SQLException;
 import java.util.*;
 
 import com.google.gson.reflect.TypeToken;
-import Models.Entities.User;
-import Models.Entities.PersonalSettings;
-import Service.UserService;
-import Service.PersonalSettingsService;
 
 public class ClientThread implements Runnable {
 
@@ -39,6 +34,9 @@ public class ClientThread implements Runnable {
     private final UserService userService = new UserService();
     private final PersonalSettingsService personalSettingsService = new PersonalSettingsService();
     private final DayService dayService = new DayService(connection);
+    private final LocationService locationService = new LocationService(connection);
+    private final WeatherNameService weatherNameService = new WeatherNameService(connection);
+    private final WeatherParametersService weatherParametersService = new WeatherParametersService(connection);
 
     public ClientThread(Socket clientSocket) throws IOException, SQLException {
         this.clientSocket = clientSocket;
@@ -91,8 +89,6 @@ public class ClientThread implements Runnable {
                     return handleLogin(request);
                 case FORGOT_PASSWORD:
                     return handleForgotPassword(request);
-                case UPDATE_PASSWORD:
-                    return handleUpdatePassword(request);
                 case UPDATE_USER:
                     return handleUpdateUser(request);
                 case GET_ALL_USERS:
@@ -107,6 +103,14 @@ public class ClientThread implements Runnable {
                     return handleGetAllDays();
                 case LOGOUT:
                     return handleLogout(request);
+                case TODAY_WEATHER:
+                    return handleGetTodayWeather(request);
+                case ADD_DAY:
+                    return handleAddDay(request);
+                case UPDATE_DAY:
+                    return handleUpdateDay(request);
+                case DELETE_DAY:
+                    return handleDeleteDay(request);
                 default:
                     return new Response(ResponseStatus.ERROR, "Неизвестный тип запроса", "");
             }
@@ -207,36 +211,6 @@ public class ClientThread implements Runnable {
             return new Response(ResponseStatus.ERROR, "Пользователь с таким логином и телефоном не найден", "");
         }
     }
-
-
-    private Response handleUpdatePassword(Request request) throws SQLException {
-        // Преобразуем сообщение запроса в объект User
-        User requestUser = gson.fromJson(request.getRequestMessage(), User.class);
-
-        // Пытаемся найти пользователя по логину
-        User existingUser = userService.getAllEntities().stream()
-                .filter(x -> x.getLogin().equalsIgnoreCase(requestUser.getLogin()))
-                .findFirst()
-                .orElse(null);
-
-        // Если пользователь найден
-        if (existingUser != null) {
-            // Обновляем пароль
-            existingUser.setPassword(requestUser.getPassword());
-
-            // Сохраняем изменения в базе данных
-            userService.updateEntity(existingUser);
-
-            // Возвращаем успешный ответ
-            return new Response(ResponseStatus.OK, "Пароль успешно изменен", gson.toJson(existingUser));
-        } else {
-            // Если пользователь не найден, возвращаем ошибку
-            return new Response(ResponseStatus.ERROR, "Пользователь с таким логином не найден", "");
-        }
-    }
-
-
-
 
     private Response handleUpdateUser(Request request) throws SQLException {
         // Десериализация объекта пользователя из запроса
@@ -386,6 +360,146 @@ public class ClientThread implements Runnable {
         return new Response(ResponseStatus.OK, "Данные загружены", gson.toJson(regions));
     }
 
+    private Response handleGetTodayWeather(Request request) throws SQLException {
+        Day tempDay = gson.fromJson(request.getRequestMessage(), Day.class);
+
+        Day existingDay = dayService.getAllEntities().stream()
+                .filter(x -> x.getDate().equals(tempDay.getDate()) && x.getLocation().getTown().equals(tempDay.getLocation().getTown()))
+                .findFirst()
+                .orElse(null);
+
+        if (existingDay != null) {
+            return new Response(ResponseStatus.OK, "Погода найдена", gson.toJson(existingDay));
+        } else {
+            return new Response(ResponseStatus.ERROR, "Погода не найдена", "");
+        }
+    }
+
+    private Response handleAddDay(Request request) throws SQLException{
+        Day insertDay = gson.fromJson(request.getRequestMessage(), Day.class); //без id
+
+        if (dayService.getAllEntities().stream().noneMatch
+                (x -> x.getDate().equals(insertDay.getDate()) && x.getLocation().getTown().equals(insertDay.getLocation().getTown()))) {
+
+            Location loc=new Location(insertDay.getLocation().getTown(),insertDay.getLocation().getCountry());
+            // Проверяем, есть ли такой город в списке
+            Optional<Location> existingLocation = locationService.getAllEntities().stream()
+                    .filter(x -> x.getTown().equals(loc.getTown()))
+                    .findFirst();
+
+            if (existingLocation.isPresent()) {
+                // Если найден, устанавливаем его ID
+                loc.setId(existingLocation.get().getId());
+            } else {
+                // Если не найден, создаем новый объект
+                locationService.createEntity(loc);
+            }
+
+            WeatherName weatherN=new WeatherName(insertDay.getWeatherName().getName());
+            // Проверяем, есть ли такой город в списке
+            Optional<WeatherName> existingW = weatherNameService.getAllEntities().stream()
+                    .filter(x -> x.getName().equals(weatherN.getName()))
+                    .findFirst();
+
+            if (existingW.isPresent()) {
+                // Если найден, устанавливаем его ID
+                weatherN.setId(existingW.get().getId());
+            } else {
+                // Если не найден, создаем новый объект
+                weatherNameService.createEntity(weatherN);
+            }
+            WeatherParameters dayP=new WeatherParameters(insertDay.getDayWeather().getTemperature(),
+                    insertDay.getDayWeather().getPressure(),
+                    insertDay.getDayWeather().getHumidity(),
+                    insertDay.getDayWeather().getPrecipitation(),
+                    insertDay.getDayWeather().getWindSpeed());
+            WeatherParameters nightP=new WeatherParameters(insertDay.getNightWeather().getTemperature(),
+                    insertDay.getNightWeather().getPressure(),
+                    insertDay.getNightWeather().getHumidity(),
+                    insertDay.getNightWeather().getPrecipitation(),
+                    insertDay.getNightWeather().getWindSpeed());
+
+            weatherParametersService.createEntity(dayP);
+            weatherParametersService.createEntity(nightP);
+
+
+            Day finalDay=new Day(insertDay.getDate(),dayP,nightP,weatherN,loc);
+
+            dayService.createEntity(finalDay);
+                return new Response(ResponseStatus.OK, "Добавление данных прошло успешно", gson.toJson(finalDay));
+
+        }else
+            return new Response(ResponseStatus.ERROR, "На этот день погода уже установлена", "");
+    }
+
+    private Response handleUpdateDay(Request request) throws SQLException {
+        Day updatedDay = gson.fromJson(request.getRequestMessage(), Day.class);
+
+        // Проверяем существование дня в базе данных
+        Optional<Day> existingDayOpt = dayService.getEntityById(updatedDay.getId());
+        if (!existingDayOpt.isPresent()) {
+            return new Response(ResponseStatus.ERROR, "День не найден", "");
+        }
+
+        Day existingDay = existingDayOpt.get();
+
+        // 1. Проверка и обновление Location
+        Location updatedLocation = updatedDay.getLocation();
+        Optional<Location> existingLocationOpt = locationService.getAllEntities().stream()
+                .filter(loc -> loc.getTown().equals(updatedLocation.getTown()) &&
+                        loc.getCountry().equals(updatedLocation.getCountry()))
+                .findFirst();
+        if (existingLocationOpt.isPresent()) {
+            updatedLocation.setId(existingLocationOpt.get().getId());
+        } else {
+            locationService.createEntity(updatedLocation);
+        }
+        updatedDay.setLocation(updatedLocation);
+
+        // 2. Проверка и обновление WeatherName
+        WeatherName updatedWeatherName = updatedDay.getWeatherName();
+        Optional<WeatherName> existingWeatherNameOpt = weatherNameService.getAllEntities().stream()
+                .filter(w -> w.getName().equals(updatedWeatherName.getName()))
+                .findFirst();
+        if (existingWeatherNameOpt.isPresent()) {
+            updatedWeatherName.setId(existingWeatherNameOpt.get().getId());
+        } else {
+            weatherNameService.createEntity(updatedWeatherName);
+        }
+        updatedDay.setWeatherName(updatedWeatherName);
+
+        // 3. Обновление погодных параметров без изменений
+        weatherParametersService.updateEntity(updatedDay.getDayWeather());
+        weatherParametersService.updateEntity(updatedDay.getNightWeather());
+
+        // 4. Проверка уникальности даты и города
+        boolean isDuplicate = dayService.getAllEntities().stream()
+                .anyMatch(day -> day.getDate().equals(updatedDay.getDate()) &&
+                        Objects.equals(day.getLocation().getTown(), updatedDay.getLocation().getTown()) &&
+                        day.getId() != updatedDay.getId()); // Исключаем текущую запись
+        if (isDuplicate) {
+            return new Response(ResponseStatus.ERROR, "Запись с такой датой и городом уже существует", "");
+        }
+
+        // Обновление записи дня
+        dayService.updateEntity(updatedDay);
+
+        // Возврат успешного ответа
+        return new Response(ResponseStatus.OK, "Данные успешно обновлены", gson.toJson(updatedDay));
+    }
+
+    private Response handleDeleteDay(Request request) throws SQLException {
+        Day deletedDay = gson.fromJson(request.getRequestMessage(), Day.class);
+        // Проверяем, существует ли запись
+        Optional<Day> existingDay = dayService.getEntityById(deletedDay.getId());
+        if (!existingDay.isPresent()) {
+            return new Response(ResponseStatus.ERROR, "День не найден", "");
+        }
+        dayService.deleteEntity(deletedDay);
+        weatherParametersService.deleteEntity(deletedDay.getDayWeather());
+        weatherParametersService.deleteEntity(deletedDay.getNightWeather());
+        return new Response(ResponseStatus.OK, "Данные успешно удалены", "");
+    }
 
     private void closeResources() {
         System.out.println("Клиент " + clientSocket.getInetAddress() + ":" + clientSocket.getPort() + " отключен.");

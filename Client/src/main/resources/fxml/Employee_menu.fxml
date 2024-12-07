@@ -2,6 +2,8 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.PasswordField?>
@@ -15,6 +17,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="847.0" prefWidth="1464.0" styleClass="bg-form" stylesheets="@../css/menu.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Employee.EmployeeMenu">
@@ -23,8 +26,211 @@
             <center>
                 <AnchorPane fx:id="pane1" prefHeight="800.0" prefWidth="1178.0" BorderPane.alignment="CENTER">
                     <children>
-                        <AnchorPane fx:id="panel0" prefHeight="806.0" prefWidth="1212.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <AnchorPane layoutX="76.0" layoutY="411.0" prefHeight="295.0" prefWidth="683.0" styleClass="bg-white" />
+                        <AnchorPane fx:id="panel0" layoutX="10.0" prefHeight="806.0" prefWidth="1212.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="-10.0" AnchorPane.topAnchor="0.0">
+                     <AnchorPane fx:id="todayWeatherPanel" layoutX="76.0" layoutY="411.0" prefHeight="326.0" prefWidth="690.0" styleClass="weather-panel" visible="false">
+                        <children>
+                            <Pane layoutY="108.0" prefHeight="68.0" prefWidth="690.0" styleClass="bg-form">
+                           <Label layoutX="18.0" layoutY="6.0" styleClass="title-text" text="Температура">
+                              <font>
+                                 <Font size="14.0" />
+                              </font>
+                           </Label>
+                           <Label layoutX="166.0" layoutY="7.0" prefHeight="20.0" prefWidth="67.0" styleClass="title-text" text="Давление">
+                              <font>
+                                 <Font size="14.0" />
+                              </font>
+                           </Label>
+                           <Label layoutX="298.0" layoutY="7.0" styleClass="title-text" text="Влажность">
+                              <font>
+                                 <Font size="14.0" />
+                              </font>
+                           </Label>
+                           <Label layoutX="394.0" layoutY="6.0" styleClass="title-text" text="Вероятность осадков">
+                              <font>
+                                 <Font size="14.0" />
+                              </font>
+                           </Label>
+                           <Label layoutX="562.0" layoutY="6.0" styleClass="title-text" text="Скорость ветра">
+                              <font>
+                                 <Font size="14.0" />
+                              </font>
+                           </Label>
+                           <Label alignment="CENTER_RIGHT" layoutY="26.0" prefHeight="35.0" prefWidth="81.0" styleClass="secondary-text" text="XXXXX" fx:id="xTemperatura1">
+                              <font>
+                                 <Font size="24.0" />
+                              </font>
+                           </Label>
+                           <Label fx:id="textC1" layoutX="85.0" layoutY="37.0" prefHeight="20.0" prefWidth="20.0" styleClass="title-text" text="°С">
+                              <font>
+                                 <Font size="14.0" />
+                              </font>
+                           </Label>
+                           <Label fx:id="textK1" layoutX="87.0" layoutY="37.0" prefHeight="0.0" prefWidth="17.0" styleClass="title-text" text="К" visible="false">
+                              <font>
+                                 <Font size="14.0" />
+                              </font>
+                           </Label>
+                           <Label alignment="CENTER_RIGHT" layoutX="100.0" layoutY="27.0" prefHeight="35.0" prefWidth="112.0" styleClass="secondary-text" text="XXXXXX" fx:id="xPressure1">
+                              <font>
+                                 <Font size="24.0" />
+                              </font>
+                           </Label>
+                           <Label fx:id="textMM1" layoutX="217.0" layoutY="38.0" prefHeight="20.0" prefWidth="67.0" styleClass="title-text" text="мм рт. ст.">
+                              <font>
+                                 <Font size="14.0" />
+                              </font>
+                           </Label>
+                           <Label fx:id="texthPa1" layoutX="217.0" layoutY="37.0" prefHeight="0.0" prefWidth="67.0" styleClass="title-text" text="гПа">
+                              <font>
+                                 <Font size="14.0" />
+                              </font>
+                           </Label>
+                           <Label alignment="CENTER_RIGHT" layoutX="561.0" layoutY="26.0" prefHeight="35.0" prefWidth="57.0" styleClass="secondary-text" text="XXX" fx:id="xWind1">
+                              <font>
+                                 <Font size="24.0" />
+                              </font>
+                           </Label>
+                           <Label fx:id="textMS1" layoutX="622.0" layoutY="37.0" prefHeight="20.0" prefWidth="24.0" styleClass="title-text" text="м/с">
+                              <font>
+                                 <Font size="14.0" />
+                              </font>
+                           </Label>
+                           <Label fx:id="textKMH1" layoutX="624.0" layoutY="37.0" prefHeight="20.0" prefWidth="39.0" styleClass="title-text" text="км/ч" visible="false">
+                              <font>
+                                 <Font size="14.0" />
+                              </font>
+                           </Label>
+                           <Label alignment="CENTER_RIGHT" layoutX="411.0" layoutY="26.0" prefHeight="35.0" prefWidth="66.0" styleClass="secondary-text" text="XXX" fx:id="xRain1">
+                              <font>
+                                 <Font size="24.0" />
+                              </font>
+                           </Label>
+                           <Label layoutX="483.0" layoutY="37.0" prefHeight="20.0" prefWidth="17.0" styleClass="title-text" text="\%">
+                              <font>
+                                 <Font size="14.0" />
+                              </font>
+                           </Label>
+                           <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="273.0" layoutY="27.0" prefHeight="35.0" prefWidth="71.0" styleClass="secondary-text" text="XXX" fx:id="xHumidity1">
+                              <font>
+                                 <Font size="24.0" />
+                              </font>
+                           </Label>
+                           <Label layoutX="350.0" layoutY="38.0" prefHeight="20.0" prefWidth="17.0" styleClass="title-text" text="\%">
+                              <font>
+                                 <Font size="14.0" />
+                              </font>
+                           </Label>
+                           </Pane>
+                        <Label alignment="CENTER" layoutX="3.0" layoutY="27.0" prefHeight="35.0" prefWidth="684.0" styleClass="weather-gradient" text="Cнег" fx:id="xWeatherName">
+                           <font>
+                              <Font name="System Bold" size="24.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="23.0" layoutY="62.0" styleClass="title-text" text="Днем:">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="23.0" layoutY="195.0" styleClass="title-text" text="Ночью:">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                           <Pane layoutY="241.0" prefHeight="68.0" prefWidth="690.0" styleClass="weather-form">
+                              <children>
+                                 <Label layoutX="18.0" layoutY="6.0" styleClass="light-text" text="Температура">
+                                    <font>
+                                       <Font size="14.0" />
+                                    </font>
+                                 </Label>
+                                 <Label layoutX="166.0" layoutY="7.0" prefHeight="20.0" prefWidth="67.0" styleClass="light-text" text="Давление">
+                                    <font>
+                                       <Font size="14.0" />
+                                    </font>
+                                 </Label>
+                                 <Label layoutX="298.0" layoutY="7.0" styleClass="light-text" text="Влажность">
+                                    <font>
+                                       <Font size="14.0" />
+                                    </font>
+                                 </Label>
+                                 <Label layoutX="394.0" layoutY="6.0" styleClass="light-text" text="Вероятность осадков">
+                                    <font>
+                                       <Font size="14.0" />
+                                    </font>
+                                 </Label>
+                                 <Label layoutX="562.0" layoutY="6.0" styleClass="light-text" text="Скорость ветра">
+                                    <font>
+                                       <Font size="14.0" />
+                                    </font>
+                                 </Label>
+                                 <Label alignment="CENTER_RIGHT" layoutX="11.0" layoutY="26.0" prefHeight="35.0" prefWidth="74.0" styleClass="white-text" text="XXXXX" fx:id="xTemperatura2">
+                                    <font>
+                                       <Font size="24.0" />
+                                    </font>
+                                 </Label>
+                                 <Label fx:id="textC2" layoutX="89.0" layoutY="37.0" prefHeight="20.0" prefWidth="20.0" styleClass="light-text" text="°С">
+                                    <font>
+                                       <Font size="14.0" />
+                                    </font>
+                                 </Label>
+                                 <Label fx:id="textK2" layoutX="90.0" layoutY="37.0" prefHeight="0.0" prefWidth="17.0" styleClass="light-text" text="К" visible="false">
+                                    <font>
+                                       <Font size="14.0" />
+                                    </font>
+                                 </Label>
+                                 <Label alignment="CENTER_RIGHT" layoutX="113.0" layoutY="27.0" prefHeight="35.0" prefWidth="95.0" styleClass="white-text" text="XXXXXX" fx:id="xPressure2">
+                                    <font>
+                                       <Font size="24.0" />
+                                    </font>
+                                 </Label>
+                                 <Label fx:id="textMM2" layoutX="215.0" layoutY="38.0" prefHeight="20.0" prefWidth="67.0" styleClass="light-text" text="мм рт. ст.">
+                                    <font>
+                                       <Font size="14.0" />
+                                    </font>
+                                 </Label>
+                                 <Label fx:id="texthPa2" layoutX="215.0" layoutY="37.0" prefHeight="0.0" prefWidth="67.0" styleClass="light-text" text="гПа" visible="false">
+                                    <font>
+                                       <Font size="14.0" />
+                                    </font>
+                                 </Label>
+                                 <Label alignment="CENTER_RIGHT" layoutX="555.0" layoutY="26.0" prefHeight="35.0" prefWidth="61.0" styleClass="white-text" text="XXX" fx:id="xWind2">
+                                    <font>
+                                       <Font size="24.0" />
+                                    </font>
+                                 </Label>
+                                 <Label fx:id="textMS2" layoutX="620.0" layoutY="37.0" prefHeight="20.0" prefWidth="24.0" styleClass="light-text" text="м/с">
+                                    <font>
+                                       <Font size="14.0" />
+                                    </font>
+                                 </Label>
+                                 <Label fx:id="textKMH2" layoutX="622.0" layoutY="37.0" prefHeight="20.0" prefWidth="39.0" styleClass="light-text" text="км/ч" visible="false">
+                                    <font>
+                                       <Font size="14.0" />
+                                    </font>
+                                 </Label>
+                                 <Label alignment="CENTER_RIGHT" layoutX="405.0" layoutY="26.0" prefHeight="35.0" prefWidth="68.0" styleClass="white-text" text="XXX" fx:id="xRain2">
+                                    <font>
+                                       <Font size="24.0" />
+                                    </font>
+                                 </Label>
+                                 <Label layoutX="478.0" layoutY="37.0" prefHeight="20.0" prefWidth="17.0" styleClass="light-text" text="\%">
+                                    <font>
+                                       <Font size="14.0" />
+                                    </font>
+                                 </Label>
+                                 <Label alignment="CENTER_RIGHT" layoutX="285.0" layoutY="27.0" prefHeight="35.0" prefWidth="62.0" styleClass="white-text" text="XXX" fx:id="xHumidity2">
+                                    <font>
+                                       <Font size="24.0" />
+                                    </font>
+                                 </Label>
+                                 <Label layoutX="350.0" layoutY="38.0" prefHeight="20.0" prefWidth="17.0" styleClass="light-text" text="\%">
+                                    <font>
+                                       <Font size="14.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </Pane>
+                        </children></AnchorPane>
                             <ImageView fitHeight="191.0" fitWidth="402.0" layoutX="354.0" layoutY="49.0" pickOnBounds="true">
                                 <image>
                                     <Image url="@../images/sun3.png" />
@@ -40,8 +246,7 @@
                                     <Font size="20.0" />
                                 </font>
                             </Label>
-                            <MenuButton fx:id="town" layoutX="89.0" layoutY="346.0" mnemonicParsing="false" onAction="#town_Pressed" styleClass="btn" text="Город" />
-                            <MenuButton fx:id="country" layoutX="179.0" layoutY="346.0" mnemonicParsing="false" onAction="#country_Pressed" styleClass="btn" text="Страна" />
+                            <MenuButton fx:id="region" layoutX="89.0" layoutY="346.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="170.0" styleClass="btn" text="Регион" />
                         </AnchorPane>
                         <AnchorPane fx:id="panel2" layoutX="1.0" layoutY="14.0" prefHeight="806.0" prefWidth="1212.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <children>
@@ -102,7 +307,7 @@
                                                 <Font size="14.0" />
                                             </font>
                                         </TextField>
-                                        <Label layoutX="66.0" layoutY="289.0" styleClass="secondary-text" text="Влажность:" AnchorPane.rightAnchor="172.0">
+                                        <Label layoutX="66.0" layoutY="289.0" styleClass="secondary-text" text="Влажность, %:" AnchorPane.rightAnchor="172.0">
                                             <font>
                                                 <Font size="14.0" />
                                             </font>
@@ -152,12 +357,12 @@
                                                 <Font size="14.0" />
                                             </font>
                                         </Label>
-                                        <TextField fx:id="textFieldHumidity" layoutX="152.0" layoutY="499.0" prefHeight="26.0" prefWidth="132.0" styleClass="btn" AnchorPane.rightAnchor="26.0">
+                                        <TextField fx:id="textFieldHumidity2" layoutX="152.0" layoutY="499.0" prefHeight="26.0" prefWidth="132.0" styleClass="btn" AnchorPane.rightAnchor="26.0">
                                             <font>
                                                 <Font size="14.0" />
                                             </font>
                                         </TextField>
-                                        <Label layoutX="66.0" layoutY="502.0" prefHeight="4.0" prefWidth="72.0" styleClass="secondary-text" text="Влажность:" AnchorPane.rightAnchor="172.0">
+                                        <Label layoutX="66.0" layoutY="502.0" prefHeight="20.0" prefWidth="91.0" styleClass="secondary-text" text="Влажность, %:" AnchorPane.rightAnchor="172.0">
                                             <font>
                                                 <Font size="14.0" />
                                             </font>
@@ -217,18 +422,12 @@
                                                 <Font size="14.0" />
                                             </font>
                                         </Label>
-                                        <TextField fx:id="textFieldDate" layoutX="94.0" layoutY="143.0" prefHeight="25.0" prefWidth="190.0" styleClass="btn" AnchorPane.rightAnchor="26.0">
-                                            <font>
-                                                <Font size="14.0" />
-                                            </font>
-                                        </TextField>
+                              <DatePicker fx:id="textFieldDate" layoutX="94.0" layoutY="143.0" prefHeight="25.0" prefWidth="190.0" styleClass="button-transparent-blue" AnchorPane.rightAnchor="26.0" />
                                     </children>
                                 </AnchorPane>
                                 <AnchorPane blendMode="SRC_ATOP" layoutX="304.0" layoutY="22.0" prefHeight="588.0" prefWidth="454.0" styleClass="bg-white" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="330.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                                     <children>
-                                        <MenuButton fx:id="townFilter" layoutX="693.0" layoutY="32.0" mnemonicParsing="false" onAction="#townFilter_Pressed" styleClass="btn" text="Город" AnchorPane.rightAnchor="145.0" />
-                                        <MenuButton fx:id="countryFilter" layoutX="795.0" layoutY="32.0" mnemonicParsing="false" onAction="#countryFilter_Pressed" styleClass="btn" text="Страна" AnchorPane.rightAnchor="40.0" />
-                                        <TableView fx:id="tableWeather" layoutX="10.0" layoutY="124.0" prefHeight="684.0" prefWidth="899.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+                                        <TableView fx:id="tableWeather" layoutX="10.0" layoutY="124.0" onMouseClicked="#selectTableRow" prefHeight="684.0" prefWidth="899.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
                                             <columns>
                                                 <TableColumn fx:id="columnDate" maxWidth="150.0" minWidth="70.0" prefWidth="-1.0" text="Дата" />
                                                 <TableColumn prefWidth="-1.0" text="Погода днём">
@@ -259,6 +458,7 @@
                                                 <Font size="14.0" />
                                             </font>
                                         </TextField>
+                              <MenuButton fx:id="regionFilter" layoutX="653.0" layoutY="32.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="170.0" styleClass="btn" text="Регион" AnchorPane.rightAnchor="39.0" />
                                     </children>
                                 </AnchorPane>
                             </children>
@@ -316,12 +516,12 @@
                                                   <Font size="14.0" />
                                               </font>
                                           </Label>
-                                          <Label layoutX="132.0" layoutY="65.0" styleClass="title-text" text="Температура">
+                                          <Label layoutX="132.0" layoutY="87.0" styleClass="title-text" text="Температура">
                                               <font>
                                                   <Font size="14.0" />
                                               </font>
                                           </Label>
-                                          <RadioButton fx:id="C" layoutX="113.0" layoutY="100.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="49.0" selected="true" styleClass="title-text" text="°C">
+                                          <RadioButton fx:id="C" layoutX="113.0" layoutY="122.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="49.0" selected="true" styleClass="title-text" text="°C">
                                               <toggleGroup>
                                                   <ToggleGroup fx:id="Temperature" />
                                               </toggleGroup>
@@ -329,22 +529,22 @@
                                                   <Font size="14.0" />
                                               </font>
                                           </RadioButton>
-                                          <RadioButton fx:id="K" layoutX="192.0" layoutY="100.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="43.0" styleClass="title-text" text="K" toggleGroup="$Temperature">
+                                          <RadioButton fx:id="K" layoutX="192.0" layoutY="122.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="43.0" styleClass="title-text" text="K" toggleGroup="$Temperature">
                                               <font>
                                                   <Font size="14.0" />
                                               </font>
                                           </RadioButton>
-                                          <Label layoutX="120.0" layoutY="25.0" styleClass="title-text" text="Настройки">
+                                          <Label layoutX="120.0" layoutY="47.0" styleClass="title-text" text="Настройки">
                                               <font>
                                                   <Font size="22.0" />
                                               </font>
                                           </Label>
-                                          <Label layoutX="144.0" layoutY="135.0" styleClass="title-text" text="Давление">
+                                          <Label layoutX="144.0" layoutY="157.0" styleClass="title-text" text="Давление">
                                               <font>
                                                   <Font size="14.0" />
                                               </font>
                                           </Label>
-                                          <RadioButton fx:id="mmHg" layoutX="81.0" layoutY="170.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="105.0" selected="true" styleClass="title-text" text="мм рт. ст.">
+                                          <RadioButton fx:id="mmHg" layoutX="81.0" layoutY="192.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="105.0" selected="true" styleClass="title-text" text="мм рт. ст.">
                                               <toggleGroup>
                                                   <ToggleGroup fx:id="Pressure" />
                                               </toggleGroup>
@@ -352,17 +552,17 @@
                                                   <Font size="14.0" />
                                               </font>
                                           </RadioButton>
-                                          <RadioButton fx:id="hPa" layoutX="210.0" layoutY="170.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="59.0" styleClass="title-text" text="гПа" toggleGroup="$Pressure">
+                                          <RadioButton fx:id="hPa" layoutX="210.0" layoutY="192.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="59.0" styleClass="title-text" text="гПа" toggleGroup="$Pressure">
                                               <font>
                                                   <Font size="14.0" />
                                               </font>
                                           </RadioButton>
-                                          <Label layoutX="124.0" layoutY="205.0" styleClass="title-text" text="Скорость ветра">
+                                          <Label layoutX="124.0" layoutY="227.0" styleClass="title-text" text="Скорость ветра">
                                               <font>
                                                   <Font size="14.0" />
                                               </font>
                                           </Label>
-                                          <RadioButton fx:id="m" layoutX="92.0" layoutY="240.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="80.0" selected="true" styleClass="title-text" text="м/c">
+                                          <RadioButton fx:id="m" layoutX="92.0" layoutY="262.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="80.0" selected="true" styleClass="title-text" text="м/c">
                                               <toggleGroup>
                                                   <ToggleGroup fx:id="Speed" />
                                               </toggleGroup>
@@ -370,26 +570,20 @@
                                                   <Font size="14.0" />
                                               </font>
                                           </RadioButton>
-                                          <RadioButton fx:id="km" layoutX="191.0" layoutY="240.0" mnemonicParsing="false" prefHeight="21.0" prefWidth="67.0" styleClass="title-text" text="км/ч" toggleGroup="$Speed">
+                                          <RadioButton fx:id="km" layoutX="191.0" layoutY="262.0" mnemonicParsing="false" prefHeight="21.0" prefWidth="67.0" styleClass="title-text" text="км/ч" toggleGroup="$Speed">
                                               <font>
                                                   <Font size="14.0" />
                                               </font>
                                           </RadioButton>
-                                          <Button fx:id="Change" layoutX="94.0" layoutY="290.0" mnemonicParsing="false" onAction="#change_Pressed" prefHeight="30.0" prefWidth="157.0" styleClass="button-crud" text="Изменить данные">
+                                          <Button fx:id="Change" layoutX="96.0" layoutY="367.0" mnemonicParsing="false" onAction="#change_Pressed" prefHeight="30.0" prefWidth="157.0" styleClass="button-crud" text="Изменить данные" AnchorPane.leftAnchor="96.0" AnchorPane.rightAnchor="95.0">
                                               <font>
                                                   <Font size="14.0" />
                                               </font>
                                           </Button>
-                                          <Button fx:id="phoneSend" layoutX="38.0" layoutY="335.0" mnemonicParsing="false" onAction="#phoneSend_Pressed" prefHeight="30.0" prefWidth="268.0" styleClass="button-crud" text="Подключить рассылку погоды по тлф">
-                                              <font>
-                                                  <Font size="14.0" />
-                                              </font>
-                                          </Button>
-                                          <Button fx:id="phoneUnsend" layoutX="39.0" layoutY="380.0" mnemonicParsing="false" onAction="#phoneUnsend_Pressed" prefHeight="30.0" prefWidth="268.0" styleClass="button-crud" text="Отключить рассылку погоды по тлф">
-                                              <font>
-                                                  <Font size="14.0" />
-                                              </font>
-                                          </Button>
+                                    <CheckBox fx:id="sendWeather" layoutX="34.0" layoutY="307.0" mnemonicParsing="false" styleClass="title-text" text="Рассылка погоды по телефону" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font></CheckBox>
                                       </children>
                                   </AnchorPane>
                               </items>

@@ -4,38 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="212a1867-1f9e-474c-b72f-37fb6a2419f7" name="Changes" comment="Tests">
+    <list default="true" id="212a1867-1f9e-474c-b72f-37fb6a2419f7" name="Changes" comment="Employee menu">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Client/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/java/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/java/Client.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Client/src/main/java/Enums/RequestType.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/java/Enums/RequestType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/java/Enums/Roles.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/java/Enums/Roles.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/java/GUI/Admin/AdminMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/java/GUI/Admin/AdminMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/java/GUI/Admin/PersonalAccountAdmin.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/java/GUI/Admin/PersonalAccountAdmin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/java/GUI/Admin/RoleControl.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/java/GUI/Admin/RoleControl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/java/GUI/Admin/Statistic.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/java/GUI/Admin/Statistic.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/main/java/GUI/Employee/EmployeeMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/java/GUI/Employee/EmployeeMenu.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Client/src/main/java/GUI/ForgotPassword.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/java/GUI/ForgotPassword.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/java/GUI/Login.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/java/GUI/Login.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/java/GUI/Register.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/java/GUI/Register.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/java/GUI/User/PersonalAccount.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/java/GUI/User/PersonalAccount.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/java/GUI/User/UserMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/java/GUI/User/UserMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/java/Utilities/ClientSocket.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/java/Utilities/ClientSocket.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/resources/Admin_menu.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/resources/fxml/Admin_menu.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/resources/Admin_statistic.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/resources/fxml/Admin_statistic.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/resources/Calendar.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/resources/fxml/Calendar.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/resources/Forgot_password.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/resources/fxml/Forgot_password.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/resources/Login.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/resources/fxml/Login.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/resources/Personal_account.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/resources/fxml/Personal_account.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/resources/Personal_account_admin.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/resources/fxml/Personal_account_admin.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/resources/Register.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/resources/fxml/Register.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/resources/Role_control.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/resources/fxml/Role_control.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/resources/User_menu.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/resources/fxml/User_menu.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/src/main/java/DAO/PersonalSettingsDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/java/DAO/PersonalSettingsDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/src/main/java/DAO/UserDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/java/DAO/UserDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/main/resources/css/menu.css" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/resources/css/menu.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/main/resources/fxml/Employee_menu.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/resources/fxml/Employee_menu.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Server/src/main/java/Enums/RequestType.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/java/Enums/RequestType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/src/main/java/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/java/Server.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/src/main/java/Service/PersonalSettingsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/java/Service/PersonalSettingsService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/src/main/java/Service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/java/Service/UserService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Server/src/main/java/Utilities/ClientThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/java/Utilities/ClientThread.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -47,9 +23,9 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Interface" />
-        <option value="Class" />
         <option value="FxmlFile" />
         <option value="CSS File" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -82,52 +58,53 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Clent1.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Client.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Client1.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Client2.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Server.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.DashboardDaoTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.DayDaoTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.DayDaoTest.testFindById.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.DayDaoTest.testUpdate.executor&quot;: &quot;Debug&quot;,
-    &quot;JUnit.LocationDaoTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PersonalSettingsCRUDTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PersonalSettingsCRUDTest.testFindAll.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PersonalSettingsDaoTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.UserCRUDTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.UserCRUDTest.testFindById.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.UserCRUDTest.testFindByLogin.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.UserDaoTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.WeatherNameDaoTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.WeatherParametersDaoTest.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/Sasha/3_kurs/прогсп/КУРСАЧ/weather/Client/src/main/resources/images&quot;,
-    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;onboarding.tips.debug.path&quot;: &quot;D:/Sasha/3_kurs/прогсп/КУРСАЧ/weather/Server/src/main/java/Main.java&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Global Libraries&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.19043238&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.JavaFX&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Clent1.executor": "Run",
+    "Application.Client.executor": "Run",
+    "Application.Client1.executor": "Debug",
+    "Application.Client2.executor": "Run",
+    "Application.Server.executor": "Run",
+    "Application.test.executor": "Run",
+    "JUnit.DashboardDaoTest.executor": "Run",
+    "JUnit.DayDaoTest.executor": "Run",
+    "JUnit.DayDaoTest.testFindById.executor": "Run",
+    "JUnit.DayDaoTest.testUpdate.executor": "Debug",
+    "JUnit.LocationDaoTest.executor": "Run",
+    "JUnit.PersonalSettingsCRUDTest.executor": "Run",
+    "JUnit.PersonalSettingsCRUDTest.testFindAll.executor": "Run",
+    "JUnit.PersonalSettingsDaoTest.executor": "Run",
+    "JUnit.UserCRUDTest.executor": "Run",
+    "JUnit.UserCRUDTest.testFindById.executor": "Run",
+    "JUnit.UserCRUDTest.testFindByLogin.executor": "Run",
+    "JUnit.UserDaoTest.executor": "Run",
+    "JUnit.WeatherNameDaoTest.executor": "Run",
+    "JUnit.WeatherParametersDaoTest.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/Sasha/3_kurs/прогсп/КУРСАЧ/weather/Client/src/main/resources/images",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "onboarding.tips.debug.path": "D:/Sasha/3_kurs/прогсп/КУРСАЧ/weather/Server/src/main/java/Main.java",
+    "project.structure.last.edited": "Global Libraries",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.19043238",
+    "settings.editor.selected.configurable": "preferences.JavaFX",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;mysql&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\Sasha\3_kurs\прогсп\КУРСАЧ\weather\Client\src\main\resources\images" />
@@ -205,7 +182,8 @@
       <workItem from="1733403323413" duration="3071000" />
       <workItem from="1733481763278" duration="9039000" />
       <workItem from="1733508096902" duration="422000" />
-      <workItem from="1733508848153" duration="3792000" />
+      <workItem from="1733508848153" duration="22038000" />
+      <workItem from="1733568588530" duration="14313000" />
     </task>
     <task id="LOCAL-00001" summary="User">
       <option name="closed" value="true" />
@@ -239,7 +217,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733280644218</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Employee menu">
+      <option name="closed" value="true" />
+      <created>1733512936399</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1733512936399</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -249,20 +235,12 @@
     <MESSAGE value="User" />
     <MESSAGE value="User cases" />
     <MESSAGE value="Tests" />
-    <option name="LAST_COMMIT_MESSAGE" value="Tests" />
+    <MESSAGE value="Employee menu" />
+    <option name="LAST_COMMIT_MESSAGE" value="Employee menu" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/Client/src/main/java/Utilities/ClientSocket.java</url>
-          <line>18</line>
-          <properties class="Utilities.ClientSocket" method="&lt;init&gt;">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="10" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/Server/src/main/java/Service/UserService.java</url>
           <line>20</line>
@@ -309,14 +287,9 @@
           <option name="timeStamp" value="32" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/Client/src/main/java/Utilities/GetService.java</url>
-          <line>9</line>
-          <option name="timeStamp" value="11" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/Server/src/test/java/DAO/DayDaoTest.java</url>
-          <line>15</line>
-          <option name="timeStamp" value="34" />
+          <url>file://$PROJECT_DIR$/Client/src/main/java/GUI/Employee/EmployeeMenu.java</url>
+          <line>707</line>
+          <option name="timeStamp" value="45" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -87,7 +87,7 @@ public class ForgotPassword {
         if (responseModel.getResponseStatus() == ResponseStatus.OK) {
             labelMessage.setVisible(false);
             ClientSocket.getInstance().setUser(new Gson().fromJson(responseModel.getResponseData(), User.class));
-
+            user = ClientSocket.getInstance().getUser();
 
             textfieldLogin.setVisible(false);
             textfieldPhone.setVisible(false);
@@ -128,7 +128,7 @@ public class ForgotPassword {
         user.setPassword(temp);
         Request requestModel = new Request();
         requestModel.setRequestMessage(new Gson().toJson(user));
-        requestModel.setRequestType(RequestType.UPDATE_PASSWORD);
+        requestModel.setRequestType(RequestType.UPDATE_USER);
         ClientSocket.getInstance().getOut().println(new Gson().toJson(requestModel));
         ClientSocket.getInstance().getOut().flush();
 

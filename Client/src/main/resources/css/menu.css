@@ -14,15 +14,20 @@
 
 }
 
-
-
-.btn{
-    -fx-background-color: #ffca32;
-    -fx-background-radius: 8px;
-    -fx-text-fill: #3696ff;
-    -fx-font-size: 14px;
-    -fx-cursor:hand;
+.weather-form{
+    -fx-background-color:linear-gradient(to top, #00468e, #00254c);
 }
+
+.weather-gradient{
+    -fx-text-fill:linear-gradient(to top, #1788ff, #002851);
+}
+
+.weather-panel{
+    -fx-background-color:linear-gradient(to top, #FFEFA6FF, #fff183);
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(three-pass-box, rgb(83, 83, 83),5,0,0,0);
+}
+
 
 
 .button-transparent{
@@ -34,6 +39,22 @@
     -fx-cursor:hand;
 }
 
+.button-transparent-blue{
+    -fx-background-color: transparent;
+    -fx-background-radius: 0px;
+    -fx-border-width: 0;
+    -fx-text-fill: #1469cf;
+    -fx-font-size: 14px;
+    -fx-cursor:hand;
+}
+.button-transparent-blue:hover{
+    -fx-background-color: transparent;
+    -fx-background-radius: 0px;
+    -fx-border-width: 0;
+    -fx-text-fill: #00244c;
+    -fx-font-size: 14px;
+    -fx-cursor:hand;
+}
 .button-transparent:hover{
     -fx-background-color: transparent;
 }
@@ -73,6 +94,7 @@
 
 .button-menu:hover{
     -fx-background-color: #0460c5;
+    -fx-text-fill: #00244c;
 }
 
 .password-field{
@@ -106,6 +128,12 @@
     -fx-text-fill: #00244c
 }
 
+.white-text{
+    -fx-text-fill: #ffffff
+}
+.light-text{
+    -fx-text-fill: #fff8d5
+}
 
 .error-text{
     -fx-text-fill: #000729;
@@ -163,3 +191,16 @@
 }
 
 
+.menu-item {
+    -fx-font-size: 14px;
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #00244c;
+    -fx-pref-width: 165px;
+    -fx-pref-height: 25px;
+}
+
+.menu-item:hover {
+    -fx-background-color: #0167d9;
+    -fx-text-fill: #00244c;
+
+}
