@@ -204,3 +204,61 @@
     -fx-text-fill: #00244c;
 
 }
+.context-menu .label {
+    -fx-text-fill: inherit; /* Наследует цвет из родительского узла */
+}
+
+.grid-pane {
+    -fx-padding: 3;          /* Внутренние отступы вокруг содержимого */
+    -fx-hgap: 3;            /* Горизонтальный интервал между столбцами */
+    -fx-vgap: 3;            /* Вертикальный интервал между строками */
+    -fx-background-color: linear-gradient(to top, #c8e1ff, #2481de);
+    -fx-border-color: #00244c; /* Цвет рамки */
+    -fx-border-width: 1;      /* Толщина рамки */
+    -fx-border-radius: 3;     /* Скругление углов рамки */
+    -fx-background-radius: 3; /* Скругление углов фона */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4),5,0,0,0);
+    -fx-border-style: solid;
+}
+.grid-pane .label, .grid-pane-header .label {
+    -fx-text-fill: #ffffff;
+}
+.grid-pane-header {
+    -fx-padding: 3;          /* Внутренние отступы вокруг содержимого */
+    -fx-hgap: 3;            /* Горизонтальный интервал между столбцами */
+    -fx-vgap: 3;            /* Вертикальный интервал между строками */
+    -fx-background-color: linear-gradient(to top, #2481de, #024787);
+    -fx-border-color: #00244c; /* Цвет рамки */
+    -fx-border-width:1;      /* Толщина рамки */
+    -fx-border-radius: 3;     /* Скругление углов рамки */
+    -fx-background-radius: 3; /* Скругление углов фона */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4),5,0,0,0);
+    -fx-border-style: solid;
+
+
+}
+
+/* Стиль для всех ячеек (например, Label или TextField) внутри GridPane */
+.grid-pane .cell {
+    -fx-font-size: 14px;       /* Размер шрифта */
+    -fx-font-family: "Arial"; /* Шрифт */
+    -fx-text-fill: #ffffff;    /* Цвет текста */
+    -fx-alignment: center;     /* Выравнивание текста в центре */
+    -fx-padding: 5;            /* Внутренние отступы ячеек */
+}
+
+.grid-pane:hover {
+    -fx-background-color: #64aeff;
+    -fx-text-fill: #00244c;
+
+}
+
+.today-weather{
+    -fx-background-color: #cee6ff;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4),5,0,0,0);
+}
+
+
+
+

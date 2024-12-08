@@ -24,33 +24,17 @@ import java.io.IOException;
 
 public class Register {
 
-
     @FXML
-    private Button buttonSignUp;
+    private Button buttonSignUp,buttonBack;
     @FXML
-    private ToggleGroup Speed;
-    @FXML
-    private ToggleGroup Pressure;
-    @FXML
-    private ToggleGroup Temperature;
-
-    @FXML
-    private Button buttonBack;
-
+    private ToggleGroup Speed,Pressure,Temperature;
     @FXML
     private Label labelMessage;
-
     @FXML
-    private PasswordField passwordfieldConfirmPassword;
-
+    private PasswordField passwordfieldConfirmPassword, passwordfieldPassword;
     @FXML
-    private PasswordField passwordfieldPassword;
+    private TextField textfieldLogin, textfieldPhone;
 
-    @FXML
-    private TextField textfieldLogin;
-
-    @FXML
-    private TextField textfieldPhone;
 
     @FXML
     void back_Pressed(ActionEvent event) throws IOException {

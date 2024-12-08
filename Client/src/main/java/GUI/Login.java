@@ -24,18 +24,11 @@ import java.io.IOException;
 public class Login {
 
     @FXML
-    private Button buttonForgotPassword;
-    @FXML
-    private Button buttonRegister;
-    @FXML
-    private Button buttonLogin;
-
+    private Button buttonForgotPassword,buttonRegister,buttonLogin;
     @FXML
     private Label labelMessage;
-
     @FXML
     private PasswordField passwordfieldPassword;
-
     @FXML
     private TextField textfieldLogin;
 

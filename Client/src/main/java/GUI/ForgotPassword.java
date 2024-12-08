@@ -25,31 +25,14 @@ public class ForgotPassword {
 
     private User user;
 
-
     @FXML
-    private Button buttonSave;
-    @FXML
-    private Button buttonBack;
-
-    @FXML
-    private Button buttonFindUser;
-
+    private Button buttonSave,buttonBack,buttonFindUser;
     @FXML
     private Label labelMessage;
-
     @FXML
-    private PasswordField passwordfieldConfirmPassword;
-
+    private PasswordField passwordfieldConfirmPassword,passwordfieldPassword;
     @FXML
-    private PasswordField passwordfieldPassword;
-
-    @FXML
-    private TextField textfieldLogin;
-
-    @FXML
-    private TextField textfieldPhone;
-
-
+    private TextField textfieldLogin,textfieldPhone;
 
     @FXML
     void back_Pressed(ActionEvent event) throws IOException {

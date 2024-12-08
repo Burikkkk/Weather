@@ -6,6 +6,7 @@
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.SplitPane?>
@@ -17,7 +18,10 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="847.0" prefWidth="1464.0" styleClass="bg-form" stylesheets="@../css/menu.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Employee.EmployeeMenu">
@@ -26,7 +30,7 @@
             <center>
                 <AnchorPane fx:id="pane1" prefHeight="800.0" prefWidth="1178.0" BorderPane.alignment="CENTER">
                     <children>
-                        <AnchorPane fx:id="panel0" layoutX="10.0" prefHeight="806.0" prefWidth="1212.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="-10.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane fx:id="panel0" prefHeight="806.0" prefWidth="1212.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <AnchorPane fx:id="todayWeatherPanel" layoutX="76.0" layoutY="411.0" prefHeight="326.0" prefWidth="690.0" styleClass="weather-panel" visible="false">
                         <children>
                             <Pane layoutY="108.0" prefHeight="68.0" prefWidth="690.0" styleClass="bg-form">
@@ -247,6 +251,213 @@
                                 </font>
                             </Label>
                             <MenuButton fx:id="region" layoutX="89.0" layoutY="346.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="170.0" styleClass="btn" text="Регион" />
+                     <AnchorPane fx:id="todayWeatherPanel1" layoutX="86.0" layoutY="421.0" prefHeight="326.0" prefWidth="690.0" styleClass="weather-panel" visible="false">
+                        <children>
+                           <Pane layoutY="108.0" prefHeight="68.0" prefWidth="690.0" styleClass="bg-form">
+                              <children>
+                                 <Label layoutX="18.0" layoutY="6.0" styleClass="title-text" text="Температура">
+                                    <font>
+                                       <Font size="14.0" />
+                                    </font>
+                                 </Label>
+                                 <Label layoutX="166.0" layoutY="7.0" prefHeight="20.0" prefWidth="67.0" styleClass="title-text" text="Давление">
+                                    <font>
+                                       <Font size="14.0" />
+                                    </font>
+                                 </Label>
+                                 <Label layoutX="298.0" layoutY="7.0" styleClass="title-text" text="Влажность">
+                                    <font>
+                                       <Font size="14.0" />
+                                    </font>
+                                 </Label>
+                                 <Label layoutX="394.0" layoutY="6.0" styleClass="title-text" text="Вероятность осадков">
+                                    <font>
+                                       <Font size="14.0" />
+                                    </font>
+                                 </Label>
+                                 <Label layoutX="562.0" layoutY="6.0" styleClass="title-text" text="Скорость ветра">
+                                    <font>
+                                       <Font size="14.0" />
+                                    </font>
+                                 </Label>
+                                 <Label alignment="CENTER_RIGHT" layoutY="26.0" prefHeight="35.0" prefWidth="81.0" styleClass="secondary-text" text="XXXXX" fx:id="xTemperatura11">
+                                    <font>
+                                       <Font size="24.0" />
+                                    </font>
+                                 </Label>
+                                 <Label fx:id="textC11" layoutX="85.0" layoutY="37.0" prefHeight="20.0" prefWidth="20.0" styleClass="title-text" text="°С">
+                                    <font>
+                                       <Font size="14.0" />
+                                    </font>
+                                 </Label>
+                                 <Label fx:id="textK11" layoutX="87.0" layoutY="37.0" prefHeight="0.0" prefWidth="17.0" styleClass="title-text" text="К" visible="false">
+                                    <font>
+                                       <Font size="14.0" />
+                                    </font>
+                                 </Label>
+                                 <Label alignment="CENTER_RIGHT" layoutX="100.0" layoutY="27.0" prefHeight="35.0" prefWidth="112.0" styleClass="secondary-text" text="XXXXXX" fx:id="xPressure11">
+                                    <font>
+                                       <Font size="24.0" />
+                                    </font>
+                                 </Label>
+                                 <Label fx:id="textMM11" layoutX="217.0" layoutY="38.0" prefHeight="20.0" prefWidth="67.0" styleClass="title-text" text="мм рт. ст.">
+                                    <font>
+                                       <Font size="14.0" />
+                                    </font>
+                                 </Label>
+                                 <Label fx:id="texthPa11" layoutX="217.0" layoutY="37.0" prefHeight="0.0" prefWidth="67.0" styleClass="title-text" text="гПа">
+                                    <font>
+                                       <Font size="14.0" />
+                                    </font>
+                                 </Label>
+                                 <Label alignment="CENTER_RIGHT" layoutX="561.0" layoutY="26.0" prefHeight="35.0" prefWidth="57.0" styleClass="secondary-text" text="XXX" fx:id="xWind11">
+                                    <font>
+                                       <Font size="24.0" />
+                                    </font>
+                                 </Label>
+                                 <Label fx:id="textMS11" layoutX="622.0" layoutY="37.0" prefHeight="20.0" prefWidth="24.0" styleClass="title-text" text="м/с">
+                                    <font>
+                                       <Font size="14.0" />
+                                    </font>
+                                 </Label>
+                                 <Label fx:id="textKMH11" layoutX="624.0" layoutY="37.0" prefHeight="20.0" prefWidth="39.0" styleClass="title-text" text="км/ч" visible="false">
+                                    <font>
+                                       <Font size="14.0" />
+                                    </font>
+                                 </Label>
+                                 <Label alignment="CENTER_RIGHT" layoutX="411.0" layoutY="26.0" prefHeight="35.0" prefWidth="66.0" styleClass="secondary-text" text="XXX" fx:id="xRain11">
+                                    <font>
+                                       <Font size="24.0" />
+                                    </font>
+                                 </Label>
+                                 <Label layoutX="483.0" layoutY="37.0" prefHeight="20.0" prefWidth="17.0" styleClass="title-text" text="\%">
+                                    <font>
+                                       <Font size="14.0" />
+                                    </font>
+                                 </Label>
+                                 <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="273.0" layoutY="27.0" prefHeight="35.0" prefWidth="71.0" styleClass="secondary-text" text="XXX" fx:id="xHumidity11">
+                                    <font>
+                                       <Font size="24.0" />
+                                    </font>
+                                 </Label>
+                                 <Label layoutX="350.0" layoutY="38.0" prefHeight="20.0" prefWidth="17.0" styleClass="title-text" text="\%">
+                                    <font>
+                                       <Font size="14.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </Pane>
+                           <Label alignment="CENTER" layoutX="3.0" layoutY="27.0" prefHeight="35.0" prefWidth="684.0" styleClass="weather-gradient" text="Cнег" fx:id="xWeatherName1">
+                              <font>
+                                 <Font name="System Bold" size="24.0" />
+                              </font>
+                           </Label>
+                           <Label layoutX="23.0" layoutY="62.0" styleClass="title-text" text="Днем:">
+                              <font>
+                                 <Font size="24.0" />
+                              </font>
+                           </Label>
+                           <Label layoutX="23.0" layoutY="195.0" styleClass="title-text" text="Ночью:">
+                              <font>
+                                 <Font size="24.0" />
+                              </font>
+                           </Label>
+                           <Pane layoutY="241.0" prefHeight="68.0" prefWidth="690.0" styleClass="weather-form">
+                              <children>
+                                 <Label layoutX="18.0" layoutY="6.0" styleClass="light-text" text="Температура">
+                                    <font>
+                                       <Font size="14.0" />
+                                    </font>
+                                 </Label>
+                                 <Label layoutX="166.0" layoutY="7.0" prefHeight="20.0" prefWidth="67.0" styleClass="light-text" text="Давление">
+                                    <font>
+                                       <Font size="14.0" />
+                                    </font>
+                                 </Label>
+                                 <Label layoutX="298.0" layoutY="7.0" styleClass="light-text" text="Влажность">
+                                    <font>
+                                       <Font size="14.0" />
+                                    </font>
+                                 </Label>
+                                 <Label layoutX="394.0" layoutY="6.0" styleClass="light-text" text="Вероятность осадков">
+                                    <font>
+                                       <Font size="14.0" />
+                                    </font>
+                                 </Label>
+                                 <Label layoutX="562.0" layoutY="6.0" styleClass="light-text" text="Скорость ветра">
+                                    <font>
+                                       <Font size="14.0" />
+                                    </font>
+                                 </Label>
+                                 <Label alignment="CENTER_RIGHT" layoutX="11.0" layoutY="26.0" prefHeight="35.0" prefWidth="74.0" styleClass="white-text" text="XXXXX" fx:id="xTemperatura21">
+                                    <font>
+                                       <Font size="24.0" />
+                                    </font>
+                                 </Label>
+                                 <Label fx:id="textC21" layoutX="89.0" layoutY="37.0" prefHeight="20.0" prefWidth="20.0" styleClass="light-text" text="°С">
+                                    <font>
+                                       <Font size="14.0" />
+                                    </font>
+                                 </Label>
+                                 <Label fx:id="textK21" layoutX="90.0" layoutY="37.0" prefHeight="0.0" prefWidth="17.0" styleClass="light-text" text="К" visible="false">
+                                    <font>
+                                       <Font size="14.0" />
+                                    </font>
+                                 </Label>
+                                 <Label alignment="CENTER_RIGHT" layoutX="113.0" layoutY="27.0" prefHeight="35.0" prefWidth="95.0" styleClass="white-text" text="XXXXXX" fx:id="xPressure21">
+                                    <font>
+                                       <Font size="24.0" />
+                                    </font>
+                                 </Label>
+                                 <Label fx:id="textMM21" layoutX="215.0" layoutY="38.0" prefHeight="20.0" prefWidth="67.0" styleClass="light-text" text="мм рт. ст.">
+                                    <font>
+                                       <Font size="14.0" />
+                                    </font>
+                                 </Label>
+                                 <Label fx:id="texthPa21" layoutX="215.0" layoutY="37.0" prefHeight="0.0" prefWidth="67.0" styleClass="light-text" text="гПа" visible="false">
+                                    <font>
+                                       <Font size="14.0" />
+                                    </font>
+                                 </Label>
+                                 <Label alignment="CENTER_RIGHT" layoutX="555.0" layoutY="26.0" prefHeight="35.0" prefWidth="61.0" styleClass="white-text" text="XXX" fx:id="xWind21">
+                                    <font>
+                                       <Font size="24.0" />
+                                    </font>
+                                 </Label>
+                                 <Label fx:id="textMS21" layoutX="620.0" layoutY="37.0" prefHeight="20.0" prefWidth="24.0" styleClass="light-text" text="м/с">
+                                    <font>
+                                       <Font size="14.0" />
+                                    </font>
+                                 </Label>
+                                 <Label fx:id="textKMH21" layoutX="622.0" layoutY="37.0" prefHeight="20.0" prefWidth="39.0" styleClass="light-text" text="км/ч" visible="false">
+                                    <font>
+                                       <Font size="14.0" />
+                                    </font>
+                                 </Label>
+                                 <Label alignment="CENTER_RIGHT" layoutX="405.0" layoutY="26.0" prefHeight="35.0" prefWidth="68.0" styleClass="white-text" text="XXX" fx:id="xRain21">
+                                    <font>
+                                       <Font size="24.0" />
+                                    </font>
+                                 </Label>
+                                 <Label layoutX="478.0" layoutY="37.0" prefHeight="20.0" prefWidth="17.0" styleClass="light-text" text="\%">
+                                    <font>
+                                       <Font size="14.0" />
+                                    </font>
+                                 </Label>
+                                 <Label alignment="CENTER_RIGHT" layoutX="285.0" layoutY="27.0" prefHeight="35.0" prefWidth="62.0" styleClass="white-text" text="XXX" fx:id="xHumidity21">
+                                    <font>
+                                       <Font size="24.0" />
+                                    </font>
+                                 </Label>
+                                 <Label layoutX="350.0" layoutY="38.0" prefHeight="20.0" prefWidth="17.0" styleClass="light-text" text="\%">
+                                    <font>
+                                       <Font size="14.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </Pane>
+                        </children>
+                     </AnchorPane>
                         </AnchorPane>
                         <AnchorPane fx:id="panel2" layoutX="1.0" layoutY="14.0" prefHeight="806.0" prefWidth="1212.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <children>
@@ -453,7 +664,7 @@
                                                 <TableColumn fx:id="columnCountry" maxWidth="100.0" minWidth="60.0" prefWidth="-1.0" text="Страна" />
                                             </columns>
                                         </TableView>
-                                        <TextField fx:id="textFieldSearch" layoutX="34.0" layoutY="31.0" prefHeight="30.0" prefWidth="298.0" promptText="Поиск: прогноз погоды" styleClass="btn">
+                                        <TextField fx:id="textFieldSearch" layoutX="34.0" layoutY="31.0" onKeyTyped="#searchDays" prefHeight="30.0" prefWidth="298.0" promptText="Поиск: прогноз погоды" styleClass="btn">
                                             <font>
                                                 <Font size="14.0" />
                                             </font>
@@ -464,7 +675,330 @@
                             </children>
                         </AnchorPane>
                   <AnchorPane fx:id="panel3" layoutX="10.0" layoutY="10.0" prefHeight="806.0" prefWidth="1212.0" styleClass="bg-white" visible="false" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
-                  <AnchorPane fx:id="panel1" layoutX="10.0" layoutY="10.0" prefHeight="806.0" prefWidth="1202.0" styleClass="bg-white" visible="false" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
+                  <AnchorPane fx:id="panel1" layoutX="10.0" layoutY="10.0" prefHeight="786.0" prefWidth="1179.0" styleClass="button-transparent" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" visible="false">
+                      <children>
+                        <AnchorPane fx:id="todayWeatherPanel2" prefHeight="280.0" prefWidth="597.0" styleClass="today-weather" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <Pane layoutY="90.0" prefHeight="62.0" prefWidth="595.0" styleClass="bg-form">
+                                 <children>
+                                    <Label layoutX="18.0" layoutY="6.0" styleClass="title-text" text="Температура">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label layoutX="166.0" layoutY="6.0" prefHeight="20.0" prefWidth="67.0" styleClass="title-text" text="Давление">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label layoutX="290.0" layoutY="6.0" styleClass="title-text" text="Влажность">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label layoutX="410.0" layoutY="6.0" styleClass="title-text" text="Осадки">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label layoutX="514.0" layoutY="6.0" styleClass="title-text" text="Ветер">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER_RIGHT" layoutY="26.0" prefHeight="35.0" prefWidth="81.0" styleClass="secondary-text" text="XXXXX" fx:id="xTemperatura12">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="textC12" layoutX="85.0" layoutY="37.0" prefHeight="20.0" prefWidth="20.0" styleClass="title-text" text="°С">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="textK12" layoutX="87.0" layoutY="37.0" prefHeight="0.0" prefWidth="17.0" styleClass="title-text" text="К" visible="false">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER_RIGHT" layoutX="99.0" layoutY="26.0" prefHeight="35.0" prefWidth="112.0" styleClass="secondary-text" text="XXXXXX" fx:id="xPressure12">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="textMM12" layoutX="216.0" layoutY="38.0" prefHeight="20.0" prefWidth="67.0" styleClass="title-text" text="мм рт. ст.">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="texthPa12" layoutX="216.0" layoutY="37.0" prefHeight="0.0" prefWidth="67.0" styleClass="title-text" text="гПа" visible="false">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER_RIGHT" layoutX="493.0" layoutY="26.0" prefHeight="35.0" prefWidth="57.0" styleClass="secondary-text" text="XXX" fx:id="xWind12">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="textMS12" layoutX="554.0" layoutY="37.0" prefHeight="20.0" prefWidth="24.0" styleClass="title-text" text="м/с">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="textKMH12" layoutX="556.0" layoutY="37.0" prefHeight="20.0" prefWidth="39.0" styleClass="title-text" text="км/ч" visible="false">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER_RIGHT" layoutX="382.0" layoutY="26.0" prefHeight="35.0" prefWidth="66.0" styleClass="secondary-text" text="XXX" fx:id="xRain12">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <Label layoutX="454.0" layoutY="37.0" prefHeight="20.0" prefWidth="17.0" styleClass="title-text" text="\%">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="268.0" layoutY="26.0" prefHeight="35.0" prefWidth="71.0" styleClass="secondary-text" text="XXX" fx:id="xHumidity12">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <Label layoutX="345.0" layoutY="37.0" prefHeight="20.0" prefWidth="17.0" styleClass="title-text" text="\%">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </Pane>
+                              <Label alignment="CENTER" layoutX="2.0" layoutY="14.0" prefHeight="35.0" prefWidth="595.0" styleClass="weather-gradient" text="Cнег" fx:id="xWeatherName2">
+                                 <font>
+                                    <Font name="System Bold" size="24.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="14.0" layoutY="60.0" prefHeight="21.0" prefWidth="79.0" styleClass="title-text" text="Днем:">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="14.0" layoutY="161.0" styleClass="title-text" text="Ночью:">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Label>
+                              <Pane layoutY="191.0" prefWidth="595.0" styleClass="weather-form">
+                                 <children>
+                                    <Label layoutX="18.0" layoutY="6.0" styleClass="light-text" text="Температура">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label layoutX="166.0" layoutY="6.0" prefHeight="20.0" prefWidth="67.0" styleClass="light-text" text="Давление">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label layoutX="290.0" layoutY="6.0" styleClass="light-text" text="Влажность">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label layoutX="410.0" layoutY="6.0" styleClass="light-text" text="Осадки">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label layoutX="514.0" layoutY="6.0" styleClass="light-text" text="Ветер">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER_RIGHT" layoutX="11.0" layoutY="26.0" prefHeight="35.0" prefWidth="74.0" styleClass="white-text" text="XXXXX" fx:id="xTemperatura22">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="textC22" layoutX="89.0" layoutY="37.0" prefHeight="20.0" prefWidth="20.0" styleClass="light-text" text="°С">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="textK22" layoutX="90.0" layoutY="37.0" prefHeight="0.0" prefWidth="17.0" styleClass="light-text" text="К" visible="false">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER_RIGHT" layoutX="113.0" layoutY="26.0" prefHeight="35.0" prefWidth="95.0" styleClass="white-text" text="XXXXXX" fx:id="xPressure22">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="textMM22" layoutX="215.0" layoutY="37.0" prefHeight="20.0" prefWidth="67.0" styleClass="light-text" text="мм рт. ст.">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="texthPa22" layoutX="215.0" layoutY="37.0" prefHeight="0.0" prefWidth="67.0" styleClass="light-text" text="гПа" visible="false">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER_RIGHT" layoutX="493.0" layoutY="26.0" prefHeight="35.0" prefWidth="61.0" styleClass="white-text" text="XXX" fx:id="xWind22">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="textMS22" layoutX="558.0" layoutY="37.0" prefHeight="20.0" prefWidth="24.0" styleClass="light-text" text="м/с">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="textKMH22" layoutX="558.0" layoutY="37.0" prefHeight="20.0" prefWidth="39.0" styleClass="light-text" text="км/ч" visible="false">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER_RIGHT" layoutX="382.0" layoutY="26.0" prefHeight="35.0" prefWidth="68.0" styleClass="white-text" text="XXX" fx:id="xRain22">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <Label layoutX="454.0" layoutY="37.0" prefHeight="20.0" prefWidth="17.0" styleClass="light-text" text="\%">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER_RIGHT" layoutX="280.0" layoutY="26.0" prefHeight="35.0" prefWidth="62.0" styleClass="white-text" text="XXX" fx:id="xHumidity22">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <Label layoutX="348.0" layoutY="37.0" prefHeight="20.0" prefWidth="17.0" styleClass="light-text" text="\%">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </Pane>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="panelWeather" prefHeight="491.0" prefWidth="595.0" styleClass="bg-white" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="290.0" />
+                        <AnchorPane fx:id="panelWeather1" prefHeight="786.0" prefWidth="573.0" styleClass="bg-white" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="605.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <MenuButton fx:id="region1" layoutX="345.0" layoutY="138.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="170.0" styleClass="btn" text="Регион" />
+                                <MenuButton fx:id="monthMenuBtn" layoutX="38.0" layoutY="138.0" mnemonicParsing="false" onAction="#monthPressed" prefHeight="26.0" prefWidth="102.0" styleClass="btn" text="Месяц">
+                                    <items>
+                                        <MenuItem mnemonicParsing="false" onAction="#monthPressed" text="Январь" />
+                                        <MenuItem mnemonicParsing="false" onAction="#monthPressed" text="Февраль" />
+                                        <MenuItem mnemonicParsing="false" onAction="#monthPressed" text="Март" />
+                                        <MenuItem mnemonicParsing="false" onAction="#monthPressed" text="Апрель" />
+                                        <MenuItem mnemonicParsing="false" onAction="#monthPressed" text="Май" />
+                                        <MenuItem mnemonicParsing="false" onAction="#monthPressed" text="Июнь" />
+                                        <MenuItem mnemonicParsing="false" onAction="#monthPressed" text="Июль" />
+                                        <MenuItem mnemonicParsing="false" onAction="#monthPressed" text="Август" />
+                                        <MenuItem mnemonicParsing="false" onAction="#monthPressed" text="Сентябрь" />
+                                        <MenuItem mnemonicParsing="false" onAction="#monthPressed" text="Октябрь" />
+                                        <MenuItem mnemonicParsing="false" onAction="#monthPressed" text="Ноябрь" />
+                                        <MenuItem mnemonicParsing="false" onAction="#monthPressed" text="Декабрь" />
+                                    </items>
+                                    <font>
+                                        <Font name="Arial" size="14.0" />
+                                    </font>
+                                </MenuButton>
+                                <MenuButton fx:id="yearMenuBtn" layoutX="189.0" layoutY="138.0" mnemonicParsing="false" onAction="#yearPressed" prefHeight="26.0" prefWidth="102.0" styleClass="btn" text="Год">
+                                    <items>
+                                        <MenuItem mnemonicParsing="false" onAction="#yearPressed" text="2024" />
+                                        <MenuItem mnemonicParsing="false" onAction="#yearPressed" text="2025" />
+      
+                                    </items>
+                                    <font>
+                                        <Font name="Arial" size="14.0" />
+                                    </font>
+                                </MenuButton>
+                                <GridPane fx:id="daysGrid" layoutX="30.0" layoutY="237.0" prefHeight="336.0" prefWidth="504.0" styleClass="grid-pane">
+                                    <rowConstraints>
+                                        <RowConstraints minHeight="50.0" prefHeight="50.0" vgrow="NEVER" />
+                                        <RowConstraints minHeight="50.0" prefHeight="50.0" vgrow="NEVER" />
+                                        <RowConstraints minHeight="50.0" prefHeight="50.0" vgrow="NEVER" />
+                                        <RowConstraints minHeight="50.0" prefHeight="50.0" vgrow="NEVER" />
+                                        <RowConstraints minHeight="50.0" prefHeight="50.0" vgrow="NEVER" />
+                                        <RowConstraints minHeight="50.0" prefHeight="50.0" vgrow="NEVER" />
+                                    <RowConstraints minHeight="50.0" prefHeight="50.0" vgrow="NEVER" />
+                                    </rowConstraints>
+                                    <columnConstraints>
+                                        <ColumnConstraints hgrow="ALWAYS" />
+                                        <ColumnConstraints hgrow="ALWAYS" />
+                                        <ColumnConstraints hgrow="ALWAYS" />
+                                        <ColumnConstraints hgrow="ALWAYS" />
+                                        <ColumnConstraints hgrow="ALWAYS" />
+                                        <ColumnConstraints hgrow="ALWAYS" />
+                                        <ColumnConstraints hgrow="ALWAYS" />
+                                    </columnConstraints>
+      
+                                      </GridPane>
+                                <GridPane layoutX="30.0" layoutY="193.0" prefHeight="47.0" prefWidth="504.0" styleClass="grid-pane-header">
+                                    <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    </columnConstraints>
+                                    <rowConstraints>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    </rowConstraints>
+                                    <children>
+                                        <Label alignment="CENTER" prefHeight="44.0" prefWidth="71.0" styleClass="column-header-background" text="Понедельник" textFill="WHITE">
+                                            <font>
+                                                <Font name="Arial" size="12.0" />
+                                            </font>
+                                        </Label>
+                                        <Label alignment="CENTER" prefHeight="44.0" prefWidth="71.0" styleClass="column-header-background" text="Вторник" textFill="WHITE" GridPane.columnIndex="1">
+                                            <font>
+                                                <Font name="Arial" size="12.0" />
+                                            </font>
+                                        </Label>
+                                        <Label alignment="CENTER" prefHeight="44.0" prefWidth="71.0" styleClass="column-header-background" text="Среда" textFill="WHITE" GridPane.columnIndex="2">
+                                            <font>
+                                                <Font name="Arial" size="12.0" />
+                                            </font>
+                                        </Label>
+                                        <Label alignment="CENTER" prefHeight="44.0" prefWidth="71.0" styleClass="column-header-background" text="Четверг" textFill="WHITE" GridPane.columnIndex="3">
+                                            <font>
+                                                <Font name="Arial" size="12.0" />
+                                            </font>
+                                        </Label>
+                                        <Label alignment="CENTER" prefHeight="44.0" prefWidth="71.0" styleClass="column-header-background" text="Пятница" textFill="WHITE" GridPane.columnIndex="4">
+                                            <font>
+                                                <Font name="Arial" size="12.0" />
+                                            </font>
+                                        </Label>
+                                        <Label alignment="CENTER" prefHeight="44.0" prefWidth="71.0" styleClass="column-header-background" text="Суббота" textFill="WHITE" GridPane.columnIndex="5">
+                                            <font>
+                                                <Font name="Arial" size="12.0" />
+                                            </font>
+                                        </Label>
+                                        <Label alignment="CENTER" prefHeight="44.0" prefWidth="71.0" styleClass="column-header-background" text="Воскресенье" textFill="WHITE" GridPane.columnIndex="6">
+                                            <font>
+                                                <Font name="Arial" size="12.0" />
+                                            </font>
+                                        </Label>
+                                    </children>
+                                </GridPane>
+                                <Label layoutX="39.0" layoutY="33.0" prefHeight="56.0" prefWidth="495.0" styleClass="weather-gradient" text="Календарь">
+                                    <font>
+                                        <Font name="Arial" size="55.0" />
+                                    </font>
+                                </Label>
+                           </children>
+                        </AnchorPane>
+                      </children>
+
+                  </AnchorPane>
                   <AnchorPane fx:id="personalPanel" prefHeight="806.0" prefWidth="350.0" styleClass="bg-white" visible="false" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
       
                             <children>
@@ -627,7 +1161,7 @@
             <left>
                 <AnchorPane prefHeight="436.0" prefWidth="262.0" styleClass="left-form" BorderPane.alignment="CENTER">
                     <children>
-                        <Button fx:id="calendar" cache="true" layoutX="35.0" layoutY="317.0" mnemonicParsing="false" onAction="#calendar_Pressed" prefHeight="35.0" prefWidth="190.0" styleClass="button-menu" text="Календарь" textAlignment="RIGHT">
+                        <Button fx:id="calendarButton" cache="true" layoutX="35.0" layoutY="317.0" mnemonicParsing="false" onAction="#calendarButton_Pressed" prefHeight="35.0" prefWidth="190.0" styleClass="button-menu" text="Календарь" textAlignment="RIGHT">
                             <font>
                                 <Font size="14.0" />
                             </font>

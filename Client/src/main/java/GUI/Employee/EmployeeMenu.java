@@ -1,5 +1,11 @@
 package GUI.Employee;
 
+import Enums.Months;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
+import java.util.Calendar;
 import Enums.RequestType;
 import Enums.ResponseStatus;
 import Enums.Roles;
@@ -9,21 +15,17 @@ import Models.TCP.Response;
 import Utilities.ClientSocket;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -32,300 +34,119 @@ import java.net.URL;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class EmployeeMenu implements Initializable {
 
     @FXML
-    private Button add;
-
+    private Button add, analitics, calendarButton, clear, delete, edit, editDB, exit,
+            personalAccount, Change, buttonSignUp, firstPage, saveBtn;
     @FXML
-    private Button analitics;
-
-    @FXML
-    private Button calendar;
-
-    @FXML
-    private Button clear;
-
-    @FXML
-    private TableColumn<Day, String> columnCountry;
-
+    private TableColumn<Day, String> columnCountry, columnTown, columnWeatherName;
     @FXML
     private TableColumn<Day, Date> columnDate;
-
-
     @FXML
-    private TableColumn<Day, Integer> columnHumidity1;
-
+    private TableColumn<Day, Integer> columnHumidity1, columnHumidity2, columnPressure1, columnPressure2;
     @FXML
-    private TableColumn<Day, Integer> columnHumidity2;
-
+    private TableColumn<Day, Double> columnPrecipitation1, columnPrecipitation2,
+            columnTemperature1, columnTemperature2,
+            columnWind1, columnWind2;
     @FXML
-    private TableColumn<Day, Double> columnPrecipitation1;
-
+    private AnchorPane todayWeatherPanel, pane1, panel0, panel1, panel2, panel3, personalPanel;
     @FXML
-    private TableColumn<Day, Double> columnPrecipitation2;
-
-    @FXML
-    private TableColumn<Day, Integer> columnPressure1;
-
-    @FXML
-    private TableColumn<Day, Integer> columnPressure2;
-
-    @FXML
-    private TableColumn<Day, Double> columnTemperature1;
-
-    @FXML
-    private TableColumn<Day, Double> columnTemperature2;
-
-    @FXML
-    private TableColumn<Day, String> columnTown;
-
-    @FXML
-    private TableColumn<Day, String> columnWeatherName;
-
-    @FXML
-    private TableColumn<Day, Double> columnWind1;
-
-    @FXML
-    private TableColumn<Day, Double> columnWind2;
-
-
-    @FXML
-    private AnchorPane todayWeatherPanel;
-
-    @FXML
-    private Button delete;
-
-    @FXML
-    private Button edit;
-
-    @FXML
-    private Button editDB;
-
-    @FXML
-    private Button exit;
-
-    @FXML
-    private Label labelCurrentDate;
-
-    @FXML
-    private Label labelError;
-
-    @FXML
-    private Label labelUser;
-
-    @FXML
-    private AnchorPane pane1;
-
-    @FXML
-    private AnchorPane panel1;
-
-    @FXML
-    private AnchorPane panel2;
-
-    @FXML
-    private AnchorPane panel3;
-
-    @FXML
-    private AnchorPane panel0;
-
-    @FXML
-    private AnchorPane personalPanel;
-
-    @FXML
-    private Button personalAccount;
-
+    private Label labelCurrentDate, labelError, labelUser, labelMessage, textC1, textC2,
+            textK1, textK2, textKMH1, textKMH2, textMM1, textMM2, textMS1, textMS2,
+            texthPa1, texthPa2, xHumidity1, xHumidity2, xPressure1, xPressure2,
+            xRain1, xRain2, xTemperatura1, xTemperatura2, xWeatherName, xWind1, xWind2;
     @FXML
     private TableView<Day> tableWeather;
-
     @FXML
-    private TextField textFieldCounty;
+    private TextField textFieldCounty, textFieldTown, textFieldWeather, textFieldSearch,
+            textFieldHumidity1, textFieldHumidity2, textFieldPrecipitation1, textFieldPrecipitation2,
+            textFieldPressure1, textFieldPressure2, textFieldTemperature1, textFieldTemperature2,
+            textFieldWind1, textFieldWind2, textfieldLogin, textfieldPhone;
+    @FXML
+    private PasswordField passwordfieldPassword, passwordfieldConfirmPassword;
 
     @FXML
     private DatePicker textFieldDate;
-
     @FXML
-    private TextField textFieldHumidity2;
-
+    private MenuButton region, regionFilter,monthMenuBtn,yearMenuBtn;
     @FXML
-    private TextField textFieldHumidity1;
-
+    private RadioButton C, K, hPa, km, m, mmHg;
     @FXML
-    private TextField textFieldPrecipitation1;
-
-    @FXML
-    private TextField textFieldPrecipitation2;
-
-    @FXML
-    private TextField textFieldPressure1;
-
-    @FXML
-    private TextField textFieldPressure2;
-
-    @FXML
-    private TextField textFieldSearch;
-
-    @FXML
-    private TextField textFieldTemperature1;
-
-    @FXML
-    private TextField textFieldTemperature2;
-
-    @FXML
-    private TextField textFieldTown;
-
-    @FXML
-    private TextField textFieldWeather;
-
-    @FXML
-    private TextField textFieldWind1;
-
-    @FXML
-    private TextField textFieldWind2;
-
-    @FXML
-    private Label textC1;
-
-    @FXML
-    private Label textC2;
-
-
-    @FXML
-    private Label textK1;
-
-    @FXML
-    private Label textK2;
-
-    @FXML
-    private Label textKMH1;
-
-    @FXML
-    private Label textKMH2;
-
-    @FXML
-    private Label textMM1;
-
-    @FXML
-    private Label textMM2;
-
-    @FXML
-    private Label textMS1;
-
-    @FXML
-    private Label textMS2;
-    @FXML
-    private Label texthPa1;
-
-    @FXML
-    private Label texthPa2;
-
-    @FXML
-    private Label xHumidity1;
-
-    @FXML
-    private Label xHumidity2;
-
-    @FXML
-    private Label xPressure1;
-
-    @FXML
-    private Label xPressure2;
-
-    @FXML
-    private Label xRain1;
-
-    @FXML
-    private Label xRain2;
-
-    @FXML
-    private Label xTemperatura1;
-
-    @FXML
-    private Label xTemperatura2;
-
-    @FXML
-    private Label xWeatherName;
-
-    @FXML
-    private Label xWind1;
-
-    @FXML
-    private Label xWind2;
-    @FXML
-    private MenuButton region;
-
-    @FXML
-    private MenuButton regionFilter;
-
-
-    @FXML
-    private Button Change;
-    @FXML
-    private RadioButton C;
-
-    @FXML
-    private RadioButton K;
-
-    @FXML
-    private ToggleGroup Pressure;
-
-    @FXML
-    private ToggleGroup Speed;
-
-    @FXML
-    private ToggleGroup Temperature;
-
-
-    @FXML
-    private Button buttonSignUp;
-
-    @FXML
-    private RadioButton hPa;
-
-    @FXML
-    private RadioButton km;
-
-    @FXML
-    private Label labelMessage;
-
-    @FXML
-    private RadioButton m;
-
-    @FXML
-    private RadioButton mmHg;
-
-    @FXML
-    private PasswordField passwordfieldConfirmPassword;
-
-    @FXML
-    private PasswordField passwordfieldPassword;
-
+    private ToggleGroup Pressure, Speed, Temperature;
     @FXML
     private CheckBox sendWeather;
-
-
     @FXML
-    private TextField textfieldLogin;
-
+    private GridPane daysGrid;
     @FXML
-    private TextField textfieldPhone;
+    private TextArea textArea;
     @FXML
-    private Button firstPage;
+    private Label chosenDateLabel;
 
+    private final Calendar calendar = Calendar.getInstance();
+    private boolean monthChosen = false;
+    private boolean yearChosen = false;
+    private final int BUTTONS_IN_A_ROW = 7;
+    private final int LINES = 6;
+
+    private Button[] dayButtons;
+    private final CalendarData calendarData = new CalendarData();
 
     private User currentUser;
     private List<Location> regions;
-    LocalDate today;
-    Day todayWeather;
-    private Location currentRegion;
+    private LocalDate today;
+    private Day todayWeather;
     private String selectedTown;
     private ObservableList<Day> tableDays;
     private Day rowDay;
+
+
+    public String validateAndFormatString(String input) {
+        labelError.setVisible(true);
+        // Убираем лишние пробелы
+        input = input.trim();
+        // Проверка на длину строки
+        if (input.length() <= 3) {
+            labelError.setText("Строка должна быть длиннее 3 символов");
+            return "error";
+        }
+
+        // Проверка на наличие цифр
+        if (!input.matches("[a-zA-Zа-яА-ЯёЁ]+")) {
+            labelError.setText("Строка должна содержать только буквы");
+            return "error"; // Возвращаем "error" для указания ошибки
+        }
+        // Преобразуем первую букву в верхний регистр, остальные — в нижний
+        return input.substring(0, 1).toUpperCase() + input.substring(1).toLowerCase();
+    }
+
+    public double validateAndParseDouble(String input){
+        labelError.setVisible(true);
+        if (!input.matches("-?\\d+(\\.\\d+)?")) {
+            labelError.setText("Число должно содержать только цифры");
+            return -1000;
+        }
+        double value = Double.parseDouble(input);
+        if (value < -1000||value>1000) {
+            labelError.setText("Слишком маленькое или большое значение");
+            return -1000;
+        }
+        return value;
+    }
+
+    public int validateAndParseInt(String input) {
+        labelError.setVisible(true);
+        // Проверка на наличие букв (ни русских, ни английских)
+        if (!input.matches("-?\\d+(\\.\\d+)?")) {
+            labelError.setText("Число должно содержать только цифры");
+            return -1000; // Возвращаем ошибочный код
+        }
+        return Integer.parseInt(input.trim()); // Убираем пробелы и пытаемся распарсить
+        // Проверка на положительное значение
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -384,7 +205,6 @@ public class EmployeeMenu implements Initializable {
                         cellData.getValue().getLocation().getCountry() : ""));
 
 
-        initRegion();
         initMenuButtons();
 
 
@@ -392,14 +212,16 @@ public class EmployeeMenu implements Initializable {
 
 
     public void switchForm(ActionEvent event) {
-        if (event.getSource() == calendar) {
+        if (event.getSource() == calendarButton) {
+            labelError.setVisible(false);
             panel1.setVisible(true);
             panel2.setVisible(false);
             panel3.setVisible(false);
             panel0.setVisible(false);
             personalPanel.setVisible(false);
-            calendar.getStyleClass().add("button-menu:hover");
+            calendarButton.getStyleClass().add("button-menu:hover");
         } else if (event.getSource() == editDB) {
+            labelError.setVisible(false);
             panel1.setVisible(false);
             panel2.setVisible(true);
             panel3.setVisible(false);
@@ -407,6 +229,7 @@ public class EmployeeMenu implements Initializable {
             personalPanel.setVisible(false);
             editDB.getStyleClass().add("button-menu:hover");
         } else if (event.getSource() == analitics) {
+            labelError.setVisible(false);
             panel1.setVisible(false);
             panel2.setVisible(false);
             panel3.setVisible(true);
@@ -418,6 +241,7 @@ public class EmployeeMenu implements Initializable {
                 personalPanel.setVisible(true); // Делаем видимой
             } else {
                 personalPanel.setVisible(false); // Иначе скрываем
+                labelMessage.setVisible(false);
             }
 
         } else if (event.getSource() == firstPage) {
@@ -474,9 +298,34 @@ public class EmployeeMenu implements Initializable {
             // Создаем пункт меню для regionFilter
             MenuItem menuItem1 = new MenuItem(displayText);
             menuItem1.getStyleClass().add("menu-item");
-            menuItem1.setOnAction(event -> handleRegionSelection(displayText, temp.getTown()));
+            menuItem1.setOnAction(event -> handleFilterRegions(displayText, temp.getTown()));
             regionFilter.getItems().add(menuItem1);
         }
+    }
+
+    public void updateMenuButtons(){
+
+        // Получаем список городов из tableDays
+        List<String> currentCities = tableDays.stream()
+                .map(day -> day.getLocation().getTown()) // Извлекаем названия городов
+                .distinct() // Убираем дубликаты
+                .collect(Collectors.toList());
+
+        // Получаем список городов из regions
+        List<String> regionCities = regions.stream()
+                .map(region -> region.getTown()) // Извлекаем названия городов из regions
+                .distinct()
+                .collect(Collectors.toList());
+
+        // Если списки городов отличаются
+        if (!currentCities.equals(regionCities)) {
+            regions.clear();
+            initRegion(); // Перезагружаем список регионов с сервера
+            region.getItems().clear();
+            regionFilter.getItems().clear(); // Очищаем текущее меню
+            initMenuButtons(); // Перезагружаем кнопки меню
+        }
+
     }
 
     // Метод для обработки выбора региона
@@ -488,12 +337,22 @@ public class EmployeeMenu implements Initializable {
         selectedTown = town;
 
         initUserWeather();
-        initWeatherFields();
-        todayWeatherPanel.setVisible(true);
+
     }
 
+    public void handleFilterRegions(String displayText, String town) {
+        regionFilter.setText(displayText);
+        FilteredList<Day> filteredRegions = new FilteredList<>(tableDays, e -> true);
+        // Устанавливаем предикат для фильтрации
+        filteredRegions.setPredicate(predicateDay -> {
+            // Фильтруем по названию города
+            return predicateDay.getLocation().getTown().equals(town);
+        });
+        SortedList <Day> sortData=filteredRegions.sorted();
+        sortData.comparatorProperty().bind(tableWeather.comparatorProperty());
+        tableWeather.setItems(sortData);
+    }
 
-    //редактирование БД
     public void initWeatherTable() {
 
         Request requestModel = new Request();
@@ -526,11 +385,10 @@ public class EmployeeMenu implements Initializable {
         }
     }
 
-
     @FXML
     void editDB_Pressed(ActionEvent event) {
-
         initWeatherTable();
+        updateMenuButtons();
         switchForm(event);
     }
 
@@ -562,22 +420,47 @@ public class EmployeeMenu implements Initializable {
 
     public void insertDay() {
         if (prepareToEdit()) {
-            double t = Double.parseDouble(textFieldTemperature1.getText());
-            int pr = Integer.parseInt(textFieldPressure1.getText());
-            int h = Integer.parseInt(textFieldHumidity1.getText());
-            double r = Double.parseDouble(textFieldPrecipitation1.getText());
-            double w = Double.parseDouble(textFieldWind1.getText());
+            double t = validateAndParseDouble(textFieldTemperature1.getText());
+            int pr = validateAndParseInt(textFieldPressure1.getText());
+            int h = validateAndParseInt(textFieldHumidity1.getText());
+            double r = validateAndParseDouble(textFieldPrecipitation1.getText());
+            double w = validateAndParseDouble(textFieldWind1.getText());
+            if(t==-1000||pr==-1000||h==-1000||r==-1000||w==-1000)
+                return;
+            if(t>60||t<-40||pr<600||pr>850||r>100||r<0||w>50||w<0||h<0||h>100)
+            {
+                labelError.setVisible(true);
+                labelError.setText("Некорректные данные");
+                return;
+            }
             WeatherParameters dayW = new WeatherParameters(t, pr, h, r, w);
 
-            t = Double.parseDouble(textFieldTemperature2.getText());
-            pr = Integer.parseInt(textFieldPressure2.getText());
-            h = Integer.parseInt(textFieldHumidity2.getText());
-            r = Double.parseDouble(textFieldPrecipitation2.getText());
-            w = Double.parseDouble(textFieldWind2.getText());
+            t = validateAndParseDouble(textFieldTemperature2.getText());
+            pr = validateAndParseInt(textFieldPressure2.getText());
+            h = validateAndParseInt(textFieldHumidity2.getText());
+            r = validateAndParseDouble(textFieldPrecipitation2.getText());
+            w = validateAndParseDouble(textFieldWind2.getText());
+            if(t==-1000||pr==-1000||h==-1000||r==-1000||w==-1000)
+                return;
+            if(t>60||t<-40||pr<600||pr>850||r>100||r<0||w>50||w<0||h<0||h>100)
+            {
+                labelError.setVisible(true);
+                labelError.setText("Некорректные данные");
+                return;
+            }
             WeatherParameters nightW = new WeatherParameters(t, pr, h, r, w);
 
-            WeatherName insertW = new WeatherName(textFieldWeather.getText());
-            Location insertL = new Location(textFieldTown.getText(), textFieldCounty.getText());
+            String temp =validateAndFormatString(textFieldWeather.getText());
+            if(temp.equals("error"))
+                return;
+            WeatherName insertW = new WeatherName(temp);
+            temp =validateAndFormatString(textFieldTown.getText());
+            if(temp.equals("error"))
+                return;
+            String temp1 =validateAndFormatString(textFieldCounty.getText());
+            if(temp1.equals("error"))
+                return;
+            Location insertL = new Location(temp,temp1);
 
             LocalDate selectedDate = textFieldDate.getValue();
             java.sql.Date sqlDate = java.sql.Date.valueOf(selectedDate);
@@ -598,7 +481,7 @@ public class EmployeeMenu implements Initializable {
                     labelError.setVisible(true);
                     tableDays.add(insertDay);
 
-
+                    updateMenuButtons();
                 } else {
                     labelError.setText(responseModel.getResponseMessage());
                     labelError.setVisible(true);
@@ -637,22 +520,50 @@ public class EmployeeMenu implements Initializable {
 
     public void updateDay() {
         if (prepareToEdit()) {
-        double t = Double.parseDouble(textFieldTemperature1.getText());
-        int pr = Integer.parseInt(textFieldPressure1.getText());
-        int h = Integer.parseInt(textFieldHumidity1.getText());
-        double r = Double.parseDouble(textFieldPrecipitation1.getText());
-        double w = Double.parseDouble(textFieldWind1.getText());
+        double t = validateAndParseDouble(textFieldTemperature1.getText());
+        int pr = validateAndParseInt(textFieldPressure1.getText());
+        int h = validateAndParseInt(textFieldHumidity1.getText());
+        double r = validateAndParseDouble(textFieldPrecipitation1.getText());
+        double w = validateAndParseDouble(textFieldWind1.getText());
+            if(t==-1000||pr==-1000||h==-1000||r==-1000||w==-1000)
+                return;
+            if(t>60||t<-40||pr<600||pr>850||r>100||r<0||w>50||w<0||h<0||h>100)
+            {
+                labelError.setVisible(true);
+                labelError.setText("Некорректные данные");
+                return;
+            }
         WeatherParameters dayW = new WeatherParameters(rowDay.getDayWeather().getId(),t, pr, h, r, w);
 
-        t = Double.parseDouble(textFieldTemperature2.getText());
-        pr = Integer.parseInt(textFieldPressure2.getText());
-        h = Integer.parseInt(textFieldHumidity2.getText());
-        r = Double.parseDouble(textFieldPrecipitation2.getText());
-        w = Double.parseDouble(textFieldWind2.getText());
+        t = validateAndParseDouble(textFieldTemperature2.getText());
+        pr = validateAndParseInt(textFieldPressure2.getText());
+        h = validateAndParseInt(textFieldHumidity2.getText());
+        r = validateAndParseDouble(textFieldPrecipitation2.getText());
+        w = validateAndParseDouble(textFieldWind2.getText());
+            if(t==-1000||pr==-1000||h==-1000||r==-1000||w==-1000)
+                return;
+            if(t>60||t<-40||pr<600||pr>850||r>100||r<0||w>50||w<0||h<0||h>100)
+            {
+                labelError.setVisible(true);
+                labelError.setText("Некорректные данные");
+                return;
+            }
+
         WeatherParameters nightW = new WeatherParameters(rowDay.getNightWeather().getId(),t, pr, h, r, w);
 
-        WeatherName insertW = new WeatherName(rowDay.getWeatherName().getId(),textFieldWeather.getText());
-        Location insertL = new Location(rowDay.getLocation().getId(),textFieldTown.getText(), textFieldCounty.getText());
+            String temp =validateAndFormatString(textFieldWeather.getText());
+            if(temp.equals("error"))
+                return;
+            WeatherName insertW = new WeatherName(rowDay.getWeatherName().getId(),temp);
+            temp =validateAndFormatString(textFieldTown.getText());
+            if(temp.equals("error"))
+                return;
+            String temp1 =validateAndFormatString(textFieldCounty.getText());
+            if(temp1.equals("error"))
+                return;
+
+        Location insertL = new Location(rowDay.getLocation().getId(),temp,temp1);
+
 
         LocalDate selectedDate = textFieldDate.getValue();
         java.sql.Date sqlDate = java.sql.Date.valueOf(selectedDate);
@@ -687,7 +598,7 @@ public class EmployeeMenu implements Initializable {
                     labelError.setVisible(true);
                 }
 
-
+                updateMenuButtons();
             } else {
                 labelError.setText(responseModel.getResponseMessage());
                 labelError.setVisible(true);
@@ -703,8 +614,7 @@ public class EmployeeMenu implements Initializable {
         }
     }
 
-    public void deleteDay()
-    {
+    public void deleteDay()    {
         Day deletedDay = rowDay;
 
         Request requestModel = new Request();
@@ -734,7 +644,7 @@ public class EmployeeMenu implements Initializable {
                     labelError.setVisible(true);
                 }
                 rowDay=null;
-
+                updateMenuButtons();
             } else {
                 labelError.setText(responseModel.getResponseMessage());
                 labelError.setVisible(true);
@@ -746,16 +656,31 @@ public class EmployeeMenu implements Initializable {
     }
 
 
-    @FXML
-    void calendar_Pressed(ActionEvent event) {
-        switchForm(event);
-    }
+   public void searchDays(){
+       FilteredList<Day> filter = new FilteredList<>(tableDays, e->true);
+       textFieldSearch.textProperty().addListener((observable, oldValue,newValue)->{
+           filter.setPredicate(predicateDay->{
+               if(newValue.isEmpty())
+                   return true;
+               String keySearch=newValue.toLowerCase();
+               if(predicateDay.getDate().toString().contains(keySearch))
+                   return true;
+               else if(predicateDay.getLocation().getTown().toLowerCase().contains(keySearch))
+                   return true;
+               else if(predicateDay.getLocation().getCountry().toLowerCase().contains(keySearch))
+                   return true;
+               else if(predicateDay.getWeatherName().getName().toLowerCase().contains(keySearch))
+                   return true;
 
-    @FXML
-    void analitics_Pressed(ActionEvent event) {
-        switchForm(event);
-    }
 
+               return false;
+           });
+
+       });
+       SortedList <Day> sortData=filter.sorted();
+       sortData.comparatorProperty().bind(tableWeather.comparatorProperty());
+       tableWeather.setItems(sortData);
+   }
 
     @FXML
     void delete_Pressed(ActionEvent event) {
@@ -830,9 +755,9 @@ public class EmployeeMenu implements Initializable {
 
     @FXML
     void firstPage_Pressed(ActionEvent event) {
-
+        updateMenuButtons();
         switchForm(event);
-        initRegion(); //надо ли
+
     }
 
     public void initUserWeather() {
@@ -854,9 +779,13 @@ public class EmployeeMenu implements Initializable {
             if (responseModel.getResponseStatus() == ResponseStatus.OK) {
 
                 todayWeather = new Gson().fromJson(responseModel.getResponseData(), Day.class);
+                initWeatherFields();
+                todayWeatherPanel.setVisible(true);
+                labelError.setVisible(false);
             } else {
-                labelMessage.setText(responseModel.getResponseMessage());
-                labelMessage.setVisible(true);
+                todayWeatherPanel.setVisible(false);
+                labelError.setText(responseModel.getResponseMessage());
+                labelError.setVisible(true);
             }
         } catch (IOException e) {
             labelError.setText("Ошибка связи с сервером.");
@@ -1077,5 +1006,130 @@ public class EmployeeMenu implements Initializable {
         switchForm(event);
     }
 
+    @FXML
+    void calendarButton_Pressed(ActionEvent event) {
+        switchForm(event);
+    }
+
+    @FXML
+    void analitics_Pressed(ActionEvent event) {
+        switchForm(event);
+    }
+
+
+    @FXML
+    void monthPressed(ActionEvent event) {
+        MenuItem btn = (MenuItem) event.getSource();
+        monthMenuBtn.setText(btn.getText()); // Устанавливаем текст выбранного месяца на кнопку
+        try {
+
+            String monthName = btn.getText();
+            Months selectedMonth = Months.valueOf(monthName);
+            calendar.set(Calendar.MONTH, selectedMonth.getMonthNumber() - 1); // Устанавливаем выбранный месяц (учитываем, что в Calendar месяцы начинаются с 0)
+            monthChosen = true;
+            updateCalendar(); // Обновляем календарь
+        } catch (NumberFormatException e) {
+            showError("Неверный формат месяца: " + btn.getText());
+        }
+    }
+
+    /**
+     * Метод вызывается при нажатии на кнопку "Сохранить"
+     */
+    @FXML
+    void savePressed(ActionEvent event) {
+        calendarData.setData(calendar, textArea.getText()); // Сохраняем данные для выбранной даты
+    }
+
+    /**
+     * Метод вызывается при выборе года
+     */
+    @FXML
+    void yearPressed(ActionEvent event) {
+        MenuItem btn = (MenuItem) event.getSource();
+        yearMenuBtn.setText(btn.getText()); // Устанавливаем текст выбранного года на кнопку
+        try {
+            int year = Integer.parseInt(btn.getText());
+            calendar.set(Calendar.YEAR, year); // Устанавливаем выбранный год
+            yearChosen = true;
+            updateCalendar(); // Обновляем календарь
+        } catch (NumberFormatException e) {
+            showError("Неверный формат года: " + btn.getText());
+        }
+    }
+
+    /**
+     * Обновляет календарь, если выбраны месяц и год
+     */
+    private void updateCalendar() {
+        if (!monthChosen || !yearChosen) return; // Проверяем, что месяц и год выбраны
+
+        int daysInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH); // Определяем количество дней в месяце
+        createDaysButtons(daysInMonth); // Создаем кнопки для дней месяца
+    }
+
+    /**
+     * Создает кнопки для отображения дней в календаре
+     * @param daysInMonth количество дней в текущем месяце
+     */
+    private void createDaysButtons(int daysInMonth) {
+        calendar.set(Calendar.DAY_OF_MONTH, 1); // Устанавливаем первый день месяца
+        calendar.setFirstDayOfWeek(Calendar.MONDAY); // Устанавливаем первый день недели как понедельник
+        int firstDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - Calendar.MONDAY; // Определяем день недели первого числа месяца
+
+        if (firstDayOfWeek < 0) {
+            firstDayOfWeek += 7; // Если день недели смещен из-за понедельника как первого дня недели
+        }
+
+        dayButtons = new Button[daysInMonth + firstDayOfWeek]; // Размер массива включает "пустые" ячейки для смещения
+        daysGrid.getChildren().clear(); // Очищаем сетку перед созданием кнопок
+
+        for (int i = 0; i < dayButtons.length; i++) {
+            if (i < firstDayOfWeek) {
+                // Добавляем пустые ячейки для смещения (дни до первого числа месяца)
+                daysGrid.add(new Label(""), i % BUTTONS_IN_A_ROW, i / BUTTONS_IN_A_ROW);
+            } else {
+                int day = i - firstDayOfWeek + 1; // Рассчитываем текущий день
+                Button dayButton = new Button(String.valueOf(day)); // Создаем кнопку с текстом для текущего дня
+                dayButton.setPrefSize(daysGrid.getPrefWidth() / BUTTONS_IN_A_ROW, daysGrid.getPrefHeight() / LINES); // Устанавливаем размер кнопки
+                dayButton.setOnAction(this::dayPressed); // Устанавливаем обработчик события для кнопки
+                daysGrid.add(dayButton, i % BUTTONS_IN_A_ROW, i / BUTTONS_IN_A_ROW); // Добавляем кнопку в сетку
+                dayButtons[i] = dayButton; // Сохраняем кнопку в массив
+            }
+        }
+    }
+
+    /**
+     * Обрабатывает нажатие на кнопку дня
+     * @param event событие нажатия
+     */
+    private void dayPressed(ActionEvent event) {
+        Button dayBtn = (Button) event.getSource(); // Получаем кнопку, вызвавшую событие
+        try {
+            int day = Integer.parseInt(dayBtn.getText()); // Определяем выбранный день
+            calendar.set(Calendar.DAY_OF_MONTH, day); // Устанавливаем день в календаре
+            textArea.setText(calendarData.getData(calendar)); // Отображаем данные для выбранной даты
+
+            int dayInMonth = calendar.get(Calendar.DAY_OF_MONTH);
+            int month = calendar.get(Calendar.MONTH) + 1; // Преобразуем месяц из 0-базового формата
+            int year = calendar.get(Calendar.YEAR);
+
+            // Обновляем текст метки с выбранной датой
+            chosenDateLabel.setText(String.format("Выбранная дата: %d/%d/%d", dayInMonth, month, year));
+        } catch (NumberFormatException e) {
+            showError("Неверное значение дня.");
+        }
+    }
+
+    /**
+     * Отображает сообщение об ошибке
+     * @param message текст сообщения
+     */
+    private void showError(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR); // Создаем окно с типом "Ошибка"
+        alert.setTitle("Ошибка");
+        alert.setContentText(message);
+        alert.showAndWait(); // Показываем сообщение пользователю
+    }
 
 }
