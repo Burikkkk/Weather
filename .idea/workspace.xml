@@ -4,14 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="212a1867-1f9e-474c-b72f-37fb6a2419f7" name="Changes" comment="Employee crud">
+    <list default="true" id="212a1867-1f9e-474c-b72f-37fb6a2419f7" name="Changes" comment="Employee Calendar">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/main/java/Enums/RequestType.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/java/Enums/RequestType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/main/java/GUI/Employee/CalendarController.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Client/src/main/java/GUI/Employee/EmployeeMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/java/GUI/Employee/EmployeeMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/java/GUI/ForgotPassword.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/java/GUI/ForgotPassword.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/java/GUI/Login.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/java/GUI/Login.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Client/src/main/java/GUI/Register.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/java/GUI/Register.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Client/src/main/resources/css/menu.css" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/resources/css/menu.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Client/src/main/resources/fxml/Employee_menu.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/resources/fxml/Employee_menu.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/main/resources/fxml/Register.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/resources/fxml/Register.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/Enums/RequestType.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/java/Enums/RequestType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/Utilities/ClientThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/java/Utilities/ClientThread.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -183,7 +186,8 @@
       <workItem from="1733481763278" duration="9039000" />
       <workItem from="1733508096902" duration="422000" />
       <workItem from="1733508848153" duration="22038000" />
-      <workItem from="1733568588530" duration="31052000" />
+      <workItem from="1733568588530" duration="31101000" />
+      <workItem from="1733655378738" duration="32063000" />
     </task>
     <task id="LOCAL-00001" summary="User">
       <option name="closed" value="true" />
@@ -233,7 +237,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733583325855</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Employee Calendar">
+      <option name="closed" value="true" />
+      <created>1733620279768</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1733620279768</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -245,7 +257,8 @@
     <MESSAGE value="Tests" />
     <MESSAGE value="Employee menu" />
     <MESSAGE value="Employee crud" />
-    <option name="LAST_COMMIT_MESSAGE" value="Employee crud" />
+    <MESSAGE value="Employee Calendar" />
+    <option name="LAST_COMMIT_MESSAGE" value="Employee Calendar" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -294,6 +307,15 @@
             <option name="WATCH_EXIT" value="false" />
           </properties>
           <option name="timeStamp" value="32" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/Client/src/main/java/GUI/Employee/EmployeeMenu.java</url>
+          <line>1433</line>
+          <properties class="GUI.Employee.EmployeeMenu" method="savePressed">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="46" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

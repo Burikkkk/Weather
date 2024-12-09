@@ -10,9 +10,11 @@ public enum RequestType {
     GET_CONNECTED_USERS,
     LOGOUT,
     GET_ALL_DAYS,
-    GET_REGION,
+    GET_REGIONS,
     TODAY_WEATHER,
     ADD_DAY,
     UPDATE_DAY,
-    DELETE_DAY
+    DELETE_DAY,
+    GET_DASHBOARD,
+    ADD_USER_DASHBOARD
 }

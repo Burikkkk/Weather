@@ -93,8 +93,8 @@ public class Register {
         settings.setPhone(tempPhone);
 
         String temperature = ((RadioButton) Temperature.getSelectedToggle()).getText();
-        if(temperature.equals("K"))
-            settings.setTemperature(temperature);
+        if(temperature.equals("°F"))
+            settings.setTemperature("F");
         else
             settings.setTemperature("C");
         String pressure = ((RadioButton) Pressure.getSelectedToggle()).getText();

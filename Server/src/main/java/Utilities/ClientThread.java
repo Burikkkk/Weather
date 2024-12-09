@@ -37,6 +37,7 @@ public class ClientThread implements Runnable {
     private final LocationService locationService = new LocationService(connection);
     private final WeatherNameService weatherNameService = new WeatherNameService(connection);
     private final WeatherParametersService weatherParametersService = new WeatherParametersService(connection);
+    private final DashboardService dashboardService = new DashboardService(connection);
 
     public ClientThread(Socket clientSocket) throws IOException, SQLException {
         this.clientSocket = clientSocket;
@@ -69,7 +70,7 @@ public class ClientThread implements Runnable {
                     loginUsersId.removeIf(id -> id == currentId);
                 }
             }
-            if(clientSocket != null && !clientSocket.isClosed())
+            if (clientSocket != null && !clientSocket.isClosed())
                 closeResources();
         }
     }
@@ -97,7 +98,7 @@ public class ClientThread implements Runnable {
                     return handleUpdateAllUsers(request);
                 case GET_CONNECTED_USERS:
                     return handleGetConnectedUsers();
-                case GET_REGION:
+                case GET_REGIONS:
                     return handleGetRegions();
                 case GET_ALL_DAYS:
                     return handleGetAllDays();
@@ -111,6 +112,10 @@ public class ClientThread implements Runnable {
                     return handleUpdateDay(request);
                 case DELETE_DAY:
                     return handleDeleteDay(request);
+                case GET_DASHBOARD:
+                    return handleGetDashboard(request);
+                case ADD_USER_DASHBOARD:
+                    return handleAddUserDashboard(request);
                 default:
                     return new Response(ResponseStatus.ERROR, "Неизвестный тип запроса", "");
             }
@@ -120,11 +125,11 @@ public class ClientThread implements Runnable {
         }
     }
 
-    private Response handleRegister(Request request) throws SQLException{
+    private Response handleRegister(Request request) throws SQLException {
         User user = gson.fromJson(request.getRequestMessage(), User.class);
 
         if (personalSettingsService.getAllEntities().stream().noneMatch(x -> x.getPhone().equalsIgnoreCase(user.getPersonalSettings().getPhone()))) {
-        // Проверка, существует ли уже пользователь с таким логином
+            // Проверка, существует ли уже пользователь с таким логином
             if (userService.getAllEntities().stream().noneMatch(x -> x.getLogin().equalsIgnoreCase(user.getLogin()))) {
                 // Сохранение PersonalSettings пользователя
                 PersonalSettings personalSettings = user.getPersonalSettings();
@@ -139,7 +144,7 @@ public class ClientThread implements Runnable {
             } else {
                 return new Response(ResponseStatus.ERROR, "Такой пользователь уже существует", "");
             }
-        }else
+        } else
             return new Response(ResponseStatus.ERROR, "Пользователь с таким телефоном уже существует", "");
     }
 
@@ -153,7 +158,7 @@ public class ClientThread implements Runnable {
 
 
         if (existingUser != null) {
-            currentId= existingUser.getId();
+            currentId = existingUser.getId();
             synchronized (loginUsersId) {
                 if (!loginUsersId.contains(existingUser.getId())) {
                     loginUsersId.add(existingUser.getId());
@@ -179,7 +184,6 @@ public class ClientThread implements Runnable {
             // Проверяем, существует ли пользователь в списке
             if (loginUsersId.contains(requestUser.getId())) {
                 loginUsersId.removeIf(id -> id == currentId);
-
 
 
                 return new Response(ResponseStatus.OK, "Выход успешен", gson.toJson(requestUser));
@@ -219,11 +223,11 @@ public class ClientThread implements Runnable {
 
         // Получаем текущего пользователя из базы данных
         Optional<User> existingUser = userService.getEntityById(updatedUser.getId());
-        if (existingUser==null) {
+        if (existingUser == null) {
             return new Response(ResponseStatus.ERROR, "Пользователь не найден", "");
         }
         Optional<PersonalSettings> existingSettings = personalSettingsService.getEntityById(updatedUser.getPersonalSettings().getId());
-        if (existingSettings==null) {
+        if (existingSettings == null) {
             return new Response(ResponseStatus.ERROR, "Настройки не найдены", "");
         }
         // Проверка на уникальность логина
@@ -271,7 +275,8 @@ public class ClientThread implements Runnable {
 
     private Response handleUpdateAllUsers(Request request) throws SQLException {
         // Преобразуем сообщение запроса в список пользователей
-        Type userListType = new TypeToken<List<User>>() {}.getType();
+        Type userListType = new TypeToken<List<User>>() {
+        }.getType();
         List<User> updatedUsers = gson.fromJson(request.getRequestMessage(), userListType);
 
         if (updatedUsers == null || updatedUsers.isEmpty()) {
@@ -287,8 +292,8 @@ public class ClientThread implements Runnable {
                     .orElse(null);
 
 
-                existingUser.setRole(updatedUser.getRole());
-                userService.updateEntity(existingUser); // Сохраняем изменения в базе данных
+            existingUser.setRole(updatedUser.getRole());
+            userService.updateEntity(existingUser); // Сохраняем изменения в базе данных
 
         }
 
@@ -375,13 +380,13 @@ public class ClientThread implements Runnable {
         }
     }
 
-    private Response handleAddDay(Request request) throws SQLException{
+    private Response handleAddDay(Request request) throws SQLException {
         Day insertDay = gson.fromJson(request.getRequestMessage(), Day.class); //без id
 
         if (dayService.getAllEntities().stream().noneMatch
                 (x -> x.getDate().equals(insertDay.getDate()) && x.getLocation().getTown().equals(insertDay.getLocation().getTown()))) {
 
-            Location loc=new Location(insertDay.getLocation().getTown(),insertDay.getLocation().getCountry());
+            Location loc = new Location(insertDay.getLocation().getTown(), insertDay.getLocation().getCountry());
             // Проверяем, есть ли такой город в списке
             Optional<Location> existingLocation = locationService.getAllEntities().stream()
                     .filter(x -> x.getTown().equals(loc.getTown()))
@@ -395,7 +400,7 @@ public class ClientThread implements Runnable {
                 locationService.createEntity(loc);
             }
 
-            WeatherName weatherN=new WeatherName(insertDay.getWeatherName().getName());
+            WeatherName weatherN = new WeatherName(insertDay.getWeatherName().getName());
             // Проверяем, есть ли такой город в списке
             Optional<WeatherName> existingW = weatherNameService.getAllEntities().stream()
                     .filter(x -> x.getName().equals(weatherN.getName()))
@@ -408,12 +413,12 @@ public class ClientThread implements Runnable {
                 // Если не найден, создаем новый объект
                 weatherNameService.createEntity(weatherN);
             }
-            WeatherParameters dayP=new WeatherParameters(insertDay.getDayWeather().getTemperature(),
+            WeatherParameters dayP = new WeatherParameters(insertDay.getDayWeather().getTemperature(),
                     insertDay.getDayWeather().getPressure(),
                     insertDay.getDayWeather().getHumidity(),
                     insertDay.getDayWeather().getPrecipitation(),
                     insertDay.getDayWeather().getWindSpeed());
-            WeatherParameters nightP=new WeatherParameters(insertDay.getNightWeather().getTemperature(),
+            WeatherParameters nightP = new WeatherParameters(insertDay.getNightWeather().getTemperature(),
                     insertDay.getNightWeather().getPressure(),
                     insertDay.getNightWeather().getHumidity(),
                     insertDay.getNightWeather().getPrecipitation(),
@@ -423,12 +428,12 @@ public class ClientThread implements Runnable {
             weatherParametersService.createEntity(nightP);
 
 
-            Day finalDay=new Day(insertDay.getDate(),dayP,nightP,weatherN,loc);
+            Day finalDay = new Day(insertDay.getDate(), dayP, nightP, weatherN, loc);
 
             dayService.createEntity(finalDay);
-                return new Response(ResponseStatus.OK, "Добавление данных прошло успешно", gson.toJson(finalDay));
+            return new Response(ResponseStatus.OK, "Добавление данных прошло успешно", gson.toJson(finalDay));
 
-        }else
+        } else
             return new Response(ResponseStatus.ERROR, "На этот день погода уже установлена", "");
     }
 
@@ -499,6 +504,64 @@ public class ClientThread implements Runnable {
         weatherParametersService.deleteEntity(deletedDay.getDayWeather());
         weatherParametersService.deleteEntity(deletedDay.getNightWeather());
         return new Response(ResponseStatus.OK, "Данные успешно удалены", "");
+    }
+
+    private Response handleGetDashboard(Request request) throws SQLException {
+        User user = gson.fromJson(request.getRequestMessage(), User.class);
+
+        Dashboard existingDashboard = dashboardService.getAllEntities().stream()
+                .filter(x -> x.getUser().getId() == user.getId())
+                .max(Comparator.comparing(Dashboard::getId))
+                .orElse(null);
+
+        if (existingDashboard != null) {
+            return new Response(ResponseStatus.OK, "Данные найдены", gson.toJson(existingDashboard));
+        } else {
+            return new Response(ResponseStatus.ERROR, "Данные не найдены", null);
+        }
+    }
+
+    private Response handleAddUserDashboard(Request request) throws SQLException {
+        Dashboard current = gson.fromJson(request.getRequestMessage(), Dashboard.class);
+        if (current == null) {
+            return new Response(ResponseStatus.ERROR, "Данные не получены", "");
+        }
+        Dashboard existingDashboard = dashboardService.getAllEntities().stream()
+                .filter(x -> x.getUser().getId() == current.getUser().getId() &&
+                        x.getStartDate().getDate().equals(current.getStartDate().getDate()) &&
+                        x.getStartDate().getLocation().equals(current.getStartDate().getLocation()) &&
+                        x.getEndDate().getDate().equals(current.getEndDate().getDate()))
+
+                .findAny()
+                .orElse(null);
+
+        if (existingDashboard == null) {
+
+            Day endDay= new Day();
+            endDay.setDate(current.getEndDate().getDate());
+            endDay.setLocation(current.getEndDate().getLocation());
+            Optional<Day> matchingDay = dayService.getAllEntities().stream()
+                    .filter(day -> day.getDate().equals(endDay.getDate())
+                            && day.getLocation().getTown().equals(endDay.getLocation().getTown()))
+                    .findFirst();
+
+            if (matchingDay.isPresent()) {
+
+                endDay.setId(matchingDay.get().getId());
+                endDay.setDayWeather(matchingDay.get().getDayWeather());
+                endDay.setNightWeather(matchingDay.get().getNightWeather());
+                endDay.setWeatherName(matchingDay.get().getWeatherName());
+            } else{
+                return new Response(ResponseStatus.ERROR, "Ошибка сохранения", "");
+            }
+
+
+            current.setEndDate(endDay);
+            dashboardService.createEntity(current);
+            return new Response(ResponseStatus.OK, "Данные сохранены", "");
+        } else
+            return new Response(ResponseStatus.ERROR, "Данные уже сохранены", "");
+
     }
 
     private void closeResources() {

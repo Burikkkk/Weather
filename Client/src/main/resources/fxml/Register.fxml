@@ -69,7 +69,7 @@
                         <Font size="14.0" />
                      </font>
                   </RadioButton>
-                  <RadioButton fx:id="K" layoutX="121.0" layoutY="119.0" mnemonicParsing="false" styleClass="secondary-text" text="K" toggleGroup="$Temperature">
+                  <RadioButton fx:id="F" layoutX="121.0" layoutY="119.0" mnemonicParsing="false" styleClass="secondary-text" text="°F" toggleGroup="$Temperature">
                       <font>
                         <Font size="14.0" />
                      </font>

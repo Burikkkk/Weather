@@ -83,6 +83,14 @@
     -fx-cursor:hand;
 }
 
+.btn:hover{
+    -fx-background-color: #fcda74;
+    -fx-background-radius: 8px;
+    -fx-text-fill: #00244c;
+    -fx-font-size: 14px;
+    -fx-cursor:hand;
+}
+
 
 .button-menu{
     -fx-background-color: #004797;
@@ -204,15 +212,29 @@
     -fx-text-fill: #00244c;
 
 }
+
+.menu-item-date {
+    -fx-font-size: 14px;
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #00244c;
+    -fx-pref-width: 100px;
+    -fx-pref-height: 25px;
+}
+
+.menu-item-date:hover {
+    -fx-background-color: #0167d9;
+    -fx-text-fill: #00244c;
+
+}
+
 .context-menu .label {
     -fx-text-fill: inherit; /* Наследует цвет из родительского узла */
 }
 
 .grid-pane {
-    -fx-padding: 3;          /* Внутренние отступы вокруг содержимого */
     -fx-hgap: 3;            /* Горизонтальный интервал между столбцами */
     -fx-vgap: 3;            /* Вертикальный интервал между строками */
-    -fx-background-color: linear-gradient(to top, #c8e1ff, #2481de);
+    -fx-background-color:  #c8e1ff;
     -fx-border-color: #00244c; /* Цвет рамки */
     -fx-border-width: 1;      /* Толщина рамки */
     -fx-border-radius: 3;     /* Скругление углов рамки */
@@ -224,7 +246,7 @@
     -fx-text-fill: #ffffff;
 }
 .grid-pane-header {
-    -fx-padding: 3;          /* Внутренние отступы вокруг содержимого */
+    -fx-padding: 1;          /* Внутренние отступы вокруг содержимого */
     -fx-hgap: 3;            /* Горизонтальный интервал между столбцами */
     -fx-vgap: 3;            /* Вертикальный интервал между строками */
     -fx-background-color: linear-gradient(to top, #2481de, #024787);
@@ -240,14 +262,21 @@
 
 /* Стиль для всех ячеек (например, Label или TextField) внутри GridPane */
 .grid-pane .cell {
-    -fx-font-size: 14px;       /* Размер шрифта */
+    -fx-font-size: 12px;       /* Размер шрифта */
     -fx-font-family: "Arial"; /* Шрифт */
     -fx-text-fill: #ffffff;    /* Цвет текста */
     -fx-alignment: center;     /* Выравнивание текста в центре */
-    -fx-padding: 5;            /* Внутренние отступы ячеек */
+
 }
 
-.grid-pane:hover {
+.grid-pane-item{
+    -fx-background-color: linear-gradient(to top, #61adfb, #1a87eb);
+    -fx-text-fill: #00244c;
+    -fx-font-size: 12px;       /* Размер шрифта */
+
+}
+
+.grid-pane-item:hover {
     -fx-background-color: #64aeff;
     -fx-text-fill: #00244c;
 
@@ -261,4 +290,19 @@
 
 
 
+.temperature-chart .chart-series-line.chart-day-temperature {
+    -fx-stroke: #f9da55; /* Цвет линии для дневной температуры */
+    -fx-stroke-width: 2px; /* Толщина линии */
+    -fx-fill: rgba(249, 233, 164, 0.3); /* Цвет заливки для дневной температуры */
+}
+
+.temperature-chart .chart-series-line.chart-night-temperature {
+    -fx-stroke: #3271d2; /* Цвет линии для ночной температуры */
+    -fx-stroke-width: 2px; /* Толщина линии */
+    -fx-fill: rgba(50, 113, 210, 0.3); /* Цвет заливки для ночной температуры */
+}
+
+.temperature-chart{
+    -fx-background-color: #ffffff;
+}
 

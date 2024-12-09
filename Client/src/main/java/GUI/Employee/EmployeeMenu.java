@@ -1,10 +1,18 @@
 package GUI.Employee;
 
 import Enums.Months;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.chart.AreaChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import Enums.RequestType;
 import Enums.ResponseStatus;
@@ -41,7 +49,7 @@ public class EmployeeMenu implements Initializable {
 
     @FXML
     private Button add, analitics, calendarButton, clear, delete, edit, editDB, exit,
-            personalAccount, Change, buttonSignUp, firstPage, saveBtn;
+            personalAccount, Change, buttonSignUp, firstPage, save;
     @FXML
     private TableColumn<Day, String> columnCountry, columnTown, columnWeatherName;
     @FXML
@@ -53,12 +61,15 @@ public class EmployeeMenu implements Initializable {
             columnTemperature1, columnTemperature2,
             columnWind1, columnWind2;
     @FXML
-    private AnchorPane todayWeatherPanel, pane1, panel0, panel1, panel2, panel3, personalPanel;
+    private AnchorPane todayWeatherPanel, pane1, panel0, panel1, panel2, panel3, personalPanel, todayWeatherPanel2;
     @FXML
     private Label labelCurrentDate, labelError, labelUser, labelMessage, textC1, textC2,
-            textK1, textK2, textKMH1, textKMH2, textMM1, textMM2, textMS1, textMS2,
+            textF1, textF2, textKMH1, textKMH2, textMM1, textMM2, textMS1, textMS2,
             texthPa1, texthPa2, xHumidity1, xHumidity2, xPressure1, xPressure2,
-            xRain1, xRain2, xTemperatura1, xTemperatura2, xWeatherName, xWind1, xWind2;
+            xRain1, xRain2, xTemperatura1, xTemperatura2, xWeatherName, xWind1, xWind2,
+            textC3, textC4, textF3, textF4, textKMH3, textKMH4, textMM3, textMM4, textMS3, textMS4,
+            texthPa3, texthPa4, xHumidity3, xHumidity4, xPressure3, xPressure4,
+            xRain3, xRain4, xTemperatura3, xTemperatura4, xWeatherName2, xWind3, xWind4, labelCalendarDate;
     @FXML
     private TableView<Day> tableWeather;
     @FXML
@@ -72,15 +83,19 @@ public class EmployeeMenu implements Initializable {
     @FXML
     private DatePicker textFieldDate;
     @FXML
-    private MenuButton region, regionFilter,monthMenuBtn,yearMenuBtn;
+    private MenuButton region, regionFilter, regionCalendar,monthMenuBtn,yearMenuBtn;
     @FXML
-    private RadioButton C, K, hPa, km, m, mmHg;
+    private RadioButton C, F, hPa, km, m, mmHg;
     @FXML
     private ToggleGroup Pressure, Speed, Temperature;
+    @FXML
+    private ToggleButton threeDays, week, monthPeriod;
     @FXML
     private CheckBox sendWeather;
     @FXML
     private GridPane daysGrid;
+    @FXML
+    private AreaChart<String, Number> temperatureChart;
     @FXML
     private TextArea textArea;
     @FXML
@@ -89,8 +104,10 @@ public class EmployeeMenu implements Initializable {
     private final Calendar calendar = Calendar.getInstance();
     private boolean monthChosen = false;
     private boolean yearChosen = false;
+    private boolean regionChosen = false;
     private final int BUTTONS_IN_A_ROW = 7;
     private final int LINES = 6;
+    private int currentChartDays=0;
 
     private Button[] dayButtons;
     private final CalendarData calendarData = new CalendarData();
@@ -99,7 +116,10 @@ public class EmployeeMenu implements Initializable {
     private List<Location> regions;
     private LocalDate today;
     private Day todayWeather;
+    private Day calendarWeather;
     private String selectedTown;
+    private String selectedTownCalendar;
+    private LocalDate calendarDate;
     private ObservableList<Day> tableDays;
     private Day rowDay;
 
@@ -206,6 +226,7 @@ public class EmployeeMenu implements Initializable {
 
 
         initMenuButtons();
+        initWeatherTable();
 
 
     }
@@ -238,6 +259,7 @@ public class EmployeeMenu implements Initializable {
             analitics.getStyleClass().add("button-menu:hover");
         } else if (event.getSource() == personalAccount) {
             if (!personalPanel.isVisible()) {
+                //initPersonalAccount();
                 personalPanel.setVisible(true); // Делаем видимой
             } else {
                 personalPanel.setVisible(false); // Иначе скрываем
@@ -256,7 +278,7 @@ public class EmployeeMenu implements Initializable {
 
     public void initRegion() {
         Request requestModel = new Request();
-        requestModel.setRequestType(RequestType.GET_REGION);
+        requestModel.setRequestType(RequestType.GET_REGIONS);
 
         try {
 
@@ -300,6 +322,12 @@ public class EmployeeMenu implements Initializable {
             menuItem1.getStyleClass().add("menu-item");
             menuItem1.setOnAction(event -> handleFilterRegions(displayText, temp.getTown()));
             regionFilter.getItems().add(menuItem1);
+
+            // Создаем пункт меню для regionCalendar
+            MenuItem menuItem2 = new MenuItem(displayText);
+            menuItem2.getStyleClass().add("menu-item");
+            menuItem2.setOnAction(event -> handleRegionCalendarSelection(displayText, temp.getTown()));
+            regionCalendar.getItems().add(menuItem2);
         }
     }
 
@@ -323,6 +351,7 @@ public class EmployeeMenu implements Initializable {
             initRegion(); // Перезагружаем список регионов с сервера
             region.getItems().clear();
             regionFilter.getItems().clear(); // Очищаем текущее меню
+            regionCalendar.getItems().clear();
             initMenuButtons(); // Перезагружаем кнопки меню
         }
 
@@ -351,6 +380,16 @@ public class EmployeeMenu implements Initializable {
         SortedList <Day> sortData=filteredRegions.sorted();
         sortData.comparatorProperty().bind(tableWeather.comparatorProperty());
         tableWeather.setItems(sortData);
+    }
+
+    public void handleRegionCalendarSelection(String displayText, String town){
+        // Устанавливаем текст кнопки region
+        regionCalendar.setText(displayText);
+        // Сохраняем выбранный город в переменной
+        selectedTownCalendar = town;
+        regionChosen = true;
+        updateCalendar();
+
     }
 
     public void initWeatherTable() {
@@ -387,8 +426,6 @@ public class EmployeeMenu implements Initializable {
 
     @FXML
     void editDB_Pressed(ActionEvent event) {
-        initWeatherTable();
-        updateMenuButtons();
         switchForm(event);
     }
 
@@ -795,13 +832,13 @@ public class EmployeeMenu implements Initializable {
 
     public void initWeatherFields() {
         xWeatherName.setText(todayWeather.getWeatherName().getName());
-        if (currentUser.getPersonalSettings().getTemperature().equals("K")) {
-            double x = todayWeather.getDayWeather().getTemperature() + 273.15;
+        if (currentUser.getPersonalSettings().getTemperature().equals("F")) {
+            double x = todayWeather.getDayWeather().getTemperature()*9/5+32;
             xTemperatura1.setText(String.valueOf(x));
-            x = todayWeather.getNightWeather().getTemperature() + 273.15;
+            x = todayWeather.getNightWeather().getTemperature() *9/5+32;
             xTemperatura2.setText(String.valueOf(x));
-            textK1.setVisible(true);
-            textK2.setVisible(true);
+            textF1.setVisible(true);
+            textF2.setVisible(true);
             textC1.setVisible(false);
             textC2.setVisible(false);
         } else {
@@ -809,8 +846,8 @@ public class EmployeeMenu implements Initializable {
             xTemperatura2.setText(todayWeather.getNightWeather().getTemperature().toString());
             textC1.setVisible(true);
             textC2.setVisible(true);
-            textK1.setVisible(false);
-            textK2.setVisible(false);
+            textF1.setVisible(false);
+            textF2.setVisible(false);
         }
         if (currentUser.getPersonalSettings().getPressure().equals("гПа")) {
             double x = todayWeather.getDayWeather().getPressure() * 1.33322;
@@ -856,7 +893,7 @@ public class EmployeeMenu implements Initializable {
 
     //для настроек пользователя
 
-    public void updateUser(User currentUser) {
+    public void updateUser() {
         if (!passwordfieldPassword.getText().equals(passwordfieldConfirmPassword.getText())) {
             labelMessage.setText("Пароли не совпадают");
             labelMessage.setVisible(true);
@@ -907,8 +944,8 @@ public class EmployeeMenu implements Initializable {
         settings.setPhone(tempPhone);
 
         String temperature = ((RadioButton) Temperature.getSelectedToggle()).getText();
-        if (temperature.equals("K"))
-            settings.setTemperature(temperature);
+        if (temperature.equals("°F"))
+            settings.setTemperature("F");
         else
             settings.setTemperature("C");
         String pressure = ((RadioButton) Pressure.getSelectedToggle()).getText();
@@ -937,8 +974,13 @@ public class EmployeeMenu implements Initializable {
                     //заново проинициализировать поля
                     labelUser.setText(currentUser.getLogin());
                     if (selectedTown != null) {
-                        initUserWeather();
                         initWeatherFields();
+
+                    }
+                    if (selectedTownCalendar != null) {
+                        initWeatherFields2();
+                        updateCalendar();
+                        updateChart();
                     }
 
                 } else {
@@ -955,7 +997,7 @@ public class EmployeeMenu implements Initializable {
         }
     }
 
-    public void initPersonalAccount(User currentUser) {
+    public void initPersonalAccount() {
         if (currentUser != null) {
             // Инициализируем логин
             textfieldLogin.setText(currentUser.getLogin());
@@ -968,8 +1010,8 @@ public class EmployeeMenu implements Initializable {
                 textfieldPhone.setText(settings.getPhone());
 
                 // Температура
-                if ("K".equals(settings.getTemperature())) {
-                    K.setSelected(true);
+                if ("F".equals(settings.getTemperature())) {
+                    F.setSelected(true);
                 } else {
                     C.setSelected(true);
                 }
@@ -997,18 +1039,19 @@ public class EmployeeMenu implements Initializable {
 
     @FXML
     void change_Pressed(ActionEvent actionEvent) {
-        updateUser(currentUser);
+        updateUser();
     }
 
     @FXML
     void personalAccount_Pressed(ActionEvent event) {
-        initPersonalAccount(currentUser);
+        initPersonalAccount();
         switchForm(event);
     }
 
     @FXML
     void calendarButton_Pressed(ActionEvent event) {
         switchForm(event);
+        initChart();
     }
 
     @FXML
@@ -1029,21 +1072,14 @@ public class EmployeeMenu implements Initializable {
             monthChosen = true;
             updateCalendar(); // Обновляем календарь
         } catch (NumberFormatException e) {
-            showError("Неверный формат месяца: " + btn.getText());
+            labelError.setText("Неверный формат месяца: " + btn.getText());
+            labelError.setVisible(true);
         }
     }
 
-    /**
-     * Метод вызывается при нажатии на кнопку "Сохранить"
-     */
-    @FXML
-    void savePressed(ActionEvent event) {
-        calendarData.setData(calendar, textArea.getText()); // Сохраняем данные для выбранной даты
-    }
 
-    /**
-     * Метод вызывается при выборе года
-     */
+
+
     @FXML
     void yearPressed(ActionEvent event) {
         MenuItem btn = (MenuItem) event.getSource();
@@ -1054,24 +1090,18 @@ public class EmployeeMenu implements Initializable {
             yearChosen = true;
             updateCalendar(); // Обновляем календарь
         } catch (NumberFormatException e) {
-            showError("Неверный формат года: " + btn.getText());
+            labelError.setText("Неверный формат года: " + btn.getText());
+            labelError.setVisible(true);
         }
     }
 
-    /**
-     * Обновляет календарь, если выбраны месяц и год
-     */
     private void updateCalendar() {
-        if (!monthChosen || !yearChosen) return; // Проверяем, что месяц и год выбраны
+        if (!monthChosen || !yearChosen|| !regionChosen) return; // Проверяем, что месяц и год выбраны
 
         int daysInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH); // Определяем количество дней в месяце
         createDaysButtons(daysInMonth); // Создаем кнопки для дней месяца
     }
 
-    /**
-     * Создает кнопки для отображения дней в календаре
-     * @param daysInMonth количество дней в текущем месяце
-     */
     private void createDaysButtons(int daysInMonth) {
         calendar.set(Calendar.DAY_OF_MONTH, 1); // Устанавливаем первый день месяца
         calendar.setFirstDayOfWeek(Calendar.MONDAY); // Устанавливаем первый день недели как понедельник
@@ -1090,46 +1120,349 @@ public class EmployeeMenu implements Initializable {
                 daysGrid.add(new Label(""), i % BUTTONS_IN_A_ROW, i / BUTTONS_IN_A_ROW);
             } else {
                 int day = i - firstDayOfWeek + 1; // Рассчитываем текущий день
-                Button dayButton = new Button(String.valueOf(day)); // Создаем кнопку с текстом для текущего дня
+                //Button dayButton = new Button(String.valueOf(day)); // Создаем кнопку с текстом для текущего дня
+
+                Button dayButton = new Button(); // Создаем кнопку
+
+                // Устанавливаем текст для кнопки
+                String buttonText = setButtonCalendarText(day, calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.YEAR));
+                dayButton.setText(buttonText);
+
                 dayButton.setPrefSize(daysGrid.getPrefWidth() / BUTTONS_IN_A_ROW, daysGrid.getPrefHeight() / LINES); // Устанавливаем размер кнопки
                 dayButton.setOnAction(this::dayPressed); // Устанавливаем обработчик события для кнопки
                 daysGrid.add(dayButton, i % BUTTONS_IN_A_ROW, i / BUTTONS_IN_A_ROW); // Добавляем кнопку в сетку
+                dayButton.getStyleClass().add("grid-pane-item");
                 dayButtons[i] = dayButton; // Сохраняем кнопку в массив
             }
         }
+
+
     }
 
-    /**
-     * Обрабатывает нажатие на кнопку дня
-     * @param event событие нажатия
-     */
+    public String setButtonCalendarText(int day, int month, int year) {
+        for (Day tableDay : tableDays) { // tableDays — это ваш ObservableList<Day>
+            // Преобразуем `Date` в `LocalDate`
+            LocalDate localDate = tableDay.getDate().toLocalDate();
+            String dayTemp, nightTemp;
+            // Сравнение даты и города
+            if (localDate.equals(LocalDate.of(year, month, day)) &&
+                    tableDay.getLocation().getTown().equals(selectedTownCalendar)) {
+
+                if(currentUser.getPersonalSettings().getTemperature().equals("F")){
+                    double temp=tableDay.getDayWeather().getTemperature()*9/5+32;
+                    dayTemp =  Double.toString(temp);
+                    temp=tableDay.getNightWeather().getTemperature()*9/5+32;
+                    nightTemp =  Double.toString(temp);
+                }
+                else{
+                    dayTemp = tableDay.getDayWeather().getTemperature().toString();
+                    nightTemp = tableDay.getNightWeather().getTemperature().toString();
+                }
+
+                // Возвращаем текст кнопки
+                return day + "\n" + dayTemp + "/" + nightTemp;
+            }
+        }
+
+        // Если данных нет, возвращаем просто день
+        return String.valueOf(day);
+    }
+
+
     private void dayPressed(ActionEvent event) {
         Button dayBtn = (Button) event.getSource(); // Получаем кнопку, вызвавшую событие
         try {
-            int day = Integer.parseInt(dayBtn.getText()); // Определяем выбранный день
+            // Разделяем текст на строку и получаем первый элемент, который будет числом дня
+            String[] buttonText = dayBtn.getText().split("\n");
+            int day = Integer.parseInt(buttonText[0].trim()); // Определяем выбранный день
+
             calendar.set(Calendar.DAY_OF_MONTH, day); // Устанавливаем день в календаре
-            textArea.setText(calendarData.getData(calendar)); // Отображаем данные для выбранной даты
 
             int dayInMonth = calendar.get(Calendar.DAY_OF_MONTH);
             int month = calendar.get(Calendar.MONTH) + 1; // Преобразуем месяц из 0-базового формата
             int year = calendar.get(Calendar.YEAR);
+            calendarDate = LocalDate.of(year, month, dayInMonth); // Устанавливаем дату
 
-            // Обновляем текст метки с выбранной датой
-            chosenDateLabel.setText(String.format("Выбранная дата: %d/%d/%d", dayInMonth, month, year));
+            initSelectedWeather();
+
         } catch (NumberFormatException e) {
-            showError("Неверное значение дня.");
+            labelError.setText("Неверное значение дня.");
+            labelError.setVisible(true);
         }
     }
 
-    /**
-     * Отображает сообщение об ошибке
-     * @param message текст сообщения
-     */
-    private void showError(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR); // Создаем окно с типом "Ошибка"
-        alert.setTitle("Ошибка");
-        alert.setContentText(message);
-        alert.showAndWait(); // Показываем сообщение пользователю
+    public void initSelectedWeather() {
+        Location tempL = new Location();
+        Day tempDay = new Day();
+        tempL.setTown(selectedTownCalendar);
+        tempDay.setLocation(tempL);
+        tempDay.setDate(java.sql.Date.valueOf(calendarDate));
+        Request requestModel = new Request();
+        requestModel.setRequestMessage(new Gson().toJson(tempDay));
+        requestModel.setRequestType(RequestType.TODAY_WEATHER);
+        try {
+            ClientSocket.getInstance().getOut().println(new Gson().toJson(requestModel));
+            ClientSocket.getInstance().getOut().flush();
+
+            String answer = ClientSocket.getInstance().getInStream().readLine();
+            Response responseModel = new Gson().fromJson(answer, Response.class);
+            if (responseModel.getResponseStatus() == ResponseStatus.OK) {
+
+                calendarWeather = new Gson().fromJson(responseModel.getResponseData(), Day.class);
+                initWeatherFields2();
+                todayWeatherPanel2.setVisible(true);
+                labelError.setVisible(false);
+            } else {
+                todayWeatherPanel2.setVisible(false);
+                labelError.setText(responseModel.getResponseMessage());
+                labelError.setVisible(true);
+            }
+        } catch (IOException e) {
+            labelError.setText("Ошибка связи с сервером.");
+            labelError.setVisible(true);
+        }
+    }
+
+    public void initWeatherFields2() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", new Locale("ru"));
+        String formattedDate = calendarDate.format(formatter);
+        labelCalendarDate.setText(formattedDate);
+        xWeatherName2.setText(calendarWeather.getWeatherName().getName());
+        if (currentUser.getPersonalSettings().getTemperature().equals("F")) {
+            double x = calendarWeather.getDayWeather().getTemperature() *9/5+32;
+            xTemperatura3.setText(String.valueOf(x));
+            x = calendarWeather.getNightWeather().getTemperature() *9/5+32;
+            xTemperatura4.setText(String.valueOf(x));
+            textF3.setVisible(true);
+            textF4.setVisible(true);
+            textC3.setVisible(false);
+            textC4.setVisible(false);
+        } else {
+            xTemperatura3.setText(calendarWeather.getDayWeather().getTemperature().toString());
+            xTemperatura4.setText(calendarWeather.getNightWeather().getTemperature().toString());
+            textC3.setVisible(true);
+            textC4.setVisible(true);
+            textF3.setVisible(false);
+            textF4.setVisible(false);
+        }
+        if (currentUser.getPersonalSettings().getPressure().equals("гПа")) {
+            double x = calendarWeather.getDayWeather().getPressure() * 1.33322;
+            xPressure3.setText(String.format("%.2f", x));
+            x = calendarWeather.getNightWeather().getPressure() * 1.33322;
+            xPressure4.setText(String.format("%.2f", x));
+            texthPa3.setVisible(true);
+            texthPa4.setVisible(true);
+            textMM3.setVisible(false);
+            textMM4.setVisible(false);
+        } else {
+            xPressure3.setText(calendarWeather.getDayWeather().getPressure().toString());
+            xPressure4.setText(calendarWeather.getNightWeather().getPressure().toString());
+            textMM3.setVisible(true);
+            textMM4.setVisible(true);
+            texthPa3.setVisible(false);
+            texthPa4.setVisible(false);
+        }
+        if (currentUser.getPersonalSettings().getSpeed().equals("км/ч")) {
+            double x = calendarWeather.getDayWeather().getWindSpeed() * 3.6;
+            xWind3.setText(String.valueOf(x));
+            x = calendarWeather.getNightWeather().getWindSpeed() * 3.6;
+            xWind4.setText(String.valueOf(x));
+            textKMH3.setVisible(true);
+            textKMH4.setVisible(true);
+            textMS3.setVisible(false);
+            textMS4.setVisible(false);
+        } else {
+            xWind3.setText(calendarWeather.getDayWeather().getWindSpeed().toString());
+            xWind4.setText(calendarWeather.getNightWeather().getWindSpeed().toString());
+            textMS3.setVisible(true);
+            textMS4.setVisible(true);
+            textKMH3.setVisible(false);
+            textKMH4.setVisible(false);
+        }
+        xHumidity3.setText(calendarWeather.getDayWeather().getHumidity().toString());
+        xHumidity4.setText(calendarWeather.getNightWeather().getHumidity().toString());
+        xRain3.setText(calendarWeather.getDayWeather().getPrecipitation().toString());
+        xRain4.setText(calendarWeather.getNightWeather().getPrecipitation().toString());
+
+    }
+
+    @FXML
+    void threeDays_Pressed(ActionEvent event){
+        currentChartDays=2;
+        updateChart();
+    }
+    @FXML
+    void week_Pressed(ActionEvent event)    {
+        currentChartDays=6;
+        updateChart();
+    }
+    @FXML
+    void monthPeriod_Pressed(ActionEvent event){
+        currentChartDays=30;
+        updateChart();
+    }
+
+
+    public void updateChart() {
+        if (calendarDate != null && selectedTownCalendar != null) {
+            // Определяем начальную и конечную дату для графика
+            LocalDate chartDateStart = calendarDate;
+            LocalDate chartDateEnd = chartDateStart.plusDays(currentChartDays);
+
+            // Фильтрация данных по указанному периоду и городу
+            ObservableList<Day> filteredDays = tableDays.filtered(day -> {
+                // Преобразуем java.sql.Date в LocalDate
+                LocalDate dayDate = day.getDate().toLocalDate(); // преобразуем в LocalDate
+
+                // Фильтруем по диапазону дат и городу
+                return !dayDate.isBefore(chartDateStart) &&
+                        !dayDate.isAfter(chartDateEnd) &&
+                        day.getLocation().getTown().equals(selectedTownCalendar);
+            });
+
+            // Проверяем, есть ли данные для графика
+            if (filteredDays.isEmpty()) {
+                // Если данных нет, выводим ошибку
+                labelError.setVisible(true);
+                labelError.setText("Нет данных для выбранного периода и города.");
+                return;
+            }
+
+            // Создаем оси для графика
+            CategoryAxis xAxis = new CategoryAxis(); // Используем CategoryAxis для отображения дат
+            NumberAxis yAxis = new NumberAxis();
+            xAxis.setLabel("Дата");
+            yAxis.setLabel("Температура (°C)");
+
+            // Создаем график
+            AreaChart<String, Number> areaChart = new AreaChart<>(xAxis, yAxis);
+            areaChart.setTitle("Температура за период");
+
+            // Создаем серии для дневной и ночной температуры
+            XYChart.Series<String, Number> daySeries = new XYChart.Series<>();
+            daySeries.setName("Дневная температура");
+
+            XYChart.Series<String, Number> nightSeries = new XYChart.Series<>();
+            nightSeries.setName("Ночная температура");
+
+            if(currentUser.getPersonalSettings().getTemperature().equals("F"))
+            {
+                yAxis.setLabel("Температура, °F");
+
+                // Добавляем данные в серии
+                for (Day day : filteredDays) {
+                    LocalDate date = day.getDate().toLocalDate();
+                    double dayTemp = day.getDayWeather().getTemperature()*9/5+32;
+                    double nightTemp = day.getNightWeather().getTemperature()*9/5+32;
+
+                    // Преобразуем дату в строку
+                    String dateStr = date.format(DateTimeFormatter.ofPattern("d MMM yyyy"));
+
+                    // Добавляем точки на график
+                    daySeries.getData().add(new XYChart.Data<>(dateStr, dayTemp));
+                    nightSeries.getData().add(new XYChart.Data<>(dateStr, nightTemp));
+
+                }
+            }else {
+                yAxis.setLabel("Температура, °C");
+
+                // Добавляем данные в серии
+                for (Day day : filteredDays) {
+                    LocalDate date = day.getDate().toLocalDate();
+                    double dayTemp = day.getDayWeather().getTemperature();
+                    double nightTemp = day.getNightWeather().getTemperature();
+
+                    // Преобразуем дату в строку
+                    String dateStr = date.format(DateTimeFormatter.ofPattern("d MMM yyyy"));
+
+                    // Добавляем точки на график
+                    daySeries.getData().add(new XYChart.Data<>(dateStr, dayTemp));
+                    nightSeries.getData().add(new XYChart.Data<>(dateStr, nightTemp));
+
+                }
+            }
+
+            // Добавляем серии в график
+            temperatureChart.getData().clear(); // Убираем старые данные с графика
+            temperatureChart.getData().add(daySeries);  // Добавляем новые серии
+            temperatureChart.getData().add(nightSeries);
+
+            daySeries.getNode().getStyleClass().add("chart-day-temperature");
+            nightSeries.getNode().getStyleClass().add("chart-night-temperature");
+        }
+        else {
+            labelError.setVisible(true);
+            labelError.setText("Сначала выберите город и дату");
+            return;
+        }
+    }
+
+
+
+
+    public void initChart(){
+        Request requestModel = new Request();
+        requestModel.setRequestMessage(new Gson().toJson(currentUser));
+        requestModel.setRequestType(RequestType.GET_DASHBOARD);
+        ClientSocket.getInstance().getOut().println(new Gson().toJson(requestModel));
+        ClientSocket.getInstance().getOut().flush();
+        try {
+            String answer = ClientSocket.getInstance().getInStream().readLine();
+            Response responseModel = new Gson().fromJson(answer, Response.class);
+            if (responseModel.getResponseStatus() == ResponseStatus.OK) {
+                Dashboard initDashboard = new Gson().fromJson(responseModel.getResponseData(), Dashboard.class);
+                selectedTownCalendar=initDashboard.getStartDate().getLocation().getTown();
+                calendarDate = initDashboard.getStartDate().getDate().toLocalDate();
+                calendarWeather=initDashboard.getStartDate();
+                LocalDate startDate = initDashboard.getStartDate().getDate().toLocalDate();
+                LocalDate endDate = initDashboard.getEndDate().getDate().toLocalDate();
+                currentChartDays = (int) ChronoUnit.DAYS.between(startDate, endDate);
+                initSelectedWeather();
+                updateChart();
+
+            } else {
+                labelMessage.setText(responseModel.getResponseMessage());
+                labelMessage.setVisible(true);
+            }
+        } catch (IOException e) {
+            labelError.setText("Ошибка связи с сервером.");
+            labelError.setVisible(true);
+        }
+    }
+
+    @FXML
+    void savePressed(ActionEvent event) {
+        if(calendarWeather==null||currentChartDays==0)
+        {
+            labelError.setText("Сначала выберите день и период");
+            labelError.setVisible(true);
+        }
+        Dashboard newDashboard = new Dashboard();
+        newDashboard.setUser(currentUser);
+        newDashboard.setStartDate(calendarWeather);
+        LocalDate startLocalDate = calendarWeather.getDate().toLocalDate(); // Преобразование в LocalDate
+        LocalDate endLocalDate = startLocalDate.plusDays(currentChartDays); // Добавляем дни
+        java.sql.Date endDate = Date.valueOf(endLocalDate);
+        Day end=new Day();
+        end.setDate(endDate);
+        end.setLocation(newDashboard.getStartDate().getLocation());
+        newDashboard.setEndDate(end);
+        Request requestModel = new Request();
+        requestModel.setRequestMessage(new Gson().toJson(newDashboard));
+        requestModel.setRequestType(RequestType.ADD_USER_DASHBOARD);
+        ClientSocket.getInstance().getOut().println(new Gson().toJson(requestModel));
+        ClientSocket.getInstance().getOut().flush();
+        try {
+            String answer = ClientSocket.getInstance().getInStream().readLine();
+            Response responseModel = new Gson().fromJson(answer, Response.class);
+                labelMessage.setText(responseModel.getResponseMessage());
+                labelMessage.setVisible(true);
+
+        } catch (IOException e) {
+            labelError.setText("Ошибка связи с сервером.");
+            labelError.setVisible(true);
+        }
+
     }
 
 }
