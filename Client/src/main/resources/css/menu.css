@@ -153,6 +153,12 @@
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4),5,0,0,0);
 }
 
+.bg-white-not-transparent{
+    -fx-background-color: rgb(255, 255, 255);
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4),5,0,0,0);
+}
+
 .text-field{
     -fx-background-color:transparent;
     -fx-text-inner-color: #1560bc;
@@ -179,6 +185,7 @@
     -fx-background-color: linear-gradient(to top, #c8e1ff, #2481de);
     -fx-background-inset: 0 0 0 0;
     -fx-background-radius: 10px 10px 0px 0px;
+    -fx-font-size: 14px;
 }
 
 .table-view .column-header, table-view .filter{
@@ -196,7 +203,19 @@
     -fx-border-color: #1169ca;
     -fx-size: 40px;
     -fx-border-width: 0 1px 1px 0;
+    -fx-font-size: 14px;
 }
+
+.table-row{
+    -fx-background-color: rgba(48, 144, 255, 0.9);
+    -fx-text-fill: #ffffff;
+}
+
+/* Стили для ComboBox внутри TableView */
+.table-view .combo-box {
+    -fx-background-color: transparent;
+}
+
 
 
 .menu-item {

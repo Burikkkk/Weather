@@ -4,12 +4,26 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="212a1867-1f9e-474c-b72f-37fb6a2419f7" name="Changes" comment="patterns (пока все работает)">
+    <list default="true" id="212a1867-1f9e-474c-b72f-37fb6a2419f7" name="Changes" comment="final employee menu">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/java/Controller/User/CommonUserFunctions.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/java/Controller/User/EmployeeMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/java/Controller/User/EmployeeMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/resources/fxml/Employee_menu.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/resources/fxml/Employee_menu.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/resources/month_statistic.json" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/resources/month_statistic.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/main/java/Controller/Admin/AdminMenu.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/main/java/Controller/Admin/PersonalAccount.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/main/java/Controller/Admin/PersonalAccountAdmin.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/main/java/Controller/Admin/RoleControl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/main/java/Controller/Admin/Statistic.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/main/java/Controller/Admin/UserMenu.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/main/java/Controller/Entrance/Login.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/java/Controller/Entrance/Login.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/main/java/Enums/Roles.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/main/java/Service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/java/Service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/main/resources/css/menu.css" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/resources/css/menu.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/main/resources/fxml/Admin_menu.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/main/resources/fxml/Admin_statistic.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/main/resources/fxml/Calendar.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/main/resources/fxml/Personal_account.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/main/resources/fxml/Personal_account_admin.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/main/resources/fxml/Role_control.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/main/resources/fxml/User_menu.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/resources/fxml/User_menu.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/Enums/Roles.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,6 +49,9 @@
     &quot;assignee&quot;: &quot;Burikkkk&quot;
   }
 }</component>
+  <component name="GithubDefaultAccount">
+    <option name="defaultAccountId" value="9fa653a0-795d-4708-ac3c-5316c77dc0e3" />
+  </component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/Burikkkk/Weather.git&quot;,
@@ -61,6 +78,7 @@
     "Application.Client.executor": "Run",
     "Application.Client1.executor": "Run",
     "Application.Client2.executor": "Run",
+    "Application.Client3.executor": "Run",
     "Application.Server.executor": "Run",
     "Application.test.executor": "Run",
     "JUnit.DashboardDaoTest.executor": "Run",
@@ -93,7 +111,7 @@
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.19043238",
-    "settings.editor.selected.configurable": "preferences.JavaFX",
+    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
@@ -125,7 +143,7 @@
       <recent name="Models.Entities" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Client1">
+  <component name="RunManager" selected="Application.Client2">
     <configuration name="Client1" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="Client" />
       <module name="Client" />
@@ -134,6 +152,13 @@
       </method>
     </configuration>
     <configuration name="Client2" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="Client" />
+      <module name="Client" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Client3" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="Client" />
       <module name="Client" />
       <method v="2">
@@ -150,6 +175,7 @@
     <list>
       <item itemvalue="Application.Client1" />
       <item itemvalue="Application.Client2" />
+      <item itemvalue="Application.Client3" />
       <item itemvalue="Application.Server" />
     </list>
   </component>
@@ -186,6 +212,8 @@
       <workItem from="1733706941905" duration="121000" />
       <workItem from="1733739022758" duration="27463000" />
       <workItem from="1733816894235" duration="9329000" />
+      <workItem from="1733832566954" duration="769000" />
+      <workItem from="1733849639748" duration="15599000" />
     </task>
     <task id="LOCAL-00001" summary="User">
       <option name="closed" value="true" />
@@ -251,7 +279,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733706985491</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="final employee menu">
+      <option name="closed" value="true" />
+      <created>1733832633774</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1733832633774</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -265,7 +301,8 @@
     <MESSAGE value="Employee crud" />
     <MESSAGE value="Employee Calendar" />
     <MESSAGE value="Employee Calendar Chart" />
-    <option name="LAST_COMMIT_MESSAGE" value="Employee Calendar Chart" />
+    <MESSAGE value="final employee menu" />
+    <option name="LAST_COMMIT_MESSAGE" value="final employee menu" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

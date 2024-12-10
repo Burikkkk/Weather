@@ -1,25 +1,192 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="211.0" prefWidth="335.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.Admin.AdminMenu">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="847.0" prefWidth="1116.0" styleClass="bg-form" stylesheets="@../css/menu.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.User.AdminMenu">
     <children>
-        <Button fx:id="statistic" alignment="CENTER" cache="true" layoutX="45.0" layoutY="90.0" mnemonicParsing="false" onAction="#statistic_Pressed" prefHeight="30.0" prefWidth="245.0" text="Статистика подключений" textAlignment="CENTER">
-            <font>
-                <Font size="14.0" />
-            </font>
-        </Button>
-        <Button fx:id="personalAccount" alignment="CENTER" contentDisplay="CENTER" layoutX="45.0" layoutY="40.0" mnemonicParsing="false" onAction="#personalAccount_Pressed" prefHeight="30.0" prefWidth="245.0" text="Личный кабинет">
-            <font>
-                <Font size="14.0" />
-            </font>
-        </Button>
-      <Button fx:id="usersControl" alignment="CENTER" contentDisplay="CENTER" layoutX="45.0" layoutY="140.0" mnemonicParsing="false" onAction="#usersControl_Pressed" prefHeight="30.0" prefWidth="245.0" text="Управление пользователями">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Button>
+        <BorderPane prefHeight="847.0" prefWidth="1116.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <center>
+                <AnchorPane prefHeight="806.0" prefWidth="964.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <AnchorPane fx:id="statisticPanel" layoutX="10.0" layoutY="10.0" prefHeight="806.0" prefWidth="756.0" styleClass="bg-white" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                            <children>
+                                <TableView fx:id="statisticTable" layoutX="245.0" layoutY="139.0" prefHeight="637.0" prefWidth="734.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="120.0">
+                                    <columns>
+                                        <TableColumn fx:id="loginColumn1" prefWidth="372.0" text="Логин" />
+                                        <TableColumn fx:id="roleColumn1" minWidth="0.0" prefWidth="360.0" text="Роль" />
+                                    </columns>
+                                </TableView>
+                                <TextField fx:id="searchStatisticTextfield" layoutX="25.0" layoutY="68.0" onKeyTyped="#searchStatistic" prefHeight="30.0" prefWidth="303.0" promptText="Поиск" styleClass="btn">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                </TextField>
+                        <Button fx:id="update" layoutX="609.0" layoutY="68.0" mnemonicParsing="false" onAction="#update_Pressed" prefHeight="30.0" prefWidth="121.0" styleClass="btn" text="Обновить" />
+                        <Label layoutX="25.0" layoutY="14.0" styleClass="weather-gradient" text="Подключенные пользователи:">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="amount" alignment="CENTER" layoutX="305.0" layoutY="14.0" prefHeight="30.0" prefWidth="41.0" styleClass="weather-gradient" text="X" visible="false">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                            </children>
+
+                        </AnchorPane>
+                        <AnchorPane fx:id="rolesPanel" prefHeight="786.0" prefWidth="736.0" styleClass="bg-white" visible="false" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                            <children>
+                                <TableView fx:id="rolesTable" prefHeight="786.0" prefWidth="736.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="80.0">
+                                    <columns>
+                                        <TableColumn fx:id="loginColumn" prefWidth="177.0" text="Логин" />
+                              <TableColumn fx:id="phoneColumn" prefWidth="130.0" text="Телефон" />
+                                        <TableColumn fx:id="notificationsColumn" minWidth="0.0" prefWidth="70.0" text="Уведомления" />
+                                        <TableColumn fx:id="temperatureColumn" minWidth="0.0" prefWidth="70.0" text="Температура" />
+                                        <TableColumn fx:id="pressureColumn" minWidth="0.0" prefWidth="70.0" text="Давление" />
+                                        <TableColumn fx:id="speedColumn" minWidth="0.0" prefWidth="70.0" text="Скорость" />
+                                    </columns>
+                                </TableView>
+                                <TextField fx:id="searchRolesTextfield" layoutX="20.0" layoutY="25.0" onKeyTyped="#searchRoles" prefHeight="30.0" prefWidth="303.0" promptText="Поиск" styleClass="btn">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                </TextField>
+                        <Button fx:id="changeRole" layoutX="572.0" layoutY="28.0" mnemonicParsing="false" onAction="#changeRole_Pressed" prefHeight="30.0" prefWidth="159.0" styleClass="btn" text="Изменить роли" />
+                            </children>
+                        </AnchorPane>
+                    </children>
+                </AnchorPane>
+            </center>
+            <top>
+                <AnchorPane prefHeight="41.0" prefWidth="1220.0" styleClass="top-form" stylesheets="@../css/menu.css" BorderPane.alignment="CENTER">
+                    <children>
+                        <Button fx:id="exit" alignment="CENTER" contentDisplay="CENTER" layoutX="550.0" layoutY="5.0" mnemonicParsing="false" onAction="#exit_Pressed" prefHeight="30.0" prefWidth="118.0" styleClass="button-transparent" text="Выйти" underline="true" AnchorPane.rightAnchor="8.0">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="personalAccount" alignment="CENTER_RIGHT" contentDisplay="CENTER" layoutX="7.0" layoutY="5.0" mnemonicParsing="false" onAction="#personalAccount_Pressed" prefHeight="30.0" prefWidth="176.0" styleClass="button-transparent" text="Личный кабинет" underline="true" AnchorPane.leftAnchor="7.0">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </Button>
+                        <ImageView fitHeight="25.0" fitWidth="20.0" layoutX="14.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="10.0">
+                            <image>
+                                <Image url="@../images/person1.png" />
+                            </image>
+                        </ImageView>
+                        <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="985.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="8.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="8.0">
+                            <image>
+                                <Image url="@../images/exit1.png" />
+                            </image>
+                        </ImageView>
+
+                    </children>
+                    <BorderPane.margin>
+                        <Insets />
+                    </BorderPane.margin>
+                </AnchorPane>
+            </top>
+            <left>
+                <AnchorPane prefHeight="436.0" prefWidth="262.0" styleClass="left-form" BorderPane.alignment="CENTER">
+                    <children>
+                        <Button fx:id="loginStatisticBtn" cache="true" layoutX="47.0" layoutY="318.0" mnemonicParsing="false" onAction="#loginStatisticBtn_Pressed" prefHeight="35.0" prefWidth="250.0" styleClass="button-menu" text="Статистика подключений" textAlignment="RIGHT" AnchorPane.leftAnchor="46.0" AnchorPane.topAnchor="318.0">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="roleControlBtn" layoutX="48.0" layoutY="368.0" mnemonicParsing="false" onAction="#roleControlBtn_Pressed" prefHeight="35.0" prefWidth="250.0" styleClass="button-menu" text="Управление ролями" AnchorPane.leftAnchor="46.0" AnchorPane.topAnchor="368.0" />
+
+                        <Label layoutX="80.0" layoutY="245.0" styleClass="title-text" text="Добро пожаловать,">
+                            <font>
+                                <Font size="20.0" />
+                            </font>
+                        </Label>
+                        <Label fx:id="labelUser" alignment="CENTER" layoutX="40.0" layoutY="272.0" prefHeight="30.0" prefWidth="262.0" styleClass="title-text" text="admin">
+                            <font>
+                                <Font size="20.0" />
+                            </font>
+                        </Label>
+                        <ImageView fitHeight="150.0" fitWidth="173.0" layoutX="96.0" layoutY="71.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../images/user1.png" />
+                            </image>
+                        </ImageView>
+                        <Label fx:id="labelError" alignment="TOP_CENTER" layoutX="5.0" layoutY="626.0" prefHeight="119.0" prefWidth="262.0" styleClass="error-text" text="Ошибка" textFill="RED" visible="false" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </Label>
+                        <AnchorPane fx:id="personalPanel" layoutX="5.0" layoutY="14.0" prefHeight="406.0" prefWidth="332.0" styleClass="bg-white-not-transparent" visible="false" AnchorPane.bottomAnchor="386.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="10.0">
+
+
+                            <children>
+                                <PasswordField fx:id="passwordfieldPassword" layoutX="117.0" layoutY="138.0" prefHeight="25.0" prefWidth="194.0" styleClass="password-field" stylesheets="@../css/menu.css">
+                                    <font>
+                                        <Font size="10.0" />
+                                    </font>
+                                </PasswordField>
+                                <PasswordField fx:id="passwordfieldConfirmPassword" layoutX="117.0" layoutY="183.0" prefHeight="25.0" prefWidth="194.0" styleClass="password-field" stylesheets="@../css/menu.css">
+                                    <font>
+                                        <Font size="10.0" />
+                                    </font>
+                                </PasswordField>
+                                <Label layoutX="37.0" layoutY="141.0" styleClass="title-text" text="Пароль:" AnchorPane.rightAnchor="243.0">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                </Label>
+                                <Label layoutY="176.0" prefHeight="39.0" prefWidth="84.0" styleClass="title-text" text="Подтвердите&#10;пароль:" textAlignment="RIGHT" AnchorPane.rightAnchor="248.0">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                </Label>
+                                <Label layoutX="56.0" layoutY="29.0" styleClass="title-text" text="Личный кабинет">
+                                    <font>
+                                        <Font size="30.0" />
+                                    </font>
+                                </Label>
+                                <Label layoutX="46.0" layoutY="96.0" styleClass="title-text" text="Логин:" AnchorPane.rightAnchor="243.0">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                </Label>
+                                <TextField fx:id="textfieldLogin" layoutX="117.0" layoutY="96.0" prefHeight="25.0" prefWidth="194.0" stylesheets="@../css/menu.css" />
+                                <TextField fx:id="textfieldPhone" layoutX="117.0" layoutY="228.0" prefHeight="25.0" prefWidth="194.0" stylesheets="@../css/menu.css" />
+                                <Label layoutX="26.0" layoutY="231.0" styleClass="title-text" text="Телефон:" AnchorPane.rightAnchor="247.0">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                </Label>
+                                <Button fx:id="Change" layoutX="93.0" layoutY="291.0" mnemonicParsing="false" onAction="#change_Pressed" prefHeight="30.0" prefWidth="157.0" styleClass="button-crud" text="Изменить данные" AnchorPane.leftAnchor="93.0" AnchorPane.rightAnchor="98.0">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                </Button>
+                                <Label fx:id="labelMessage" alignment="CENTER" contentDisplay="CENTER" layoutY="345.0" prefHeight="36.0" prefWidth="348.0" styleClass="error-text" text="Ошибка регистрации!" textFill="RED" visible="false" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                </Label>
+                            </children>
+
+
+                        </AnchorPane>
+                    </children>
+                </AnchorPane>
+            </left>
+        </BorderPane>
     </children>
 </AnchorPane>
