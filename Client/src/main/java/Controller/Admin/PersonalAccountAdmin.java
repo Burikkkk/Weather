@@ -1,4 +1,4 @@
-package GUI.Admin;
+package Controller.Admin;
 
 import Enums.RequestType;
 import Enums.ResponseStatus;

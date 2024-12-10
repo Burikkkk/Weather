@@ -306,3 +306,12 @@
     -fx-background-color: #ffffff;
 }
 
+
+.other-charts{
+    -fx-background-color: #ffffff;
+}
+
+.other-charts .title-text{
+    -fx-text-fill: linear-gradient(to top, #2891ff, #00376b);
+}
+

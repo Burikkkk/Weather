@@ -1,28 +1,27 @@
-package GUI.Employee;
+package Controller.User;
 
+import Controller.Calendar.CalendarData;
+import Controller.Validation.ErrorStrategy;
+import Controller.Validation.LabelErrorStrategy;
+import Controller.Validation.LogErrorStrategy;
+import Controller.Validation.Validation;
 import Enums.Months;
-import javafx.application.Platform;
+import Service.DashboardService;
+import Service.DayService;
+import Service.LocationService;
+import Service.UserService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.chart.AreaChart;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
+import javafx.scene.chart.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
-
-import java.time.ZoneId;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
-import Enums.RequestType;
-import Enums.ResponseStatus;
-import Enums.Roles;
 import Models.Entities.*;
-import Models.TCP.Request;
-import Models.TCP.Response;
 import Utilities.ClientSocket;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -35,9 +34,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.net.URL;
 import java.sql.Date;
 import java.time.LocalDate;
@@ -49,7 +46,7 @@ public class EmployeeMenu implements Initializable {
 
     @FXML
     private Button add, analitics, calendarButton, clear, delete, edit, editDB, exit,
-            personalAccount, Change, buttonSignUp, firstPage, save;
+            personalAccount, Change, buttonSignUp, firstPage, save, saveInFile;
     @FXML
     private TableColumn<Day, String> columnCountry, columnTown, columnWeatherName;
     @FXML
@@ -83,7 +80,7 @@ public class EmployeeMenu implements Initializable {
     @FXML
     private DatePicker textFieldDate;
     @FXML
-    private MenuButton region, regionFilter, regionCalendar,monthMenuBtn,yearMenuBtn;
+    private MenuButton region, regionFilter, regionCalendar, monthMenuBtn, yearMenuBtn, monthMenuBtn2, yearMenuBtn2, regionChart;
     @FXML
     private RadioButton C, F, hPa, km, m, mmHg;
     @FXML
@@ -99,74 +96,35 @@ public class EmployeeMenu implements Initializable {
     @FXML
     private TextArea textArea;
     @FXML
-    private Label chosenDateLabel;
+    private Label chosenDateLabel, minText, maxText, averageText;
+    @FXML
+    private LineChart<String, Number> pressureChart, windSpeedChart, tempChart;
+    @FXML
+    private BarChart<String, Number> statisticChart;
 
     private final Calendar calendar = Calendar.getInstance();
-    private boolean monthChosen = false;
-    private boolean yearChosen = false;
-    private boolean regionChosen = false;
+    private boolean monthChosen = false, yearChosen = false, regionChosen = false,
+            monthChosen2 = false, yearChosen2 = false, regionChosen2 = false;
     private final int BUTTONS_IN_A_ROW = 7;
     private final int LINES = 6;
-    private int currentChartDays=0;
+    private int currentChartDays = 0;
 
     private Button[] dayButtons;
     private final CalendarData calendarData = new CalendarData();
 
     private User currentUser;
     private List<Location> regions;
-    private LocalDate today;
-    private Day todayWeather;
-    private Day calendarWeather;
-    private String selectedTown;
-    private String selectedTownCalendar;
-    private LocalDate calendarDate;
+    private LocalDate today, calendarDate, chartDate;
+    private Day todayWeather, calendarWeather, rowDay;
+    private String selectedTown, selectedTownCalendar, selectedTownChart;
     private ObservableList<Day> tableDays;
-    private Day rowDay;
+    private Map<String, Object> weatherData = new HashMap<>();
 
+    private LocationService locationService = new LocationService();
+    private DayService dayService = new DayService();
+    private UserService userService = new UserService();
+    private DashboardService dashboardService = new DashboardService();
 
-    public String validateAndFormatString(String input) {
-        labelError.setVisible(true);
-        // Убираем лишние пробелы
-        input = input.trim();
-        // Проверка на длину строки
-        if (input.length() <= 3) {
-            labelError.setText("Строка должна быть длиннее 3 символов");
-            return "error";
-        }
-
-        // Проверка на наличие цифр
-        if (!input.matches("[a-zA-Zа-яА-ЯёЁ]+")) {
-            labelError.setText("Строка должна содержать только буквы");
-            return "error"; // Возвращаем "error" для указания ошибки
-        }
-        // Преобразуем первую букву в верхний регистр, остальные — в нижний
-        return input.substring(0, 1).toUpperCase() + input.substring(1).toLowerCase();
-    }
-
-    public double validateAndParseDouble(String input){
-        labelError.setVisible(true);
-        if (!input.matches("-?\\d+(\\.\\d+)?")) {
-            labelError.setText("Число должно содержать только цифры");
-            return -1000;
-        }
-        double value = Double.parseDouble(input);
-        if (value < -1000||value>1000) {
-            labelError.setText("Слишком маленькое или большое значение");
-            return -1000;
-        }
-        return value;
-    }
-
-    public int validateAndParseInt(String input) {
-        labelError.setVisible(true);
-        // Проверка на наличие букв (ни русских, ни английских)
-        if (!input.matches("-?\\d+(\\.\\d+)?")) {
-            labelError.setText("Число должно содержать только цифры");
-            return -1000; // Возвращаем ошибочный код
-        }
-        return Integer.parseInt(input.trim()); // Убираем пробелы и пытаемся распарсить
-        // Проверка на положительное значение
-    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -277,32 +235,9 @@ public class EmployeeMenu implements Initializable {
     }
 
     public void initRegion() {
-        Request requestModel = new Request();
-        requestModel.setRequestType(RequestType.GET_REGIONS);
-
-        try {
-
-            ClientSocket.getInstance().getOut().println(new Gson().toJson(requestModel));
-            ClientSocket.getInstance().getOut().flush();
-
-            String answer = ClientSocket.getInstance().getInStream().readLine();
-            Response responseModel = new Gson().fromJson(answer, Response.class);
-
-            if (responseModel.getResponseStatus() == ResponseStatus.OK) {
-                // Используем TypeToken для точного указания типа списка
-                Type regionListType = new TypeToken<List<Location>>() {
-                }.getType();
-                regions = new Gson().fromJson(responseModel.getResponseData(), regionListType);
-
-
-            } else {
-                labelError.setText("Ошибка загрузки данных: " + responseModel.getResponseMessage());
-                labelError.setVisible(true);
-            }
-        } catch (IOException e) {
-            labelError.setText("Ошибка связи с сервером.");
-            labelError.setVisible(true);
-        }
+        regions = locationService.getRegions(labelError);
+        if (regions.isEmpty())
+            new LogErrorStrategy().handleError("Ошибка получения регионов");
     }
 
     public void initMenuButtons() {
@@ -328,10 +263,16 @@ public class EmployeeMenu implements Initializable {
             menuItem2.getStyleClass().add("menu-item");
             menuItem2.setOnAction(event -> handleRegionCalendarSelection(displayText, temp.getTown()));
             regionCalendar.getItems().add(menuItem2);
+
+            // Создаем пункт меню для regionCalendar
+            MenuItem menuItem3 = new MenuItem(displayText);
+            menuItem3.getStyleClass().add("menu-item");
+            menuItem3.setOnAction(event -> handleRegionChartSelection(displayText, temp.getTown()));
+            regionChart.getItems().add(menuItem3);
         }
     }
 
-    public void updateMenuButtons(){
+    public void updateMenuButtons() {
 
         // Получаем список городов из tableDays
         List<String> currentCities = tableDays.stream()
@@ -352,6 +293,7 @@ public class EmployeeMenu implements Initializable {
             region.getItems().clear();
             regionFilter.getItems().clear(); // Очищаем текущее меню
             regionCalendar.getItems().clear();
+            regionChart.getItems().clear();
             initMenuButtons(); // Перезагружаем кнопки меню
         }
 
@@ -377,12 +319,12 @@ public class EmployeeMenu implements Initializable {
             // Фильтруем по названию города
             return predicateDay.getLocation().getTown().equals(town);
         });
-        SortedList <Day> sortData=filteredRegions.sorted();
+        SortedList<Day> sortData = filteredRegions.sorted();
         sortData.comparatorProperty().bind(tableWeather.comparatorProperty());
         tableWeather.setItems(sortData);
     }
 
-    public void handleRegionCalendarSelection(String displayText, String town){
+    public void handleRegionCalendarSelection(String displayText, String town) {
         // Устанавливаем текст кнопки region
         regionCalendar.setText(displayText);
         // Сохраняем выбранный город в переменной
@@ -392,36 +334,25 @@ public class EmployeeMenu implements Initializable {
 
     }
 
+    public void handleRegionChartSelection(String displayText, String town) {
+        // Устанавливаем текст кнопки region
+        regionChart.setText(displayText);
+        // Сохраняем выбранный город в переменной
+        selectedTownChart = town;
+        regionChosen2 = true;
+        updateStatisticCharts();
+
+    }
+
     public void initWeatherTable() {
+        List<Day> dayList = dayService.getAllDays(labelError);
 
-        Request requestModel = new Request();
-        requestModel.setRequestType(RequestType.GET_ALL_DAYS);
-
-        try {
-
-            ClientSocket.getInstance().getOut().println(new Gson().toJson(requestModel));
-            ClientSocket.getInstance().getOut().flush();
-
-            String answer = ClientSocket.getInstance().getInStream().readLine();
-            Response responseModel = new Gson().fromJson(answer, Response.class);
-
-            if (responseModel.getResponseStatus() == ResponseStatus.OK) {
-                // Используем TypeToken для точного указания типа списка
-                Type weatherListType = new TypeToken<List<Day>>() {
-                }.getType();
-                List<Day> tempList = new Gson().fromJson(responseModel.getResponseData(), weatherListType);
-                tableDays = FXCollections.observableArrayList(tempList);
-
-                tableWeather.setItems(tableDays);
-
-            } else {
-                labelError.setText("Ошибка загрузки данных: " + responseModel.getResponseMessage());
-                labelError.setVisible(true);
-            }
-        } catch (IOException e) {
-            labelError.setText("Ошибка связи с сервером.");
-            labelError.setVisible(true);
-        }
+        if (dayList != null) {
+            // Если данные успешно получены, заполняем таблицу
+            tableDays = FXCollections.observableArrayList(dayList);
+            tableWeather.setItems(tableDays);
+        } else
+            new LogErrorStrategy().handleError("Ошибка получения дней");
     }
 
     @FXML
@@ -456,84 +387,61 @@ public class EmployeeMenu implements Initializable {
     }
 
     public void insertDay() {
+        ErrorStrategy errorStrategy = new LabelErrorStrategy(labelError);
         if (prepareToEdit()) {
-            double t = validateAndParseDouble(textFieldTemperature1.getText());
-            int pr = validateAndParseInt(textFieldPressure1.getText());
-            int h = validateAndParseInt(textFieldHumidity1.getText());
-            double r = validateAndParseDouble(textFieldPrecipitation1.getText());
-            double w = validateAndParseDouble(textFieldWind1.getText());
-            if(t==-1000||pr==-1000||h==-1000||r==-1000||w==-1000)
+
+            Validation validator = new Validation(errorStrategy);
+            double t = validator.validateAndParseDouble(textFieldTemperature1.getText());
+            int pr = validator.validateAndParseInt(textFieldPressure1.getText());
+            int h = validator.validateAndParseInt(textFieldHumidity1.getText());
+            double r = validator.validateAndParseDouble(textFieldPrecipitation1.getText());
+            double w = validator.validateAndParseDouble(textFieldWind1.getText());
+            if (t == -1000 || pr == -1000 || h == -1000 || r == -1000 || w == -1000)
                 return;
-            if(t>60||t<-40||pr<600||pr>850||r>100||r<0||w>50||w<0||h<0||h>100)
-            {
-                labelError.setVisible(true);
-                labelError.setText("Некорректные данные");
+            if (t > 60 || t < -40 || pr < 600 || pr > 850 || r > 100 || r < 0 || w > 50 || w < 0 || h < 0 || h > 100) {
+                errorStrategy.handleError("Некорректные данные");
                 return;
             }
             WeatherParameters dayW = new WeatherParameters(t, pr, h, r, w);
 
-            t = validateAndParseDouble(textFieldTemperature2.getText());
-            pr = validateAndParseInt(textFieldPressure2.getText());
-            h = validateAndParseInt(textFieldHumidity2.getText());
-            r = validateAndParseDouble(textFieldPrecipitation2.getText());
-            w = validateAndParseDouble(textFieldWind2.getText());
-            if(t==-1000||pr==-1000||h==-1000||r==-1000||w==-1000)
+            t = validator.validateAndParseDouble(textFieldTemperature2.getText());
+            pr = validator.validateAndParseInt(textFieldPressure2.getText());
+            h = validator.validateAndParseInt(textFieldHumidity2.getText());
+            r = validator.validateAndParseDouble(textFieldPrecipitation2.getText());
+            w = validator.validateAndParseDouble(textFieldWind2.getText());
+            if (t == -1000 || pr == -1000 || h == -1000 || r == -1000 || w == -1000)
                 return;
-            if(t>60||t<-40||pr<600||pr>850||r>100||r<0||w>50||w<0||h<0||h>100)
-            {
-                labelError.setVisible(true);
-                labelError.setText("Некорректные данные");
+            if (t > 60 || t < -40 || pr < 600 || pr > 850 || r > 100 || r < 0 || w > 50 || w < 0 || h < 0 || h > 100) {
+                errorStrategy.handleError("Некорректные данные");
                 return;
             }
             WeatherParameters nightW = new WeatherParameters(t, pr, h, r, w);
 
-            String temp =validateAndFormatString(textFieldWeather.getText());
-            if(temp.equals("error"))
+            String temp = validator.validateAndFormatString(textFieldWeather.getText());
+            if (temp.equals("error"))
                 return;
             WeatherName insertW = new WeatherName(temp);
-            temp =validateAndFormatString(textFieldTown.getText());
-            if(temp.equals("error"))
+            temp = validator.validateAndFormatString(textFieldTown.getText());
+            if (temp.equals("error"))
                 return;
-            String temp1 =validateAndFormatString(textFieldCounty.getText());
-            if(temp1.equals("error"))
+            String temp1 = validator.validateAndFormatString(textFieldCounty.getText());
+            if (temp1.equals("error"))
                 return;
-            Location insertL = new Location(temp,temp1);
+            Location insertL = new Location(temp, temp1);
 
             LocalDate selectedDate = textFieldDate.getValue();
             java.sql.Date sqlDate = java.sql.Date.valueOf(selectedDate);
 
             Day insertDay = new Day(sqlDate, dayW, nightW, insertW, insertL);
-
-            Request requestModel = new Request();
-            requestModel.setRequestMessage(new Gson().toJson(insertDay));
-            requestModel.setRequestType(RequestType.ADD_DAY);
-            ClientSocket.getInstance().getOut().println(new Gson().toJson(requestModel));
-            ClientSocket.getInstance().getOut().flush();
-            try {
-                String answer = ClientSocket.getInstance().getInStream().readLine();
-                Response responseModel = new Gson().fromJson(answer, Response.class);
-                if (responseModel.getResponseStatus() == ResponseStatus.OK) {
-                    insertDay = new Gson().fromJson(responseModel.getResponseData(), Day.class);
-                    labelError.setText(responseModel.getResponseMessage());
-                    labelError.setVisible(true);
-                    tableDays.add(insertDay);
-
-                    updateMenuButtons();
-                } else {
-                    labelError.setText(responseModel.getResponseMessage());
-                    labelError.setVisible(true);
-                }
-
-            } catch (IOException e) {
-                labelError.setText("Ошибка связи с сервером.");
-                labelError.setVisible(true);
-            }
-        } else {
-            labelMessage.setText("Не все поля заполнены.");
-            labelMessage.setVisible(true);
-
+            insertDay = dayService.getDay(insertDay, labelError);
+            if (insertDay != null) {
+                tableDays.add(insertDay);
+                updateMenuButtons();
+            } else
+                new LogErrorStrategy().handleError("Ошибка добавления дня");
+        }else {
+            errorStrategy.handleError("Не все поля заполнены.");
         }
-
 
     }
 
@@ -556,69 +464,57 @@ public class EmployeeMenu implements Initializable {
     }
 
     public void updateDay() {
+        ErrorStrategy errorStrategy = new LabelErrorStrategy(labelError);
         if (prepareToEdit()) {
-        double t = validateAndParseDouble(textFieldTemperature1.getText());
-        int pr = validateAndParseInt(textFieldPressure1.getText());
-        int h = validateAndParseInt(textFieldHumidity1.getText());
-        double r = validateAndParseDouble(textFieldPrecipitation1.getText());
-        double w = validateAndParseDouble(textFieldWind1.getText());
-            if(t==-1000||pr==-1000||h==-1000||r==-1000||w==-1000)
+
+            Validation validator = new Validation(errorStrategy);
+            double t = validator.validateAndParseDouble(textFieldTemperature1.getText());
+            int pr = validator.validateAndParseInt(textFieldPressure1.getText());
+            int h = validator.validateAndParseInt(textFieldHumidity1.getText());
+            double r = validator.validateAndParseDouble(textFieldPrecipitation1.getText());
+            double w = validator.validateAndParseDouble(textFieldWind1.getText());
+            if (t == -1000 || pr == -1000 || h == -1000 || r == -1000 || w == -1000)
                 return;
-            if(t>60||t<-40||pr<600||pr>850||r>100||r<0||w>50||w<0||h<0||h>100)
-            {
-                labelError.setVisible(true);
-                labelError.setText("Некорректные данные");
+            if (t > 60 || t < -40 || pr < 600 || pr > 850 || r > 100 || r < 0 || w > 50 || w < 0 || h < 0 || h > 100) {
+                errorStrategy.handleError("Некорректные данные");
                 return;
             }
-        WeatherParameters dayW = new WeatherParameters(rowDay.getDayWeather().getId(),t, pr, h, r, w);
+            WeatherParameters dayW = new WeatherParameters(rowDay.getDayWeather().getId(), t, pr, h, r, w);
 
-        t = validateAndParseDouble(textFieldTemperature2.getText());
-        pr = validateAndParseInt(textFieldPressure2.getText());
-        h = validateAndParseInt(textFieldHumidity2.getText());
-        r = validateAndParseDouble(textFieldPrecipitation2.getText());
-        w = validateAndParseDouble(textFieldWind2.getText());
-            if(t==-1000||pr==-1000||h==-1000||r==-1000||w==-1000)
+            t = validator.validateAndParseDouble(textFieldTemperature2.getText());
+            pr = validator.validateAndParseInt(textFieldPressure2.getText());
+            h = validator.validateAndParseInt(textFieldHumidity2.getText());
+            r = validator.validateAndParseDouble(textFieldPrecipitation2.getText());
+            w = validator.validateAndParseDouble(textFieldWind2.getText());
+            if (t == -1000 || pr == -1000 || h == -1000 || r == -1000 || w == -1000)
                 return;
-            if(t>60||t<-40||pr<600||pr>850||r>100||r<0||w>50||w<0||h<0||h>100)
-            {
-                labelError.setVisible(true);
-                labelError.setText("Некорректные данные");
+            if (t > 60 || t < -40 || pr < 600 || pr > 850 || r > 100 || r < 0 || w > 50 || w < 0 || h < 0 || h > 100) {
+                errorStrategy.handleError("Некорректные данные");
                 return;
             }
 
-        WeatherParameters nightW = new WeatherParameters(rowDay.getNightWeather().getId(),t, pr, h, r, w);
+            WeatherParameters nightW = new WeatherParameters(rowDay.getNightWeather().getId(), t, pr, h, r, w);
 
-            String temp =validateAndFormatString(textFieldWeather.getText());
-            if(temp.equals("error"))
+            String temp = validator.validateAndFormatString(textFieldWeather.getText());
+            if (temp.equals("error"))
                 return;
-            WeatherName insertW = new WeatherName(rowDay.getWeatherName().getId(),temp);
-            temp =validateAndFormatString(textFieldTown.getText());
-            if(temp.equals("error"))
+            WeatherName insertW = new WeatherName(rowDay.getWeatherName().getId(), temp);
+            temp = validator.validateAndFormatString(textFieldTown.getText());
+            if (temp.equals("error"))
                 return;
-            String temp1 =validateAndFormatString(textFieldCounty.getText());
-            if(temp1.equals("error"))
+            String temp1 = validator.validateAndFormatString(textFieldCounty.getText());
+            if (temp1.equals("error"))
                 return;
 
-        Location insertL = new Location(rowDay.getLocation().getId(),temp,temp1);
+            Location insertL = new Location(rowDay.getLocation().getId(), temp, temp1);
 
 
-        LocalDate selectedDate = textFieldDate.getValue();
-        java.sql.Date sqlDate = java.sql.Date.valueOf(selectedDate);
+            LocalDate selectedDate = textFieldDate.getValue();
+            java.sql.Date sqlDate = java.sql.Date.valueOf(selectedDate);
 
-        Day updatedDay = new Day(rowDay.getId(),sqlDate, dayW, nightW, insertW, insertL);
-
-        Request requestModel = new Request();
-        requestModel.setRequestMessage(new Gson().toJson(updatedDay));
-        requestModel.setRequestType(RequestType.UPDATE_DAY);
-        ClientSocket.getInstance().getOut().println(new Gson().toJson(requestModel));
-        ClientSocket.getInstance().getOut().flush();
-        try {
-            String answer = ClientSocket.getInstance().getInStream().readLine();
-            Response responseModel = new Gson().fromJson(answer, Response.class);
-            if (responseModel.getResponseStatus() == ResponseStatus.OK) {
-                updatedDay = new Gson().fromJson(responseModel.getResponseData(), Day.class);
-                labelError.setText(responseModel.getResponseMessage());
-                labelError.setVisible(true);
+            Day updatedDay = new Day(rowDay.getId(), sqlDate, dayW, nightW, insertW, insertL);
+            updatedDay = dayService.updateDay(updatedDay, labelError);
+            if (updatedDay != null) {
                 int index = -1;
                 for (int i = 0; i < tableDays.size(); i++) {
                     if (Objects.equals(tableDays.get(i).getId(), updatedDay.getId())) {
@@ -631,93 +527,70 @@ public class EmployeeMenu implements Initializable {
                 if (index != -1) {
                     tableDays.set(index, updatedDay); // Заменяем элемент на обновленный
                 } else {
-                    labelError.setText("Элемент для обновления не найден!");
-                    labelError.setVisible(true);
+                    errorStrategy.handleError("Элемент для обновления не найден!");
                 }
 
                 updateMenuButtons();
-            } else {
-                labelError.setText(responseModel.getResponseMessage());
-                labelError.setVisible(true);
-            }
-        } catch (IOException e) {
-            labelError.setText("Ошибка связи с сервером.");
-            labelError.setVisible(true);
-        }
-        } else {
-            labelMessage.setText("Не все поля заполнены.");
-            labelMessage.setVisible(true);
-
+            } else
+                new LogErrorStrategy().handleError("Ошибка редактирования дня");
+        }else {
+            errorStrategy.handleError("Не все поля заполнены.");
         }
     }
 
-    public void deleteDay()    {
+    public void deleteDay() {
         Day deletedDay = rowDay;
-
-        Request requestModel = new Request();
-        requestModel.setRequestMessage(new Gson().toJson(deletedDay));
-        requestModel.setRequestType(RequestType.DELETE_DAY);
-        ClientSocket.getInstance().getOut().println(new Gson().toJson(requestModel));
-        ClientSocket.getInstance().getOut().flush();
-        try {
-            String answer = ClientSocket.getInstance().getInStream().readLine();
-            Response responseModel = new Gson().fromJson(answer, Response.class);
-            if (responseModel.getResponseStatus() == ResponseStatus.OK) {
-
-                labelError.setText(responseModel.getResponseMessage());
-                labelError.setVisible(true);
-                int index = -1;
-                for (int i = 0; i < tableDays.size(); i++) {
-                    if (Objects.equals(tableDays.get(i).getId(), rowDay.getId())) {
-                        index = i;
-                        break;
-                    }
+        String result=dayService.deleteDay(deletedDay,labelError);
+        ErrorStrategy errorStrategy = new LabelErrorStrategy(labelError);
+        if (result.equals("OK")) {
+            int index = -1;
+            for (int i = 0; i < tableDays.size(); i++) {
+                if (Objects.equals(tableDays.get(i).getId(), rowDay.getId())) {
+                    index = i;
+                    break;
                 }
-                // Если элемент найден, обновляем его
-                if (index != -1) {
-                    tableDays.remove(index); // Заменяем элемент на обновленный
-                } else {
-                    labelError.setText("Элемент для удаления не найден!");
-                    labelError.setVisible(true);
-                }
-                rowDay=null;
-                updateMenuButtons();
-            } else {
-                labelError.setText(responseModel.getResponseMessage());
-                labelError.setVisible(true);
             }
-        } catch (IOException e) {
-            labelError.setText("Ошибка связи с сервером.");
-            labelError.setVisible(true);
+            // Если элемент найден, обновляем его
+            if (index != -1) {
+                tableDays.remove(index); // Заменяем элемент на обновленный
+            } else {
+                errorStrategy.handleError("Элемент для удаления не найден!");
+            }
+            rowDay = null;
+            updateMenuButtons();
         }
+        else
+            new LogErrorStrategy().handleError("Ошибка удаления дня");
     }
 
 
-   public void searchDays(){
-       FilteredList<Day> filter = new FilteredList<>(tableDays, e->true);
-       textFieldSearch.textProperty().addListener((observable, oldValue,newValue)->{
-           filter.setPredicate(predicateDay->{
-               if(newValue.isEmpty())
-                   return true;
-               String keySearch=newValue.toLowerCase();
-               if(predicateDay.getDate().toString().contains(keySearch))
-                   return true;
-               else if(predicateDay.getLocation().getTown().toLowerCase().contains(keySearch))
-                   return true;
-               else if(predicateDay.getLocation().getCountry().toLowerCase().contains(keySearch))
-                   return true;
-               else if(predicateDay.getWeatherName().getName().toLowerCase().contains(keySearch))
-                   return true;
 
 
-               return false;
-           });
+    public void searchDays() {
+        FilteredList<Day> filter = new FilteredList<>(tableDays, e -> true);
+        textFieldSearch.textProperty().addListener((observable, oldValue, newValue) -> {
+            filter.setPredicate(predicateDay -> {
+                if (newValue.isEmpty())
+                    return true;
+                String keySearch = newValue.toLowerCase();
+                if (predicateDay.getDate().toString().contains(keySearch))
+                    return true;
+                else if (predicateDay.getLocation().getTown().toLowerCase().contains(keySearch))
+                    return true;
+                else if (predicateDay.getLocation().getCountry().toLowerCase().contains(keySearch))
+                    return true;
+                else if (predicateDay.getWeatherName().getName().toLowerCase().contains(keySearch))
+                    return true;
 
-       });
-       SortedList <Day> sortData=filter.sorted();
-       sortData.comparatorProperty().bind(tableWeather.comparatorProperty());
-       tableWeather.setItems(sortData);
-   }
+
+                return false;
+            });
+
+        });
+        SortedList<Day> sortData = filter.sorted();
+        sortData.comparatorProperty().bind(tableWeather.comparatorProperty());
+        tableWeather.setItems(sortData);
+    }
 
     @FXML
     void delete_Pressed(ActionEvent event) {
@@ -754,39 +627,23 @@ public class EmployeeMenu implements Initializable {
     }
 
     @FXML
-    void exit_Pressed(ActionEvent event) {
+    void exit_Pressed(ActionEvent event) throws IOException {
         exit();
     }
 
-    public void exit() {
-        Request requestModel = new Request();
-        requestModel.setRequestMessage(new Gson().toJson(currentUser));
-        requestModel.setRequestType(RequestType.LOGOUT);
-        try {
-            ClientSocket.getInstance().getOut().println(new Gson().toJson(requestModel));
-
-            ClientSocket.getInstance().getOut().flush();
-
-            String answer = ClientSocket.getInstance().getInStream().readLine();
-            Response responseModel = new Gson().fromJson(answer, Response.class);
-            if (responseModel.getResponseStatus() == ResponseStatus.OK) {
-                labelError.setVisible(false);
-
-                ClientSocket.getInstance().setUser(new Gson().fromJson(responseModel.getResponseData(), User.class));
-                ClientSocket.resetConnection();
-                Stage stage = (Stage) exit.getScene().getWindow();
-                Parent root = FXMLLoader.load(getClass().getResource("/fxml/Login.fxml"));
-                Scene newScene = new Scene(root);
-                stage.setScene(newScene);
-                stage.centerOnScreen();
-            } else {
-                labelError.setText(responseModel.getResponseMessage());
-                labelError.setVisible(true);
-            }
-        } catch (IOException e) {
-            labelError.setText("Ошибка связи с сервером.");
-            labelError.setVisible(true);
+    public void exit() throws IOException {
+        User temp = userService.logout(currentUser, labelError);
+        if(temp!=null){
+        ClientSocket.getInstance().setUser(temp);
+            ClientSocket.resetConnection();
+            Stage stage = (Stage) exit.getScene().getWindow();
+            Parent root = FXMLLoader.load(getClass().getResource("/fxml/Login.fxml"));
+            Scene newScene = new Scene(root);
+            stage.setScene(newScene);
+            stage.centerOnScreen();
         }
+        else
+            new LogErrorStrategy().handleError("Ошибка выхода");
     }
 
 
@@ -804,38 +661,25 @@ public class EmployeeMenu implements Initializable {
         tempL.setTown(selectedTown);
         tempDay.setLocation(tempL);
         tempDay.setDate(java.sql.Date.valueOf(today));
-        Request requestModel = new Request();
-        requestModel.setRequestMessage(new Gson().toJson(tempDay));
-        requestModel.setRequestType(RequestType.TODAY_WEATHER);
-        try {
-            ClientSocket.getInstance().getOut().println(new Gson().toJson(requestModel));
-            ClientSocket.getInstance().getOut().flush();
-
-            String answer = ClientSocket.getInstance().getInStream().readLine();
-            Response responseModel = new Gson().fromJson(answer, Response.class);
-            if (responseModel.getResponseStatus() == ResponseStatus.OK) {
-
-                todayWeather = new Gson().fromJson(responseModel.getResponseData(), Day.class);
-                initWeatherFields();
-                todayWeatherPanel.setVisible(true);
-                labelError.setVisible(false);
-            } else {
-                todayWeatherPanel.setVisible(false);
-                labelError.setText(responseModel.getResponseMessage());
-                labelError.setVisible(true);
-            }
-        } catch (IOException e) {
-            labelError.setText("Ошибка связи с сервером.");
-            labelError.setVisible(true);
+        todayWeather = dayService.getSelectedDayWeather(tempDay,labelError);
+        if(today!=null)
+        {
+            initWeatherFields();
+            todayWeatherPanel.setVisible(true);
+            labelError.setVisible(false);
+        }
+        else{
+            todayWeatherPanel.setVisible(false);
+            new LogErrorStrategy().handleError("Ошибка поиска выбранной погоды");
         }
     }
 
     public void initWeatherFields() {
         xWeatherName.setText(todayWeather.getWeatherName().getName());
         if (currentUser.getPersonalSettings().getTemperature().equals("F")) {
-            double x = todayWeather.getDayWeather().getTemperature()*9/5+32;
+            double x = todayWeather.getDayWeather().getTemperature() * 9 / 5 + 32;
             xTemperatura1.setText(String.valueOf(x));
-            x = todayWeather.getNightWeather().getTemperature() *9/5+32;
+            x = todayWeather.getNightWeather().getTemperature() * 9 / 5 + 32;
             xTemperatura2.setText(String.valueOf(x));
             textF1.setVisible(true);
             textF2.setVisible(true);
@@ -894,37 +738,27 @@ public class EmployeeMenu implements Initializable {
     //для настроек пользователя
 
     public void updateUser() {
+        ErrorStrategy errorStrategy = new LabelErrorStrategy(labelMessage);
         if (!passwordfieldPassword.getText().equals(passwordfieldConfirmPassword.getText())) {
-            labelMessage.setText("Пароли не совпадают");
-            labelMessage.setVisible(true);
+            errorStrategy.handleError("Пароли не совпадают");
             return;
         }
         if (textfieldLogin.getText().isEmpty() ||
                 passwordfieldPassword.getText().isEmpty() ||
                 passwordfieldConfirmPassword.getText().isEmpty() ||
                 textfieldPhone.getText().isEmpty()) {
-            labelMessage.setText("Не все поля заполнены.");
-            labelMessage.setVisible(true);
+            errorStrategy.handleError("Не все поля заполнены.");
             return;
         }
         User user = new User();
         user.setId(currentUser.getId());
-        String tempLogin = textfieldLogin.getText();
         user.setRole(currentUser.getRole());
-        // Проверка на латинские буквы и цифры
-        if (!tempLogin.matches("^[a-zA-Z0-9]+$")) {
-            labelMessage.setText("Логин должен содержать только латинские буквы или цифры!");
-            labelMessage.setVisible(true);
-            return;
-        }
-
-        // Проверка длины логина
-        if (tempLogin.length() < 3 || tempLogin.length() > 25) {
-            labelMessage.setText("Логин должен быть от 3 до 25 символов!");
-            labelMessage.setVisible(true);
-            return;
-        }
+        // Валидация логина
+        Validation loginValidator = new Validation(errorStrategy);
+        String tempLogin = loginValidator.validateLogin(textfieldLogin.getText());
+        if ("error".equals(tempLogin)) return;
         user.setLogin(tempLogin);
+
         if (!passwordfieldPassword.getText().equals("11111")) {
             String pass = passwordfieldPassword.getText();
 
@@ -935,12 +769,10 @@ public class EmployeeMenu implements Initializable {
         }
         PersonalSettings settings = new PersonalSettings();
         settings.setId(currentUser.getPersonalSettings().getId());
-        String tempPhone = textfieldPhone.getText();
-        if (tempPhone.length() != 9 || !tempPhone.matches("\\d+")) {
-            labelMessage.setText("Введите номер телефона с кодом!");
-            labelMessage.setVisible(true);
-            return;
-        }
+
+        // Валидация телефона
+        String tempPhone = loginValidator.validatePhoneNumber(textfieldPhone.getText());
+        if ("error".equals(tempPhone)) return;
         settings.setPhone(tempPhone);
 
         String temperature = ((RadioButton) Temperature.getSelectedToggle()).getText();
@@ -957,43 +789,28 @@ public class EmployeeMenu implements Initializable {
         user.setPersonalSettings(settings);
 
         if (!user.equals(currentUser)) {
-            Request requestModel = new Request();
-            requestModel.setRequestMessage(new Gson().toJson(user));
-            requestModel.setRequestType(RequestType.UPDATE_USER);
-            ClientSocket.getInstance().getOut().println(new Gson().toJson(requestModel));
-            ClientSocket.getInstance().getOut().flush();
-            try {
-                String answer = ClientSocket.getInstance().getInStream().readLine();
-                Response responseModel = new Gson().fromJson(answer, Response.class);
-                if (responseModel.getResponseStatus() == ResponseStatus.OK) {
-                    ClientSocket.getInstance().setUser(new Gson().fromJson(responseModel.getResponseData(), User.class));
-                    labelMessage.setText("Данные изменены!");
-                    labelMessage.setVisible(true);
-                    currentUser = ClientSocket.getInstance().getUser();
+            user=userService.update(user,labelMessage);
+            if(user!=null) {
+                ClientSocket.getInstance().setUser(user);
+                errorStrategy.handleError("Данные изменены!");
+                currentUser = ClientSocket.getInstance().getUser();
 
-                    //заново проинициализировать поля
-                    labelUser.setText(currentUser.getLogin());
-                    if (selectedTown != null) {
-                        initWeatherFields();
+                //заново проинициализировать поля
+                labelUser.setText(currentUser.getLogin());
+                if (selectedTown != null) {
+                    initWeatherFields();
 
-                    }
-                    if (selectedTownCalendar != null) {
-                        initWeatherFields2();
-                        updateCalendar();
-                        updateChart();
-                    }
-
-                } else {
-                    labelMessage.setText(responseModel.getResponseMessage());
-                    labelMessage.setVisible(true);
                 }
-            } catch (IOException e) {
-                labelError.setText("Ошибка связи с сервером.");
-                labelError.setVisible(true);
+                if (selectedTownCalendar != null) {
+                    initWeatherFields2();
+                    updateCalendar();
+                    updateChart();
+                }
             }
+               else
+                    new LogErrorStrategy().handleError("Ошибка редактирования настроек");
         } else {
-            labelMessage.setText("Введите новые данные!");
-            labelMessage.setVisible(true);
+            errorStrategy.handleError("Введите новые данные!");
         }
     }
 
@@ -1072,12 +889,10 @@ public class EmployeeMenu implements Initializable {
             monthChosen = true;
             updateCalendar(); // Обновляем календарь
         } catch (NumberFormatException e) {
-            labelError.setText("Неверный формат месяца: " + btn.getText());
-            labelError.setVisible(true);
+            ErrorStrategy errorStrategy = new LabelErrorStrategy(labelError);
+            errorStrategy.handleError("Неверный формат месяца: " + btn.getText());
         }
     }
-
-
 
 
     @FXML
@@ -1090,13 +905,13 @@ public class EmployeeMenu implements Initializable {
             yearChosen = true;
             updateCalendar(); // Обновляем календарь
         } catch (NumberFormatException e) {
-            labelError.setText("Неверный формат года: " + btn.getText());
-            labelError.setVisible(true);
+            ErrorStrategy errorStrategy = new LabelErrorStrategy(labelError);
+            errorStrategy.handleError("Неверный формат года: " + btn.getText());
         }
     }
 
     private void updateCalendar() {
-        if (!monthChosen || !yearChosen|| !regionChosen) return; // Проверяем, что месяц и год выбраны
+        if (!monthChosen || !yearChosen || !regionChosen) return; // Проверяем, что месяц и год выбраны
 
         int daysInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH); // Определяем количество дней в месяце
         createDaysButtons(daysInMonth); // Создаем кнопки для дней месяца
@@ -1148,13 +963,12 @@ public class EmployeeMenu implements Initializable {
             if (localDate.equals(LocalDate.of(year, month, day)) &&
                     tableDay.getLocation().getTown().equals(selectedTownCalendar)) {
 
-                if(currentUser.getPersonalSettings().getTemperature().equals("F")){
-                    double temp=tableDay.getDayWeather().getTemperature()*9/5+32;
-                    dayTemp =  Double.toString(temp);
-                    temp=tableDay.getNightWeather().getTemperature()*9/5+32;
-                    nightTemp =  Double.toString(temp);
-                }
-                else{
+                if (currentUser.getPersonalSettings().getTemperature().equals("F")) {
+                    double temp = tableDay.getDayWeather().getTemperature() * 9 / 5 + 32;
+                    dayTemp = Double.toString(temp);
+                    temp = tableDay.getNightWeather().getTemperature() * 9 / 5 + 32;
+                    nightTemp = Double.toString(temp);
+                } else {
                     dayTemp = tableDay.getDayWeather().getTemperature().toString();
                     nightTemp = tableDay.getNightWeather().getTemperature().toString();
                 }
@@ -1186,8 +1000,8 @@ public class EmployeeMenu implements Initializable {
             initSelectedWeather();
 
         } catch (NumberFormatException e) {
-            labelError.setText("Неверное значение дня.");
-            labelError.setVisible(true);
+            ErrorStrategy errorStrategy = new LabelErrorStrategy(labelError);
+            errorStrategy.handleError("Неверное значение дня.");
         }
     }
 
@@ -1197,30 +1011,16 @@ public class EmployeeMenu implements Initializable {
         tempL.setTown(selectedTownCalendar);
         tempDay.setLocation(tempL);
         tempDay.setDate(java.sql.Date.valueOf(calendarDate));
-        Request requestModel = new Request();
-        requestModel.setRequestMessage(new Gson().toJson(tempDay));
-        requestModel.setRequestType(RequestType.TODAY_WEATHER);
-        try {
-            ClientSocket.getInstance().getOut().println(new Gson().toJson(requestModel));
-            ClientSocket.getInstance().getOut().flush();
-
-            String answer = ClientSocket.getInstance().getInStream().readLine();
-            Response responseModel = new Gson().fromJson(answer, Response.class);
-            if (responseModel.getResponseStatus() == ResponseStatus.OK) {
-
-                calendarWeather = new Gson().fromJson(responseModel.getResponseData(), Day.class);
-                initWeatherFields2();
-                todayWeatherPanel2.setVisible(true);
-                labelError.setVisible(false);
-            } else {
-                todayWeatherPanel2.setVisible(false);
-                labelError.setText(responseModel.getResponseMessage());
-                labelError.setVisible(true);
-            }
-        } catch (IOException e) {
-            labelError.setText("Ошибка связи с сервером.");
-            labelError.setVisible(true);
+        calendarWeather=dayService.getSelectedDayWeather(tempDay,labelError);
+        if(calendarWeather!=null){
+            initWeatherFields2();
+            todayWeatherPanel2.setVisible(true);
+            labelError.setVisible(false);
+        } else {
+            todayWeatherPanel2.setVisible(false);
+            new LogErrorStrategy().handleError("Ошибка поиска выбранной погоды");
         }
+
     }
 
     public void initWeatherFields2() {
@@ -1229,9 +1029,9 @@ public class EmployeeMenu implements Initializable {
         labelCalendarDate.setText(formattedDate);
         xWeatherName2.setText(calendarWeather.getWeatherName().getName());
         if (currentUser.getPersonalSettings().getTemperature().equals("F")) {
-            double x = calendarWeather.getDayWeather().getTemperature() *9/5+32;
+            double x = calendarWeather.getDayWeather().getTemperature() * 9 / 5 + 32;
             xTemperatura3.setText(String.valueOf(x));
-            x = calendarWeather.getNightWeather().getTemperature() *9/5+32;
+            x = calendarWeather.getNightWeather().getTemperature() * 9 / 5 + 32;
             xTemperatura4.setText(String.valueOf(x));
             textF3.setVisible(true);
             textF4.setVisible(true);
@@ -1287,23 +1087,26 @@ public class EmployeeMenu implements Initializable {
     }
 
     @FXML
-    void threeDays_Pressed(ActionEvent event){
-        currentChartDays=2;
+    void threeDays_Pressed(ActionEvent event) {
+        currentChartDays = 2;
         updateChart();
     }
+
     @FXML
-    void week_Pressed(ActionEvent event)    {
-        currentChartDays=6;
+    void week_Pressed(ActionEvent event) {
+        currentChartDays = 6;
         updateChart();
     }
+
     @FXML
-    void monthPeriod_Pressed(ActionEvent event){
-        currentChartDays=30;
+    void monthPeriod_Pressed(ActionEvent event) {
+        currentChartDays = 30;
         updateChart();
     }
 
 
     public void updateChart() {
+        ErrorStrategy errorStrategy = new LabelErrorStrategy(labelMessage);
         if (calendarDate != null && selectedTownCalendar != null) {
             // Определяем начальную и конечную дату для графика
             LocalDate chartDateStart = calendarDate;
@@ -1323,8 +1126,8 @@ public class EmployeeMenu implements Initializable {
             // Проверяем, есть ли данные для графика
             if (filteredDays.isEmpty()) {
                 // Если данных нет, выводим ошибку
-                labelError.setVisible(true);
-                labelError.setText("Нет данных для выбранного периода и города.");
+
+                errorStrategy.handleError("Нет данных для выбранного периода и города.");
                 return;
             }
 
@@ -1332,7 +1135,7 @@ public class EmployeeMenu implements Initializable {
             CategoryAxis xAxis = new CategoryAxis(); // Используем CategoryAxis для отображения дат
             NumberAxis yAxis = new NumberAxis();
             xAxis.setLabel("Дата");
-            yAxis.setLabel("Температура (°C)");
+
 
             // Создаем график
             AreaChart<String, Number> areaChart = new AreaChart<>(xAxis, yAxis);
@@ -1345,15 +1148,14 @@ public class EmployeeMenu implements Initializable {
             XYChart.Series<String, Number> nightSeries = new XYChart.Series<>();
             nightSeries.setName("Ночная температура");
 
-            if(currentUser.getPersonalSettings().getTemperature().equals("F"))
-            {
-                yAxis.setLabel("Температура, °F");
+            if (currentUser.getPersonalSettings().getTemperature().equals("F")) {
+                yAxis.setLabel("Т, °F");
 
                 // Добавляем данные в серии
                 for (Day day : filteredDays) {
                     LocalDate date = day.getDate().toLocalDate();
-                    double dayTemp = day.getDayWeather().getTemperature()*9/5+32;
-                    double nightTemp = day.getNightWeather().getTemperature()*9/5+32;
+                    double dayTemp = day.getDayWeather().getTemperature() * 9 / 5 + 32;
+                    double nightTemp = day.getNightWeather().getTemperature() * 9 / 5 + 32;
 
                     // Преобразуем дату в строку
                     String dateStr = date.format(DateTimeFormatter.ofPattern("d MMM yyyy"));
@@ -1363,8 +1165,8 @@ public class EmployeeMenu implements Initializable {
                     nightSeries.getData().add(new XYChart.Data<>(dateStr, nightTemp));
 
                 }
-            }else {
-                yAxis.setLabel("Температура, °C");
+            } else {
+                yAxis.setLabel("Т, °C");
 
                 // Добавляем данные в серии
                 for (Day day : filteredDays) {
@@ -1389,53 +1191,41 @@ public class EmployeeMenu implements Initializable {
 
             daySeries.getNode().getStyleClass().add("chart-day-temperature");
             nightSeries.getNode().getStyleClass().add("chart-night-temperature");
-        }
-        else {
-            labelError.setVisible(true);
-            labelError.setText("Сначала выберите город и дату");
+        } else {
+            errorStrategy.handleError("Сначала выберите город и дату");
             return;
         }
     }
 
 
-
-
-    public void initChart(){
-        Request requestModel = new Request();
-        requestModel.setRequestMessage(new Gson().toJson(currentUser));
-        requestModel.setRequestType(RequestType.GET_DASHBOARD);
-        ClientSocket.getInstance().getOut().println(new Gson().toJson(requestModel));
-        ClientSocket.getInstance().getOut().flush();
-        try {
-            String answer = ClientSocket.getInstance().getInStream().readLine();
-            Response responseModel = new Gson().fromJson(answer, Response.class);
-            if (responseModel.getResponseStatus() == ResponseStatus.OK) {
-                Dashboard initDashboard = new Gson().fromJson(responseModel.getResponseData(), Dashboard.class);
-                selectedTownCalendar=initDashboard.getStartDate().getLocation().getTown();
-                calendarDate = initDashboard.getStartDate().getDate().toLocalDate();
-                calendarWeather=initDashboard.getStartDate();
-                LocalDate startDate = initDashboard.getStartDate().getDate().toLocalDate();
-                LocalDate endDate = initDashboard.getEndDate().getDate().toLocalDate();
-                currentChartDays = (int) ChronoUnit.DAYS.between(startDate, endDate);
-                initSelectedWeather();
-                updateChart();
-
-            } else {
-                labelMessage.setText(responseModel.getResponseMessage());
-                labelMessage.setVisible(true);
-            }
-        } catch (IOException e) {
-            labelError.setText("Ошибка связи с сервером.");
-            labelError.setVisible(true);
+    public void initChart() {
+        Dashboard initDashboard =dashboardService.getDashboard(currentUser, labelError);
+        if(initDashboard!=null)
+        {
+            selectedTownCalendar = initDashboard.getStartDate().getLocation().getTown();
+            calendarDate = initDashboard.getStartDate().getDate().toLocalDate();
+            calendarWeather = initDashboard.getStartDate();
+            LocalDate startDate = initDashboard.getStartDate().getDate().toLocalDate();
+            LocalDate endDate = initDashboard.getEndDate().getDate().toLocalDate();
+            currentChartDays = (int) ChronoUnit.DAYS.between(startDate, endDate);
+            initSelectedWeather();
+            updateChart();
         }
+        else new LogErrorStrategy().handleError("Ошибка загрузки dashboard");
     }
 
     @FXML
     void savePressed(ActionEvent event) {
-        if(calendarWeather==null||currentChartDays==0)
-        {
-            labelError.setText("Сначала выберите день и период");
-            labelError.setVisible(true);
+        saveDashboard();
+
+    }
+
+    public void saveDashboard()
+    {
+        ErrorStrategy errorStrategy = new LabelErrorStrategy(labelMessage);
+        if (calendarWeather == null || currentChartDays == 0) {
+            errorStrategy.handleError("Сначала выберите день и период");
+
         }
         Dashboard newDashboard = new Dashboard();
         newDashboard.setUser(currentUser);
@@ -1443,26 +1233,266 @@ public class EmployeeMenu implements Initializable {
         LocalDate startLocalDate = calendarWeather.getDate().toLocalDate(); // Преобразование в LocalDate
         LocalDate endLocalDate = startLocalDate.plusDays(currentChartDays); // Добавляем дни
         java.sql.Date endDate = Date.valueOf(endLocalDate);
-        Day end=new Day();
+        Day end = new Day();
         end.setDate(endDate);
         end.setLocation(newDashboard.getStartDate().getLocation());
         newDashboard.setEndDate(end);
-        Request requestModel = new Request();
-        requestModel.setRequestMessage(new Gson().toJson(newDashboard));
-        requestModel.setRequestType(RequestType.ADD_USER_DASHBOARD);
-        ClientSocket.getInstance().getOut().println(new Gson().toJson(requestModel));
-        ClientSocket.getInstance().getOut().flush();
-        try {
-            String answer = ClientSocket.getInstance().getInStream().readLine();
-            Response responseModel = new Gson().fromJson(answer, Response.class);
-                labelMessage.setText(responseModel.getResponseMessage());
-                labelMessage.setVisible(true);
+        String result = dashboardService.addUserDashboard(newDashboard, labelError);
+        if(result.equals("ERROR"))
+            new LogErrorStrategy().handleError("Ошибка сохранения dashboard");
+    }
 
-        } catch (IOException e) {
-            labelError.setText("Ошибка связи с сервером.");
-            labelError.setVisible(true);
+
+    @FXML
+    void monthPressed2(ActionEvent event) {
+        MenuItem btn = (MenuItem) event.getSource();
+        monthMenuBtn2.setText(btn.getText()); // Устанавливаем текст выбранного месяца на кнопку
+        try {
+            String monthName = btn.getText();
+            Months selectedMonth = Months.valueOf(monthName); // Преобразуем название месяца в enum
+            calendar.set(Calendar.MONTH, selectedMonth.getMonthNumber() - 1); // Устанавливаем выбранный месяц (с учетом 0 в Calendar)
+            monthChosen2 = true;
+
+            // Если год уже выбран, обновляем chartDate
+            if (yearChosen2) {
+                updateChartDate();
+            }
+
+            updateStatisticCharts();
+        } catch (IllegalArgumentException e) {
+            ErrorStrategy errorStrategy = new LabelErrorStrategy(labelMessage);
+            errorStrategy.handleError("Неверный формат месяца: " + btn.getText());
+
+        }
+    }
+
+    @FXML
+    void yearPressed2(ActionEvent event) {
+        ErrorStrategy errorStrategy = new LabelErrorStrategy(labelMessage);
+        MenuItem btn = (MenuItem) event.getSource();
+        yearMenuBtn2.setText(btn.getText()); // Устанавливаем текст выбранного года на кнопку
+        try {
+            int year = Integer.parseInt(btn.getText());
+            calendar.set(Calendar.YEAR, year); // Устанавливаем выбранный год
+            yearChosen2 = true;
+
+            // Если месяц уже выбран, обновляем chartDate
+            if (monthChosen2) {
+                updateChartDate();
+            }
+
+            updateStatisticCharts();
+        } catch (NumberFormatException e) {
+            errorStrategy.handleError("Неверный формат года: " + btn.getText());
+        }
+    }
+
+    // Метод для обновления chartDate
+    private void updateChartDate() {
+        // Устанавливаем первый день выбранного месяца
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH) + 1; // Calendar.MONTH начинается с 0
+        chartDate = LocalDate.of(year, month, 1); // Устанавливаем 1-е число месяца
+    }
+
+
+    public void updateStatisticCharts() {
+        ErrorStrategy errorStrategy = new LabelErrorStrategy(labelMessage);
+        if (!monthChosen2 || !yearChosen2 || !regionChosen2) return; // Проверяем, что все параметры выбраны
+
+        // Фильтруем данные по выбранным месяцу, году и городу
+        ObservableList<Day> filteredDays = tableDays.filtered(day -> {
+            LocalDate dayDate = day.getDate().toLocalDate(); // Преобразуем дату
+            return dayDate.getMonthValue() == chartDate.getMonthValue() && // Совпадение месяца
+                    dayDate.getYear() == chartDate.getYear() &&            // Совпадение года
+                    day.getLocation().getTown().equals(selectedTownChart); // Совпадение города
+        });
+
+        if (filteredDays.isEmpty()) {
+            errorStrategy.handleError("Нет данных для выбранного периода и города.");
+            return;
         }
 
+        // Очистка графиков перед заполнением
+        tempChart.getData().clear();
+        pressureChart.getData().clear();
+        windSpeedChart.getData().clear();
+        statisticChart.getData().clear();
+
+        // Создаем серии для графиков
+        XYChart.Series<String, Number> tempDaySeries = new XYChart.Series<>();
+        tempDaySeries.setName("Дневная температура");
+        XYChart.Series<String, Number> tempNightSeries = new XYChart.Series<>();
+        tempNightSeries.setName("Ночная температура");
+
+        XYChart.Series<String, Number> pressureDaySeries = new XYChart.Series<>();
+        pressureDaySeries.setName("Дневное давление");
+        XYChart.Series<String, Number> pressureNightSeries = new XYChart.Series<>();
+        pressureNightSeries.setName("Ночное давление");
+
+        XYChart.Series<String, Number> windDaySeries = new XYChart.Series<>();
+        windDaySeries.setName("Дневная скорость ветра");
+        XYChart.Series<String, Number> windNightSeries = new XYChart.Series<>();
+        windNightSeries.setName("Ночная скорость ветра");
+
+        // Переменные для расчета минимальных, максимальных и средних значений
+        double minDayTemp = Double.MAX_VALUE, maxDayTemp = Double.MIN_VALUE, sumDayTemp = 0;
+        double minNightTemp = Double.MAX_VALUE, maxNightTemp = Double.MIN_VALUE, sumNightTemp = 0;
+        double minDayPressure = Double.MAX_VALUE, maxDayPressure = Double.MIN_VALUE, sumDayPressure = 0;
+        double minNightPressure = Double.MAX_VALUE, maxNightPressure = Double.MIN_VALUE, sumNightPressure = 0;
+        double minDayWind = Double.MAX_VALUE, maxDayWind = Double.MIN_VALUE, sumDayWind = 0;
+        double minNightWind = Double.MAX_VALUE, maxNightWind = Double.MIN_VALUE, sumNightWind = 0;
+
+        int count = filteredDays.size();
+
+        // Считаем количество прогнозов
+        Map<String, Long> weatherCount = new HashMap<>();
+        // Заполняем данные для графиков
+        for (Day day : filteredDays) {
+            LocalDate date = day.getDate().toLocalDate();
+            String dateStr = date.format(DateTimeFormatter.ofPattern("d MMM"));
+
+            // Получение данных
+            double dayTemp = day.getDayWeather().getTemperature();
+            double nightTemp = day.getNightWeather().getTemperature();
+            double dayPressure = day.getDayWeather().getPressure();
+            double nightPressure = day.getNightWeather().getPressure();
+            double dayWind = day.getDayWeather().getWindSpeed();
+            double nightWind = day.getNightWeather().getWindSpeed();
+
+            // Данные для температур
+            tempDaySeries.getData().add(new XYChart.Data<>(dateStr, dayTemp));
+            tempNightSeries.getData().add(new XYChart.Data<>(dateStr, nightTemp));
+
+            // Данные для давления
+            pressureDaySeries.getData().add(new XYChart.Data<>(dateStr, dayPressure));
+            pressureNightSeries.getData().add(new XYChart.Data<>(dateStr, nightPressure));
+
+            // Данные для скорости ветра
+            windDaySeries.getData().add(new XYChart.Data<>(dateStr, dayWind));
+            windNightSeries.getData().add(new XYChart.Data<>(dateStr, nightWind));
+
+            // Обновление минимальных, максимальных и суммарных значений
+            minDayTemp = Math.min(minDayTemp, dayTemp);
+            maxDayTemp = Math.max(maxDayTemp, dayTemp);
+            sumDayTemp += dayTemp;
+
+            minNightTemp = Math.min(minNightTemp, nightTemp);
+            maxNightTemp = Math.max(maxNightTemp, nightTemp);
+            sumNightTemp += nightTemp;
+
+            minDayPressure = Math.min(minDayPressure, dayPressure);
+            maxDayPressure = Math.max(maxDayPressure, dayPressure);
+            sumDayPressure += dayPressure;
+
+            minNightPressure = Math.min(minNightPressure, nightPressure);
+            maxNightPressure = Math.max(maxNightPressure, nightPressure);
+            sumNightPressure += nightPressure;
+
+            minDayWind = Math.min(minDayWind, dayWind);
+            maxDayWind = Math.max(maxDayWind, dayWind);
+            sumDayWind += dayWind;
+
+            minNightWind = Math.min(minNightWind, nightWind);
+            maxNightWind = Math.max(maxNightWind, nightWind);
+            sumNightWind += nightWind;
+
+            // Считаем количество прогнозов
+            String weatherName = day.getWeatherName().getName();
+            weatherCount.put(weatherName, weatherCount.getOrDefault(weatherName, 0L) + 1);
+        }
+
+        // Добавляем серии данных в графики
+        tempChart.getData().addAll(tempDaySeries, tempNightSeries);
+        pressureChart.getData().addAll(pressureDaySeries, pressureNightSeries);
+        windSpeedChart.getData().addAll(windDaySeries, windNightSeries);
+
+        // Заполняем статистический график
+        XYChart.Series<String, Number> statisticSeries = new XYChart.Series<>();
+        statisticSeries.setName("Количество прогнозов");
+        for (Map.Entry<String, Long> entry : weatherCount.entrySet()) {
+            statisticSeries.getData().add(new XYChart.Data<>(entry.getKey(), entry.getValue()));
+        }
+        statisticChart.getData().add(statisticSeries);
+
+        // Вычисление средних значений
+        double avgDayTemp = sumDayTemp / count,
+                avgNightTemp = sumNightTemp / count,
+                avgDayPressure = sumDayPressure / count,
+                avgNightPressure = sumNightPressure / count,
+                avgDayWind = sumDayWind / count,
+                avgNightWind = sumNightWind / count;
+
+        minText.setText(String.format("T,°C: %.2f/%.2f;\n p, мм рт. ст.: %.2f/%.2f;\n v, м/с: %.2f/%.2f",
+                minDayTemp, minNightTemp, minDayPressure, minNightPressure, minDayWind, minNightWind));
+        maxText.setText(String.format("T,°C: %.2f/%.2f;\n p, мм рт. ст.: %.2f/%.2f;\n v, м/с: %.2f/%.2f",
+                maxDayTemp, maxNightTemp, maxDayPressure, maxNightPressure, maxDayWind, maxNightWind));
+        averageText.setText(String.format("T,°C: %.2f/%.2f;\n p, мм рт. ст.: %.2f/%.2f;\n v, м/с: %.2f/%.2f",
+                avgDayTemp, avgNightTemp, avgDayPressure, avgNightPressure, avgDayWind, avgNightWind));
+        if (!weatherData.isEmpty())
+            weatherData.clear();
+        String period = chartDate.getMonthValue() + "-" + chartDate.getYear();
+        weatherData.put("period", period);
+
+        // Используем общий метод для добавления данных
+        weatherData.put("temperature", createWeatherDataMap(minDayTemp, minNightTemp, maxDayTemp, maxNightTemp, avgDayTemp, avgNightTemp));
+        weatherData.put("pressure", createWeatherDataMap(minDayPressure, minNightPressure, maxDayPressure, maxNightPressure, avgDayPressure, avgNightPressure));
+        weatherData.put("wind", createWeatherDataMap(minDayWind, minNightWind, maxDayWind, maxNightWind, avgDayWind, avgNightWind));
+    }
+
+    private Map<String, Double> createWeatherDataMap(double minDay, double minNight, double maxDay, double maxNight, double avgDay, double avgNight) {
+        Map<String, Double> data = new HashMap<>();
+        data.put("minDay", minDay);
+        data.put("minNight", minNight);
+        data.put("maxDay", maxDay);
+        data.put("maxNight", maxNight);
+        data.put("avgDay", avgDay);
+        data.put("avgNight", avgNight);
+        return data;
+    }
+
+    private void saveWeatherDataToFile(Map<String, Object> weatherData, String filePath) {
+        Gson gson = new Gson();
+        Map<String, Object> existingData = null;
+        ErrorStrategy errorStrategy = new LabelErrorStrategy(labelMessage);
+        try (FileReader reader = new FileReader(filePath)) {
+            // Читаем данные из файла и преобразуем в Map
+            existingData = gson.fromJson(reader, Map.class);
+        } catch (IOException e) {
+            // Если файл не существует или произошла ошибка, выводим сообщение и инициализируем пустую карту
+           new LogErrorStrategy().handleError("Файл не существует или ошибка при чтении.");
+        }
+
+        // Если данных нет (например, файл пустой или не существовал), создаем новую пустую карту
+        if (existingData == null) {
+            existingData = new HashMap<>();
+        }
+
+        // Извлекаем период (месяц-год) из данных
+        String period = (String) weatherData.get("period");
+
+        // Перезаписываем данные для выбранного периода
+        existingData.put(period, weatherData);
+
+        // Записываем обновленные данные в файл
+        try (FileWriter writer = new FileWriter(filePath)) {
+            gson.toJson(existingData, writer); // Преобразуем карту в JSON и записываем в файл
+            errorStrategy.handleError("Данные сохранены в файл");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    @FXML
+    void saveInFile_Pressed(ActionEvent event) {
+        String filePath = "D:\\Sasha\\3_kurs\\прогсп\\КУРСАЧ\\weather\\Client\\src\\main\\resources\\month_statistic.json";
+        ErrorStrategy errorStrategy = new LabelErrorStrategy(labelMessage);
+        if (weatherData != null) {
+            saveWeatherDataToFile(weatherData, filePath);
+        } else {
+            errorStrategy.handleError("Сначала выберите период и регион");
+        }
     }
 
 }

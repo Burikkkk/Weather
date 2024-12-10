@@ -374,7 +374,7 @@ public class ClientThread implements Runnable {
                 .orElse(null);
 
         if (existingDay != null) {
-            return new Response(ResponseStatus.OK, "Погода найдена", gson.toJson(existingDay));
+            return new Response(ResponseStatus.OK, "", gson.toJson(existingDay));
         } else {
             return new Response(ResponseStatus.ERROR, "Погода не найдена", "");
         }

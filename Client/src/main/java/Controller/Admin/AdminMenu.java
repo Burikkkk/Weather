@@ -1,4 +1,4 @@
-package GUI.Admin;
+package Controller.Admin;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

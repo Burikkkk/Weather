@@ -1,0 +1,29 @@
+{
+  "12-2024": {
+    "period": "12-2024",
+    "temperature": {
+      "minDay": -4.0,
+      "maxDay": 2.0,
+      "avgNight": -3.806451612903226,
+      "minNight": -8.0,
+      "maxNight": 4.9E-324,
+      "avgDay": -0.8387096774193549
+    },
+    "pressure": {
+      "minDay": 742.0,
+      "maxDay": 772.0,
+      "avgNight": 750.0967741935484,
+      "minNight": 739.0,
+      "maxNight": 760.0,
+      "avgDay": 749.2258064516129
+    },
+    "wind": {
+      "minDay": 2.3,
+      "maxDay": 5.3,
+      "avgNight": 2.9129032258064513,
+      "minNight": 1.2,
+      "maxNight": 5.0,
+      "avgDay": 3.458064516129032
+    }
+  }
+}

@@ -1,11 +1,12 @@
-package GUI;
+package Controller.Entrance;
 
-import Enums.RequestType;
+import Controller.Validation.ErrorStrategy;
+import Controller.Validation.LabelErrorStrategy;
+import Controller.Validation.LogErrorStrategy;
 import Enums.ResponseStatus;
-import Enums.Roles;
 import Models.Entities.User;
-import Models.TCP.Request;
 import Models.TCP.Response;
+import Service.EntranceService;
 import Utilities.ClientSocket;
 import com.google.gson.Gson;
 import javafx.event.ActionEvent;
@@ -34,50 +35,58 @@ public class Login {
 
     @FXML
     void login_Pressed(ActionEvent event) throws IOException {
-        labelMessage.setVisible(false);
-        User user = new User();
+        // Установка стратегии обработки ошибок
+        ErrorStrategy errorStrategy = new LabelErrorStrategy(labelMessage);
+
+        // Валидация ввода
         if (textfieldLogin.getText().isEmpty() || passwordfieldPassword.getText().isEmpty()) {
-            labelMessage.setText("Введите логин и пароль!");
-            labelMessage.setVisible(true);
+            errorStrategy.handleError("Введите логин и пароль!");
             return;
         }
+        // Создание пользователя
+        User user = new User();
         user.setLogin(textfieldLogin.getText());
-        String pass=passwordfieldPassword.getText();
-        user.setPassword(User.getHash(pass));
+        user.setPassword(User.getHash(passwordfieldPassword.getText()));
 
-        Request requestModel = new Request();
-        requestModel.setRequestMessage(new Gson().toJson(user));
-        requestModel.setRequestType(RequestType.LOGIN);
-        ClientSocket.getInstance().getOut().println(new Gson().toJson(requestModel));
-        ClientSocket.getInstance().getOut().flush();
+        // Вызов сервиса авторизации
+        EntranceService loginService = new EntranceService();
+        User loggedInUser = loginService.login(user, labelMessage);
 
-        String answer = ClientSocket.getInstance().getInStream().readLine();
-        Response responseModel = new Gson().fromJson(answer, Response.class);
-        if (responseModel.getResponseStatus() == ResponseStatus.OK) {
-            labelMessage.setVisible(false);
-            ClientSocket.getInstance().setUser(new Gson().fromJson(responseModel.getResponseData(), User.class));
-            Stage stage = (Stage) buttonLogin.getScene().getWindow();
-            Parent root = null;
-            labelMessage.setText(responseModel.getResponseMessage());
-            labelMessage.setVisible(true);
-            if (ClientSocket.getInstance().getUser() != null) {
-                if (Roles.user.name().equals(ClientSocket.getInstance().getUser().getRole()))
-                    root = FXMLLoader.load(getClass().getResource("/fxml/User_menu.fxml"));
-                else if (Roles.admin.name().equals(ClientSocket.getInstance().getUser().getRole()))
-                    root = FXMLLoader.load(getClass().getResource("/fxml/Admin_menu.fxml"));
-                else if (Roles.employee.name().equals(ClientSocket.getInstance().getUser().getRole())){
-                    root = FXMLLoader.load(getClass().getResource("/fxml/Employee_menu.fxml"));
-                }
-
-                Scene newScene = new Scene(root);
-                stage.setScene(newScene);
-                stage.centerOnScreen();
-            }
+        if (loggedInUser != null) {
+            ClientSocket.getInstance().setUser(loggedInUser);
+            navigateToRoleScreen(ClientSocket.getInstance().getUser());
         } else {
-            labelMessage.setText(responseModel.getResponseMessage());
-            labelMessage.setVisible(true);
+            new LogErrorStrategy().handleError("Ошибка авторизации");
+        }
+
+
+    }
+
+    private void navigateToRoleScreen(User user) throws IOException {
+        Stage stage = (Stage) buttonLogin.getScene().getWindow();
+        Parent root = null;
+
+        if (user != null) {
+            switch (user.getRole()) {
+                case "user":
+                    root = FXMLLoader.load(getClass().getResource("/fxml/User_menu.fxml"));
+                    break;
+                case "admin":
+                    root = FXMLLoader.load(getClass().getResource("/fxml/Admin_menu.fxml"));
+                    break;
+                case "employee":
+                    root = FXMLLoader.load(getClass().getResource("/fxml/Employee_menu.fxml"));
+                    break;
+            }
+        }
+
+        if (root != null) {
+            Scene newScene = new Scene(root);
+            stage.setScene(newScene);
+            stage.centerOnScreen();
         }
     }
+
 
     @FXML
     void register_Pressed(ActionEvent event) throws IOException {

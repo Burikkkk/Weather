@@ -2,7 +2,9 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.chart.AreaChart?>
+<?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
@@ -28,7 +30,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="847.0" prefWidth="1464.0" styleClass="bg-form" stylesheets="@../css/menu.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Employee.EmployeeMenu">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="847.0" prefWidth="1464.0" styleClass="bg-form" stylesheets="@../css/menu.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.User.EmployeeMenu">
     <children>
         <BorderPane prefHeight="847.0" prefWidth="1464.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <center>
@@ -471,7 +473,97 @@
                                 </AnchorPane>
                             </children>
                         </AnchorPane>
-                  <AnchorPane fx:id="panel3" layoutX="10.0" layoutY="10.0" prefHeight="806.0" prefWidth="1212.0" styleClass="bg-white" visible="false" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
+                  <AnchorPane fx:id="panel3" layoutX="10.0" layoutY="10.0" prefHeight="806.0" prefWidth="1212.0" styleClass="button-transparent" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                     <children>
+                        <AnchorPane layoutX="614.0" prefHeight="786.0" prefWidth="669.0" styleClass="bg-white" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="510.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <LineChart fx:id="tempChart" layoutX="25.0" layoutY="50.0" prefHeight="260.0" prefWidth="618.0" styleClass="other-charts" title="Температура" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="27.0" AnchorPane.topAnchor="5.0">
+                                <xAxis>
+                                  <CategoryAxis animated="false" prefHeight="85.0" prefWidth="537.0" side="BOTTOM" styleClass="title-text" tickLabelFill="#00244c" tickLabelRotation="80.0" />
+                                </xAxis>
+                                <yAxis>
+                                  <NumberAxis label="T, °C" side="LEFT" styleClass="title-text" tickLabelFill="#00244c" />
+                                </yAxis>
+                              </LineChart>
+                              <LineChart fx:id="pressureChart" horizontalZeroLineVisible="false" layoutX="27.0" layoutY="265.0" prefHeight="260.0" prefWidth="618.0" styleClass="other-charts" title="Давление" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="27.0">
+                                 <xAxis>
+                                    <CategoryAxis animated="false" prefHeight="85.0" prefWidth="546.0" side="BOTTOM" styleClass="title-text" tickLabelFill="#00244c" tickLabelRotation="80.0" />
+                                 </xAxis>
+                                 <yAxis>
+                                    <NumberAxis label="p, мм рт. ст." prefHeight="83.0" prefWidth="52.0" side="LEFT" styleClass="title-text" tickLabelFill="#00244c" />
+                                 </yAxis>
+                              </LineChart>
+                              <LineChart fx:id="windSpeedChart" layoutX="25.0" layoutY="521.0" prefHeight="260.0" prefWidth="620.0" styleClass="other-charts" title="Скорость ветра" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="27.0">
+                                 <xAxis>
+                                    <CategoryAxis animated="false" prefHeight="85.0" prefWidth="537.0" side="BOTTOM" styleClass="title-text" tickLabelFill="#00244c" tickLabelRotation="80.0" />
+                                 </xAxis>
+                                 <yAxis>
+                                    <NumberAxis label="v, м/с" side="LEFT" styleClass="title-text" tickLabelFill="#00244c" />
+                                 </yAxis>
+                              </LineChart>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="786.0" prefWidth="500.0" styleClass="bg-white" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <MenuButton fx:id="regionChart" layoutX="296.0" layoutY="28.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="170.0" styleClass="btn" text="Регион" />
+                              <MenuButton fx:id="monthMenuBtn2" layoutX="35.0" layoutY="28.0" mnemonicParsing="false" onAction="#monthPressed2" prefHeight="26.0" prefWidth="100.0" styleClass="btn" text="Месяц">
+                                 <items>
+                                    <MenuItem mnemonicParsing="false" onAction="#monthPressed2" styleClass="menu-item-date" text="Январь" />
+                                    <MenuItem mnemonicParsing="false" onAction="#monthPressed2" styleClass="menu-item-date" text="Февраль" />
+                                    <MenuItem mnemonicParsing="false" onAction="#monthPressed2" styleClass="menu-item-date" text="Март" />
+                                    <MenuItem mnemonicParsing="false" onAction="#monthPressed2" styleClass="menu-item-date" text="Апрель" />
+                                    <MenuItem mnemonicParsing="false" onAction="#monthPressed2" styleClass="menu-item-date" text="Май" />
+                                    <MenuItem mnemonicParsing="false" onAction="#monthPressed2" styleClass="menu-item-date" text="Июнь" />
+                                    <MenuItem mnemonicParsing="false" onAction="#monthPressed2" styleClass="menu-item-date" text="Июль" />
+                                    <MenuItem mnemonicParsing="false" onAction="#monthPressed2" styleClass="menu-item-date" text="Август" />
+                                    <MenuItem mnemonicParsing="false" onAction="#monthPressed2" styleClass="menu-item-date" text="Сентябрь" />
+                                    <MenuItem mnemonicParsing="false" onAction="#monthPressed2" styleClass="menu-item-date" text="Октябрь" />
+                                    <MenuItem mnemonicParsing="false" onAction="#monthPressed2" styleClass="menu-item-date" text="Ноябрь" />
+                                    <MenuItem mnemonicParsing="false" onAction="#monthPressed2" styleClass="menu-item-date" text="Декабрь" />
+                                 </items>
+                                 <font>
+                                    <Font name="Arial" size="14.0" />
+                                 </font>
+                              </MenuButton>
+                              <MenuButton fx:id="yearMenuBtn2" layoutX="167.0" layoutY="28.0" mnemonicParsing="false" onAction="#yearPressed2" prefHeight="26.0" prefWidth="100.0" styleClass="btn" text="Год">
+                                 <items>
+                                    <MenuItem mnemonicParsing="false" onAction="#yearPressed2" styleClass="menu-item-date" text="2024" />
+                                    <MenuItem mnemonicParsing="false" onAction="#yearPressed2" styleClass="menu-item-date" text="2025" />
+                                 </items>
+                                 <font>
+                                    <Font name="Arial" size="14.0" />
+                                 </font>
+                              </MenuButton>
+                              <BarChart fx:id="statisticChart" layoutX="19.0" layoutY="97.0" prefHeight="354.0" prefWidth="462.0" styleClass="other-charts" title="Прогнозы" AnchorPane.leftAnchor="19.0" AnchorPane.rightAnchor="19.0">
+                                <xAxis>
+                                  <CategoryAxis animated="false" prefHeight="91.0" prefWidth="405.0" side="BOTTOM" styleClass="title-text" tickLabelFill="#00244c" tickLabelRotation="80.0" />
+                                </xAxis>
+                                <yAxis>
+                                  <NumberAxis label="Количество дней" side="LEFT" styleClass="title-text" tickLabelFill="#00244c" />
+                                </yAxis>
+                              </BarChart>
+                              <Label layoutX="20.0" layoutY="472.0" styleClass="title-text" text="Минимальные значения:" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="275.0">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="20.0" layoutY="545.0" styleClass="title-text" text="Максимальные значения:" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="275.0">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="15.0" layoutY="618.0" styleClass="title-text" text="Средние значения:" AnchorPane.leftAnchor="15.0">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <Button fx:id="saveInFile" layoutX="341.0" layoutY="726.0" mnemonicParsing="false" onAction="#saveInFile_Pressed" styleClass="btn" text="Записать в файл" />
+                              <Label fx:id="averageText" layoutX="167.0" layoutY="618.0" prefHeight="70.0" prefWidth="312.0" text="Label" />
+                              <Label fx:id="maxText" layoutX="215.0" layoutY="545.0" prefHeight="70.0" prefWidth="267.0" text="Label" />
+                              <Label fx:id="minText" layoutX="215.0" layoutY="472.0" prefHeight="70.0" prefWidth="267.0" text="Label" />
+                           </children>
+                        </AnchorPane>
+                     </children></AnchorPane>
                   <AnchorPane fx:id="panel1" layoutX="10.0" layoutY="10.0" prefHeight="786.0" prefWidth="1179.0" styleClass="button-transparent" visible="false" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                       <children>
                           <AnchorPane prefHeight="280.0" prefWidth="595.0" styleClass="today-weather" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -690,12 +782,12 @@
                           </AnchorPane>
                         <AnchorPane fx:id="panelWeather" prefHeight="491.0" prefWidth="595.0" styleClass="bg-white" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="290.0">
                            <children>
-                              <AreaChart fx:id="temperatureChart" alternativeColumnFillVisible="true" animated="false" layoutX="11.0" layoutY="63.0" prefHeight="369.0" prefWidth="555.0" styleClass="temperature-chart" AnchorPane.bottomAnchor="64.0" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="29.0" AnchorPane.topAnchor="63.0">
+                              <AreaChart fx:id="temperatureChart" alternativeColumnFillVisible="true" layoutX="11.0" layoutY="63.0" prefHeight="369.0" prefWidth="555.0" styleClass="temperature-chart" AnchorPane.bottomAnchor="64.0" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="29.0" AnchorPane.topAnchor="63.0">
                                 <xAxis>
-                                  <CategoryAxis prefHeight="83.0" prefWidth="495.0" side="BOTTOM" />
+                                  <CategoryAxis animated="false" prefHeight="83.0" prefWidth="495.0" side="BOTTOM" styleClass="title-text" tickLabelRotation="45.0" />
                                 </xAxis>
                                 <yAxis>
-                                  <NumberAxis prefWidth="30.0" side="LEFT" />
+                                  <NumberAxis label="T, °" prefHeight="256.0" prefWidth="43.0" side="LEFT" />
                                 </yAxis>
                               </AreaChart>
                               <Label layoutX="201.0" layoutY="14.0" prefHeight="36.0" prefWidth="194.0" styleClass="weather-gradient" text="Температура">
@@ -706,10 +798,10 @@
 
 
 
-                              <ToggleButton fx:id="threeDays" layoutX="49.0" layoutY="450.0" mnemonicParsing="false" onAction="#threeDays_Pressed" prefHeight="32.0" prefWidth="70.0" styleClass="btn" text="3 дня" />
-                              <ToggleButton fx:id="monthPeriod" layoutX="209.0" layoutY="450.0" mnemonicParsing="false" onAction="#monthPeriod_Pressed" prefHeight="32.0" prefWidth="70.0" styleClass="btn" text="Месяц" />
-                              <ToggleButton fx:id="week" layoutX="129.0" layoutY="450.0" mnemonicParsing="false" onAction="#week_Pressed" prefHeight="32.0" prefWidth="70.0" styleClass="btn" text="Неделя" />
-                              <Button fx:id="save" layoutX="428.0" layoutY="450.0" mnemonicParsing="false" onAction="#savePressed" prefHeight="32.0" prefWidth="120.0" styleClass="btn" text="Сохранить" />
+                              <ToggleButton fx:id="threeDays" layoutX="50.0" layoutY="450.0" mnemonicParsing="false" onAction="#threeDays_Pressed" prefHeight="32.0" prefWidth="70.0" styleClass="btn" text="3 дня" AnchorPane.bottomAnchor="14.0" />
+                              <ToggleButton fx:id="monthPeriod" layoutX="209.0" layoutY="450.0" mnemonicParsing="false" onAction="#monthPeriod_Pressed" prefHeight="32.0" prefWidth="70.0" styleClass="btn" text="Месяц" AnchorPane.bottomAnchor="14.0" />
+                              <ToggleButton fx:id="week" layoutX="129.0" layoutY="450.0" mnemonicParsing="false" onAction="#week_Pressed" prefHeight="32.0" prefWidth="70.0" styleClass="btn" text="Неделя" AnchorPane.bottomAnchor="14.0" />
+                              <Button fx:id="save" layoutX="428.0" layoutY="450.0" mnemonicParsing="false" onAction="#savePressed" prefHeight="32.0" prefWidth="120.0" styleClass="btn" text="Сохранить" AnchorPane.bottomAnchor="14.0" />
 
                            </children></AnchorPane>
                         <AnchorPane fx:id="panelWeather1" prefHeight="786.0" prefWidth="573.0" styleClass="bg-white" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="605.0" AnchorPane.topAnchor="0.0">
