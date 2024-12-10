@@ -473,29 +473,29 @@
                                 </AnchorPane>
                             </children>
                         </AnchorPane>
-                  <AnchorPane fx:id="panel3" layoutX="10.0" layoutY="10.0" prefHeight="806.0" prefWidth="1212.0" styleClass="button-transparent" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                  <AnchorPane fx:id="panel3" layoutX="10.0" layoutY="10.0" prefHeight="806.0" prefWidth="1212.0" styleClass="button-transparent" visible="false" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                      <children>
                         <AnchorPane layoutX="614.0" prefHeight="786.0" prefWidth="669.0" styleClass="bg-white" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="510.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <LineChart fx:id="tempChart" layoutX="25.0" layoutY="50.0" prefHeight="260.0" prefWidth="618.0" styleClass="other-charts" title="Температура" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="27.0" AnchorPane.topAnchor="5.0">
+                              <LineChart fx:id="tempChart" alternativeColumnFillVisible="true" layoutX="25.0" layoutY="50.0" legendVisible="false" prefHeight="260.0" prefWidth="618.0" styleClass="other-charts" title="Температура" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="27.0" AnchorPane.topAnchor="5.0">
                                 <xAxis>
-                                  <CategoryAxis animated="false" prefHeight="85.0" prefWidth="537.0" side="BOTTOM" styleClass="title-text" tickLabelFill="#00244c" tickLabelRotation="80.0" />
+                                  <CategoryAxis animated="false" prefHeight="43.0" prefWidth="537.0" side="BOTTOM" styleClass="title-text" tickLabelFill="#00244c" tickLabelRotation="80.0" />
                                 </xAxis>
                                 <yAxis>
                                   <NumberAxis label="T, °C" side="LEFT" styleClass="title-text" tickLabelFill="#00244c" />
                                 </yAxis>
                               </LineChart>
-                              <LineChart fx:id="pressureChart" horizontalZeroLineVisible="false" layoutX="27.0" layoutY="265.0" prefHeight="260.0" prefWidth="618.0" styleClass="other-charts" title="Давление" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="27.0">
+                              <LineChart fx:id="pressureChart" alternativeColumnFillVisible="true" horizontalZeroLineVisible="false" layoutX="27.0" layoutY="265.0" legendVisible="false" prefHeight="260.0" prefWidth="618.0" styleClass="other-charts" title="Давление" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="27.0">
                                  <xAxis>
-                                    <CategoryAxis animated="false" prefHeight="85.0" prefWidth="546.0" side="BOTTOM" styleClass="title-text" tickLabelFill="#00244c" tickLabelRotation="80.0" />
+                                    <CategoryAxis animated="false" prefHeight="44.0" prefWidth="536.0" side="BOTTOM" styleClass="title-text" tickLabelFill="#00244c" tickLabelRotation="80.0" />
                                  </xAxis>
                                  <yAxis>
                                     <NumberAxis label="p, мм рт. ст." prefHeight="83.0" prefWidth="52.0" side="LEFT" styleClass="title-text" tickLabelFill="#00244c" />
                                  </yAxis>
                               </LineChart>
-                              <LineChart fx:id="windSpeedChart" layoutX="25.0" layoutY="521.0" prefHeight="260.0" prefWidth="620.0" styleClass="other-charts" title="Скорость ветра" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="27.0">
+                              <LineChart fx:id="windSpeedChart" alternativeColumnFillVisible="true" layoutX="25.0" layoutY="521.0" prefHeight="260.0" prefWidth="620.0" styleClass="other-charts" title="Скорость ветра" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="27.0">
                                  <xAxis>
-                                    <CategoryAxis animated="false" prefHeight="85.0" prefWidth="537.0" side="BOTTOM" styleClass="title-text" tickLabelFill="#00244c" tickLabelRotation="80.0" />
+                                    <CategoryAxis animated="false" prefHeight="50.0" prefWidth="537.0" side="BOTTOM" styleClass="title-text" tickLabelFill="#00244c" tickLabelRotation="80.0" />
                                  </xAxis>
                                  <yAxis>
                                     <NumberAxis label="v, м/с" side="LEFT" styleClass="title-text" tickLabelFill="#00244c" />
@@ -542,25 +542,25 @@
                                   <NumberAxis label="Количество дней" side="LEFT" styleClass="title-text" tickLabelFill="#00244c" />
                                 </yAxis>
                               </BarChart>
-                              <Label layoutX="20.0" layoutY="472.0" styleClass="title-text" text="Минимальные значения:" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="275.0">
+                              <Label alignment="TOP_LEFT" layoutX="20.0" layoutY="472.0" styleClass="title-text" text="Минимальные значения:&#10;(днём/ночью)" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="275.0">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="20.0" layoutY="545.0" styleClass="title-text" text="Максимальные значения:" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="275.0">
+                              <Label alignment="TOP_LEFT" layoutX="20.0" layoutY="545.0" styleClass="title-text" text="Максимальные значения:&#10;(днём/ночью)" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="275.0">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="15.0" layoutY="618.0" styleClass="title-text" text="Средние значения:" AnchorPane.leftAnchor="15.0">
+                              <Label alignment="TOP_CENTER" layoutX="15.0" layoutY="618.0" prefHeight="49.0" prefWidth="140.0" styleClass="title-text" text="Средние значения:&#10;(днём/ночью)" AnchorPane.leftAnchor="15.0">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
                               </Label>
                               <Button fx:id="saveInFile" layoutX="341.0" layoutY="726.0" mnemonicParsing="false" onAction="#saveInFile_Pressed" styleClass="btn" text="Записать в файл" />
-                              <Label fx:id="averageText" layoutX="167.0" layoutY="618.0" prefHeight="70.0" prefWidth="312.0" text="Label" />
-                              <Label fx:id="maxText" layoutX="215.0" layoutY="545.0" prefHeight="70.0" prefWidth="267.0" text="Label" />
-                              <Label fx:id="minText" layoutX="215.0" layoutY="472.0" prefHeight="70.0" prefWidth="267.0" text="Label" />
+                              <Label fx:id="averageText" layoutX="167.0" layoutY="618.0" prefHeight="70.0" prefWidth="312.0" styleClass="title-text" />
+                              <Label fx:id="maxText" layoutX="215.0" layoutY="545.0" prefHeight="70.0" prefWidth="267.0" styleClass="title-text" />
+                              <Label fx:id="minText" layoutX="215.0" layoutY="472.0" prefHeight="70.0" prefWidth="267.0" styleClass="title-text" />
                            </children>
                         </AnchorPane>
                      </children></AnchorPane>
@@ -1102,7 +1102,7 @@
                                 <Image url="@../images/user1.png" />
                             </image>
                         </ImageView>
-                        <Label fx:id="labelError" alignment="CENTER" layoutX="5.0" layoutY="725.0" prefHeight="20.0" prefWidth="162.0" styleClass="error-text" text="Ошибка" textFill="RED" visible="false" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                        <Label fx:id="labelError" alignment="TOP_CENTER" layoutX="5.0" layoutY="626.0" prefHeight="119.0" prefWidth="262.0" styleClass="error-text" text="Ошибка" textFill="RED" visible="false" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                             <font>
                                 <Font size="14.0" />
                             </font>

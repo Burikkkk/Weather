@@ -1,6 +1,8 @@
 package Controller.User;
 
 import Controller.Calendar.CalendarData;
+import Controller.File.AnaliticsData;
+import Controller.File.Regions;
 import Controller.Validation.ErrorStrategy;
 import Controller.Validation.LabelErrorStrategy;
 import Controller.Validation.LogErrorStrategy;
@@ -10,13 +12,17 @@ import Service.DashboardService;
 import Service.DayService;
 import Service.LocationService;
 import Service.UserService;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
-import java.io.FileReader;
-import java.io.FileWriter;
+
+import java.io.*;
+import java.lang.reflect.Type;
+import java.text.DecimalFormat;
 import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import Models.Entities.*;
@@ -34,7 +40,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import java.io.IOException;
+
 import java.net.URL;
 import java.sql.Date;
 import java.time.LocalDate;
@@ -118,12 +124,15 @@ public class EmployeeMenu implements Initializable {
     private Day todayWeather, calendarWeather, rowDay;
     private String selectedTown, selectedTownCalendar, selectedTownChart;
     private ObservableList<Day> tableDays;
-    private Map<String, Object> weatherData = new HashMap<>();
+    private AnaliticsData analiticsData=new AnaliticsData();
+    private Regions analiticsRegions = new Regions();
 
     private LocationService locationService = new LocationService();
     private DayService dayService = new DayService();
     private UserService userService = new UserService();
     private DashboardService dashboardService = new DashboardService();
+
+
 
 
     @Override
@@ -998,6 +1007,7 @@ public class EmployeeMenu implements Initializable {
             calendarDate = LocalDate.of(year, month, dayInMonth); // Устанавливаем дату
 
             initSelectedWeather();
+            updateChart();
 
         } catch (NumberFormatException e) {
             ErrorStrategy errorStrategy = new LabelErrorStrategy(labelError);
@@ -1297,7 +1307,7 @@ public class EmployeeMenu implements Initializable {
 
 
     public void updateStatisticCharts() {
-        ErrorStrategy errorStrategy = new LabelErrorStrategy(labelMessage);
+        ErrorStrategy errorStrategy = new LabelErrorStrategy(labelError);
         if (!monthChosen2 || !yearChosen2 || !regionChosen2) return; // Проверяем, что все параметры выбраны
 
         // Фильтруем данные по выбранным месяцу, году и городу
@@ -1310,6 +1320,11 @@ public class EmployeeMenu implements Initializable {
 
         if (filteredDays.isEmpty()) {
             errorStrategy.handleError("Нет данных для выбранного периода и города.");
+
+            tempChart.getData().clear();
+            pressureChart.getData().clear();
+            windSpeedChart.getData().clear();
+            statisticChart.getData().clear();
             return;
         }
 
@@ -1318,6 +1333,11 @@ public class EmployeeMenu implements Initializable {
         pressureChart.getData().clear();
         windSpeedChart.getData().clear();
         statisticChart.getData().clear();
+
+        NumberAxis pressureYAxis = (NumberAxis) pressureChart.getYAxis();
+        pressureYAxis.setLowerBound(740);
+        pressureYAxis.setAutoRanging(false);
+        pressureYAxis.setUpperBound(800);
 
         // Создаем серии для графиков
         XYChart.Series<String, Number> tempDaySeries = new XYChart.Series<>();
@@ -1329,6 +1349,7 @@ public class EmployeeMenu implements Initializable {
         pressureDaySeries.setName("Дневное давление");
         XYChart.Series<String, Number> pressureNightSeries = new XYChart.Series<>();
         pressureNightSeries.setName("Ночное давление");
+
 
         XYChart.Series<String, Number> windDaySeries = new XYChart.Series<>();
         windDaySeries.setName("Дневная скорость ветра");
@@ -1423,63 +1444,97 @@ public class EmployeeMenu implements Initializable {
                 avgDayWind = sumDayWind / count,
                 avgNightWind = sumNightWind / count;
 
-        minText.setText(String.format("T,°C: %.2f/%.2f;\n p, мм рт. ст.: %.2f/%.2f;\n v, м/с: %.2f/%.2f",
+        minText.setText(String.format("Температура,°C: %.2f/%.2f;\nДавление, мм рт. ст.: %.2f/%.2f;\nСкорость, м/с: %.2f/%.2f",
                 minDayTemp, minNightTemp, minDayPressure, minNightPressure, minDayWind, minNightWind));
-        maxText.setText(String.format("T,°C: %.2f/%.2f;\n p, мм рт. ст.: %.2f/%.2f;\n v, м/с: %.2f/%.2f",
+        maxText.setText(String.format("Температура,°C: %.2f/%.2f;\nДавление, мм рт. ст.: %.2f/%.2f;\nСкорость, м/с: %.2f/%.2f",
                 maxDayTemp, maxNightTemp, maxDayPressure, maxNightPressure, maxDayWind, maxNightWind));
-        averageText.setText(String.format("T,°C: %.2f/%.2f;\n p, мм рт. ст.: %.2f/%.2f;\n v, м/с: %.2f/%.2f",
+        averageText.setText(String.format("Температура,°C: %.2f/%.2f;\nДавление, мм рт. ст.: %.2f/%.2f;\nСкорость, м/с: %.2f/%.2f",
                 avgDayTemp, avgNightTemp, avgDayPressure, avgNightPressure, avgDayWind, avgNightWind));
-        if (!weatherData.isEmpty())
-            weatherData.clear();
+        if (analiticsData!=null)
+            analiticsData=new AnaliticsData();
         String period = chartDate.getMonthValue() + "-" + chartDate.getYear();
-        weatherData.put("period", period);
 
-        // Используем общий метод для добавления данных
-        weatherData.put("temperature", createWeatherDataMap(minDayTemp, minNightTemp, maxDayTemp, maxNightTemp, avgDayTemp, avgNightTemp));
-        weatherData.put("pressure", createWeatherDataMap(minDayPressure, minNightPressure, maxDayPressure, maxNightPressure, avgDayPressure, avgNightPressure));
-        weatherData.put("wind", createWeatherDataMap(minDayWind, minNightWind, maxDayWind, maxNightWind, avgDayWind, avgNightWind));
+        Map<String, Object> regionData = new HashMap<>();
+        regionData.put("temperature", createWeatherDataMap(minDayTemp, minNightTemp, maxDayTemp, maxNightTemp, avgDayTemp, avgNightTemp));
+        regionData.put("pressure", createWeatherDataMap(minDayPressure, minNightPressure, maxDayPressure, maxNightPressure, avgDayPressure, avgNightPressure));
+        regionData.put("wind", createWeatherDataMap(minDayWind, minNightWind, maxDayWind, maxNightWind, avgDayWind, avgNightWind));
+
+        analiticsData.setPeriod(period);
+        analiticsRegions.setRegionData(regionData);
+        analiticsRegions.setName(selectedTownChart);
+        List<Regions> analiticsRegionsList=new ArrayList<>();
+        analiticsRegionsList.add(analiticsRegions);
+        analiticsData.setRegions(analiticsRegionsList);
     }
 
-    private Map<String, Double> createWeatherDataMap(double minDay, double minNight, double maxDay, double maxNight, double avgDay, double avgNight) {
-        Map<String, Double> data = new HashMap<>();
-        data.put("minDay", minDay);
-        data.put("minNight", minNight);
-        data.put("maxDay", maxDay);
-        data.put("maxNight", maxNight);
-        data.put("avgDay", avgDay);
-        data.put("avgNight", avgNight);
+    private Map<String, String> createWeatherDataMap(double minDay, double minNight, double maxDay, double maxNight, double avgDay, double avgNight) {
+        DecimalFormat df = new DecimalFormat("#.##"); // Формат для двух знаков после запятой
+        Map<String, String> data = new HashMap<>();
+        data.put("minDay", df.format(minDay));
+        data.put("minNight", df.format(minNight));
+        data.put("maxDay", df.format(maxDay));
+        data.put("maxNight", df.format(maxNight));
+        data.put("avgDay", df.format(avgDay));
+        data.put("avgNight", df.format(avgNight));
         return data;
     }
 
-    private void saveWeatherDataToFile(Map<String, Object> weatherData, String filePath) {
+
+    public static List<AnaliticsData> readAnaliticsDataFromFile(String filePath) {
         Gson gson = new Gson();
-        Map<String, Object> existingData = null;
-        ErrorStrategy errorStrategy = new LabelErrorStrategy(labelMessage);
-        try (FileReader reader = new FileReader(filePath)) {
-            // Читаем данные из файла и преобразуем в Map
-            existingData = gson.fromJson(reader, Map.class);
-        } catch (IOException e) {
-            // Если файл не существует или произошла ошибка, выводим сообщение и инициализируем пустую карту
-           new LogErrorStrategy().handleError("Файл не существует или ошибка при чтении.");
-        }
-
-        // Если данных нет (например, файл пустой или не существовал), создаем новую пустую карту
-        if (existingData == null) {
-            existingData = new HashMap<>();
-        }
-
-        // Извлекаем период (месяц-год) из данных
-        String period = (String) weatherData.get("period");
-
-        // Перезаписываем данные для выбранного периода
-        existingData.put(period, weatherData);
-
-        // Записываем обновленные данные в файл
-        try (FileWriter writer = new FileWriter(filePath)) {
-            gson.toJson(existingData, writer); // Преобразуем карту в JSON и записываем в файл
-            errorStrategy.handleError("Данные сохранены в файл");
+        try (Reader reader = new FileReader(filePath)) {
+            Type listType = new TypeToken<List<AnaliticsData>>() {}.getType();
+            return gson.fromJson(reader, listType);  // Десериализация
         } catch (IOException e) {
             e.printStackTrace();
+        }
+        return null;  // Возвращаем null в случае ошибки
+    }
+
+    // Запись списка AnaliticsData в файл JSON
+    public static void writeAnaliticsDataToFile(String filePath, List<AnaliticsData> analiticsDataList) {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        try (Writer writer = new FileWriter(filePath)) {
+            gson.toJson(analiticsDataList, writer);  // Сериализация в JSON
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void updateAnaliticsData(List<AnaliticsData> analiticsDataList) {
+        boolean isUpdated = false;
+        String newPeriod = analiticsData.getPeriod();
+        List<Regions> newRegions = analiticsData.getRegions();
+        if(analiticsDataList!=null) {
+            // Поиск по period
+            for (AnaliticsData data : analiticsDataList) {
+                if (data.getPeriod().equals(newPeriod)) {
+                    // Если период совпадает, ищем и обновляем регион
+                    for (Regions region : newRegions) {
+                        boolean regionFound = false;
+                        for (Regions existingRegion : data.getRegions()) {
+                            if (existingRegion.getName().equals(region.getName())) {
+                                // Если регион найден, обновляем его данные
+                                existingRegion.setRegionData(region.getRegionData());
+                                regionFound = true;
+                                break;
+                            }
+                        }
+                        if (!regionFound) {
+                            // Если регион не найден, добавляем новый
+                            data.getRegions().add(region);
+                        }
+                    }
+                    isUpdated = true;
+                    break;
+                }
+            }
+        }
+
+        // Если период не найден, добавляем новую запись
+        if (!isUpdated) {
+            analiticsDataList.add(analiticsData);
         }
     }
 
@@ -1487,9 +1542,24 @@ public class EmployeeMenu implements Initializable {
     @FXML
     void saveInFile_Pressed(ActionEvent event) {
         String filePath = "D:\\Sasha\\3_kurs\\прогсп\\КУРСАЧ\\weather\\Client\\src\\main\\resources\\month_statistic.json";
-        ErrorStrategy errorStrategy = new LabelErrorStrategy(labelMessage);
-        if (weatherData != null) {
-            saveWeatherDataToFile(weatherData, filePath);
+        ErrorStrategy errorStrategy = new LabelErrorStrategy(labelError);
+        if (analiticsData != null) {
+        //Чтение данных из файла
+        List<AnaliticsData> analiticsDataList = readAnaliticsDataFromFile(filePath);
+        if (analiticsDataList == null) {
+            analiticsDataList = new ArrayList<>();  // Если файл пустой, создаем новый список
+        }
+
+        //Обновляем или добавляем данные
+        updateAnaliticsData(analiticsDataList);
+
+        //Записываем обновленные данные обратно в файл
+        writeAnaliticsDataToFile(filePath, analiticsDataList);
+
+        errorStrategy.handleError("Данные добавлены в файл.");
+
+
+
         } else {
             errorStrategy.handleError("Сначала выберите период и регион");
         }
