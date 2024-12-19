@@ -37,7 +37,7 @@ public class DayService {
                 }.getType();
                 return new Gson().fromJson(responseModel.getResponseData(), weatherListType);
             } else {
-                errorStrategy.handleError("Ошибка загрузки данных: " + responseModel.getResponseMessage());
+                errorStrategy.handleError(responseModel.getResponseMessage());
             }
         } catch (IOException e) {
             new LabelErrorStrategy(labelMessage).handleError("Ошибка связи с сервером.");
@@ -64,7 +64,7 @@ public class DayService {
                 errorStrategy.handleError(responseModel.getResponseMessage());
                 return new Gson().fromJson(responseModel.getResponseData(), Day.class);
             } else {
-                errorStrategy.handleError("Ошибка загрузки данных: " + responseModel.getResponseMessage());
+                errorStrategy.handleError(responseModel.getResponseMessage());
             }
         } catch (IOException e) {
             errorStrategy.handleError("Ошибка связи с сервером.");
@@ -102,7 +102,7 @@ public class DayService {
                 return "OK";
 
             } else {
-                errorStrategy.handleError("Ошибка загрузки данных: " + responseModel.getResponseMessage());
+                errorStrategy.handleError(responseModel.getResponseMessage());
             }
         } catch (IOException e) {
             new LabelErrorStrategy(labelMessage).handleError("Ошибка связи с сервером.");

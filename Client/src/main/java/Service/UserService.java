@@ -110,7 +110,7 @@ public class UserService {
             return "OK";
 
         } else {
-                errorStrategy.handleError("Ошибка загрузки данных: " + responseModel.getResponseMessage());
+                errorStrategy.handleError(responseModel.getResponseMessage());
             }
         } catch (IOException e) {
             errorStrategy.handleError("Ошибка связи с сервером.");

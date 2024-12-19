@@ -25,8 +25,6 @@ import java.io.IOException;
 
 public class ForgotPassword {
 
-    private User user;
-
     @FXML
     private Button buttonSave, buttonBack, buttonFindUser;
     @FXML
@@ -35,6 +33,8 @@ public class ForgotPassword {
     private PasswordField passwordfieldConfirmPassword, passwordfieldPassword;
     @FXML
     private TextField textfieldLogin, textfieldPhone;
+
+    private User user;
 
     @FXML
     void back_Pressed(ActionEvent event) throws IOException {

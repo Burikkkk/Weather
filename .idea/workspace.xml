@@ -4,26 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="212a1867-1f9e-474c-b72f-37fb6a2419f7" name="Changes" comment="final employee menu">
+    <list default="true" id="212a1867-1f9e-474c-b72f-37fb6a2419f7" name="Changes" comment="final project mb">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/java/Controller/Admin/AdminMenu.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/java/Controller/Admin/PersonalAccount.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/java/Controller/Admin/PersonalAccountAdmin.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/java/Controller/Admin/RoleControl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/java/Controller/Admin/Statistic.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/java/Controller/Admin/UserMenu.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/java/Controller/Entrance/Login.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/java/Controller/Entrance/Login.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/java/Enums/Roles.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/main/java/Controller/Entrance/ForgotPassword.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/java/Controller/Entrance/ForgotPassword.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/main/java/Controller/User/UserMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/java/Controller/User/UserMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/main/java/Service/DashboardService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/java/Service/DashboardService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/main/java/Service/DayService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/java/Service/DayService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/main/java/Service/EntranceService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/java/Service/EntranceService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/main/java/Service/LocationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/java/Service/LocationService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Client/src/main/java/Service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/java/Service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/resources/css/menu.css" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/resources/css/menu.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/resources/fxml/Admin_menu.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/resources/fxml/Admin_statistic.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/resources/fxml/Calendar.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/resources/fxml/Personal_account.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/resources/fxml/Personal_account_admin.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/resources/fxml/Role_control.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/main/resources/fxml/Admin_menu.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/resources/fxml/Admin_menu.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/main/resources/fxml/Employee_menu.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/resources/fxml/Employee_menu.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/main/resources/fxml/Forgot_password.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/resources/fxml/Forgot_password.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/main/resources/fxml/Register.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/resources/fxml/Register.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Client/src/main/resources/fxml/User_menu.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/resources/fxml/User_menu.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/src/main/java/Enums/Roles.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/main/resources/month_statistic.json" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/resources/month_statistic.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -100,7 +95,7 @@
     "git-widget-placeholder": "master",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Sasha/3_kurs/прогсп/КУРСАЧ/weather/Client/src/main/resources/images",
+    "last_opened_file_path": "D:/Sasha/3_kurs/прогсп/КУРСАЧ/weather",
     "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -111,7 +106,7 @@
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.19043238",
-    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
@@ -151,6 +146,20 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Client1" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="Client" />
+      <module name="Client" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Client2" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="Client" />
+      <module name="Client" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Client2" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="Client" />
       <module name="Client" />
@@ -161,6 +170,20 @@
     <configuration name="Client3" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="Client" />
       <module name="Client" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Client3" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="Client" />
+      <module name="Client" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Server" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="Server" />
+      <module name="Server" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -213,7 +236,14 @@
       <workItem from="1733739022758" duration="27463000" />
       <workItem from="1733816894235" duration="9329000" />
       <workItem from="1733832566954" duration="769000" />
-      <workItem from="1733849639748" duration="15599000" />
+      <workItem from="1733849639748" duration="21657000" />
+      <workItem from="1733879007828" duration="1106000" />
+      <workItem from="1733906487095" duration="553000" />
+      <workItem from="1733907076415" duration="1402000" />
+      <workItem from="1733910505666" duration="30315000" />
+      <workItem from="1733998422962" duration="8478000" />
+      <workItem from="1734344997121" duration="51000" />
+      <workItem from="1734353498989" duration="562000" />
     </task>
     <task id="LOCAL-00001" summary="User">
       <option name="closed" value="true" />
@@ -287,7 +317,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733832633774</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="final project mb">
+      <option name="closed" value="true" />
+      <created>1733866686764</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1733866686764</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -302,7 +340,8 @@
     <MESSAGE value="Employee Calendar" />
     <MESSAGE value="Employee Calendar Chart" />
     <MESSAGE value="final employee menu" />
-    <option name="LAST_COMMIT_MESSAGE" value="final employee menu" />
+    <MESSAGE value="final project mb" />
+    <option name="LAST_COMMIT_MESSAGE" value="final project mb" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -351,6 +390,21 @@
             <option name="WATCH_EXIT" value="false" />
           </properties>
           <option name="timeStamp" value="32" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/Client/src/main/java/Controller/Entrance/ForgotPassword.java</url>
+          <line>113</line>
+          <properties class="Controller.Entrance.ForgotPassword" method="switchToPasswordInput">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="35" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-field">
+          <url>file://$PROJECT_DIR$/Client/src/main/java/Controller/Entrance/ForgotPassword.java</url>
+          <line>36</line>
+          <properties field="user" class="Controller.Entrance.ForgotPassword" />
+          <option name="timeStamp" value="34" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

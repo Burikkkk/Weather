@@ -23,11 +23,11 @@
           },
           "wind": {
             "minDay": "2,3",
-            "maxDay": "5,3",
-            "avgNight": "2,92",
+            "maxDay": "42",
+            "avgNight": "4,08",
             "minNight": "1,2",
-            "maxNight": "5",
-            "avgDay": "3,46"
+            "maxNight": "40",
+            "avgDay": "4,68"
           }
         }
       }

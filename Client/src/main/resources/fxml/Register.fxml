@@ -7,6 +7,8 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
@@ -16,6 +18,15 @@
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="473.0" prefWidth="253.0" styleClass="bg-form">
                <children>
+                    <TextField fx:id="textfieldLogin" layoutX="42.0" layoutY="90.0" prefHeight="25.0" prefWidth="250.0" promptText="Логин" styleClass="text-field">
+                     <font>
+                        <Font size="14.0" />
+                     </font></TextField>
+                  <ImageView disable="true" fitHeight="430.0" fitWidth="333.0" pickOnBounds="true">
+                     <image>
+                        <Image url="@../images/stars6.png" />
+                     </image>
+                  </ImageView>
                     <PasswordField fx:id="passwordfieldPassword" layoutX="42.0" layoutY="130.0" prefHeight="25.0" prefWidth="250.0" promptText="Пароль">
                      <font>
                         <Font size="14.0" />
@@ -29,10 +40,6 @@
                             <Font size="30.0" />
                         </font>
                     </Label>
-                    <TextField fx:id="textfieldLogin" layoutX="42.0" layoutY="90.0" prefHeight="25.0" prefWidth="250.0" promptText="Логин" styleClass="text-field">
-                     <font>
-                        <Font size="14.0" />
-                     </font></TextField>
                   <TextField fx:id="textfieldPhone" layoutX="42.0" layoutY="210.0" prefHeight="25.0" prefWidth="250.0" promptText="Телефон">
                      <font>
                         <Font size="14.0" />
@@ -56,6 +63,11 @@
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="274.0" prefWidth="230.0" styleClass="bg-form">
                <children>
+                  <ImageView disable="true" fitHeight="430.0" fitWidth="333.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/stars6.png" />
+                     </image>
+                  </ImageView>
                   <Label layoutX="71.0" layoutY="88.0" styleClass="title-text" text="Температура">
                      <font>
                         <Font size="14.0" />

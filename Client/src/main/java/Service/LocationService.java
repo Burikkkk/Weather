@@ -38,7 +38,7 @@ public class LocationService {
                 }.getType();
                 return new Gson().fromJson(responseModel.getResponseData(), regionListType);
             } else {
-                errorStrategy.handleError("Ошибка загрузки данных: " + responseModel.getResponseMessage());
+                errorStrategy.handleError(responseModel.getResponseMessage());
             }
         } catch (IOException e) {
             new LabelErrorStrategy(labelMessage).handleError("Ошибка связи с сервером.");

@@ -28,7 +28,7 @@ public class DashboardService {
             if (responseModel.getResponseStatus() == ResponseStatus.OK) {
                 return "OK";
             } else {
-                errorStrategy.handleError("Ошибка загрузки данных: " + responseModel.getResponseMessage());
+                errorStrategy.handleError(responseModel.getResponseMessage());
             }
         } catch (IOException e) {
             new LabelErrorStrategy(labelMessage).handleError("Ошибка связи с сервером.");
@@ -50,7 +50,7 @@ public class DashboardService {
                 return new Gson().fromJson(responseModel.getResponseData(), Dashboard.class);
 
             } else {
-                errorStrategy.handleError("Ошибка загрузки данных: " + responseModel.getResponseMessage());
+                errorStrategy.handleError(responseModel.getResponseMessage());
             }
         } catch (IOException e) {
             errorStrategy.handleError("Ошибка связи с сервером.");

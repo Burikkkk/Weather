@@ -44,7 +44,7 @@ public class EntranceService {
             if (responseModel.getResponseStatus() == ResponseStatus.OK) {
                 return new Gson().fromJson(responseModel.getResponseData(), User.class);
             } else {
-                errorStrategy.handleError("Ошибка загрузки данных: " + responseModel.getResponseMessage());
+                errorStrategy.handleError(responseModel.getResponseMessage());
             }
         } catch (IOException e) {
             new LabelErrorStrategy(labelMessage).handleError("Ошибка связи с сервером.");

@@ -57,7 +57,7 @@ public class UserMenu implements Initializable {
     @FXML
     private AnchorPane todayWeatherPanel, panel0, panel1, personalPanel, todayWeatherPanel2;
     @FXML
-    private Label labelCurrentDate, labelError, labelUser, labelMessage, textC1, textC2,
+    private Label labelCurrentDate, labelError, labelError1, labelUser, labelMessage, textC1, textC2,
             textF1, textF2, textKMH1, textKMH2, textMM1, textMM2, textMS1, textMS2,
             texthPa1, texthPa2, xHumidity1, xHumidity2, xPressure1, xPressure2,
             xRain1, xRain2, xTemperatura1, xTemperatura2, xWeatherName, xWind1, xWind2,
@@ -148,7 +148,7 @@ public class UserMenu implements Initializable {
     }
 
     public void initRegion() {
-        regions = locationService.getRegions(labelError);
+        regions = locationService.getRegions(labelError1);
         if (regions.isEmpty())
             new LogErrorStrategy().handleError("Ошибка получения регионов");
     }
@@ -216,7 +216,7 @@ public class UserMenu implements Initializable {
 
 
     public void initWeatherTable() {
-        List<Day> dayList = dayService.getAllDays(labelError);
+        List<Day> dayList = dayService.getAllDays(labelError1);
         if (dayList != null) {
             // Если данные успешно получены, заполняем таблицу
             tableDays = FXCollections.observableArrayList(dayList);
@@ -259,7 +259,7 @@ public class UserMenu implements Initializable {
         tempL.setTown(selectedTown);
         tempDay.setLocation(tempL);
         tempDay.setDate(java.sql.Date.valueOf(today));
-        todayWeather = dayService.getSelectedDayWeather(tempDay,labelError);
+        todayWeather = dayService.getSelectedDayWeather(tempDay,labelError1);
         if(today!=null)
         {
             initWeatherFields();
@@ -482,7 +482,7 @@ public class UserMenu implements Initializable {
             monthChosen = true;
             updateCalendar(); // Обновляем календарь
         } catch (NumberFormatException e) {
-            ErrorStrategy errorStrategy = new LabelErrorStrategy(labelError);
+            ErrorStrategy errorStrategy = new LabelErrorStrategy(labelError1);
             errorStrategy.handleError("Неверный формат месяца: " + btn.getText());
         }
     }
@@ -498,7 +498,7 @@ public class UserMenu implements Initializable {
             yearChosen = true;
             updateCalendar(); // Обновляем календарь
         } catch (NumberFormatException e) {
-            ErrorStrategy errorStrategy = new LabelErrorStrategy(labelError);
+            ErrorStrategy errorStrategy = new LabelErrorStrategy(labelError1);
             errorStrategy.handleError("Неверный формат года: " + btn.getText());
         }
     }
@@ -700,7 +700,7 @@ public class UserMenu implements Initializable {
 
 
     public void updateChart() {
-        ErrorStrategy errorStrategy = new LabelErrorStrategy(labelMessage);
+        ErrorStrategy errorStrategy = new LabelErrorStrategy(labelError);
         if (calendarDate != null && selectedTownCalendar != null) {
             // Определяем начальную и конечную дату для графика
             LocalDate chartDateStart = calendarDate;
@@ -816,7 +816,7 @@ public class UserMenu implements Initializable {
 
     public void saveDashboard()
     {
-        ErrorStrategy errorStrategy = new LabelErrorStrategy(labelMessage);
+        ErrorStrategy errorStrategy = new LabelErrorStrategy(labelError);
         if (calendarWeather == null || currentChartDays == 0) {
             errorStrategy.handleError("Сначала выберите день и период");
 

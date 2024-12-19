@@ -107,7 +107,7 @@
                                 <Font size="14.0" />
                             </font>
                         </Button>
-                        <Button fx:id="roleControlBtn" layoutX="48.0" layoutY="368.0" mnemonicParsing="false" onAction="#roleControlBtn_Pressed" prefHeight="35.0" prefWidth="250.0" styleClass="button-menu" text="Управление ролями" AnchorPane.leftAnchor="46.0" AnchorPane.topAnchor="368.0" />
+                        <Button fx:id="roleControlBtn" layoutX="48.0" layoutY="368.0" mnemonicParsing="false" onAction="#roleControlBtn_Pressed" prefHeight="35.0" prefWidth="250.0" styleClass="button-menu" text="Управление правами доступа" AnchorPane.leftAnchor="46.0" AnchorPane.topAnchor="368.0" />
 
                         <Label layoutX="80.0" layoutY="245.0" styleClass="title-text" text="Добро пожаловать,">
                             <font>
@@ -119,9 +119,9 @@
                                 <Font size="20.0" />
                             </font>
                         </Label>
-                        <ImageView fitHeight="150.0" fitWidth="173.0" layoutX="96.0" layoutY="71.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="150.0" fitWidth="150.0" layoutX="101.0" layoutY="71.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../images/user1.png" />
+                                <Image url="@../images/free-icon-moon-4584453.png" />
                             </image>
                         </ImageView>
                         <Label fx:id="labelError" alignment="TOP_CENTER" layoutX="5.0" layoutY="626.0" prefHeight="119.0" prefWidth="262.0" styleClass="error-text" text="Ошибка" textFill="RED" visible="false" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
